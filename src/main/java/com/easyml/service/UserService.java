@@ -1,26 +1,23 @@
 package com.easyml.service;
 
 import com.easyml.repository.UserRepository;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import com.easyml.model.User;
+
 @Service
 public class UserService {
-
     private final UserRepository userRepository;
-
     public UserService(UserRepository userRepository) {
         this.userRepository = userRepository;
     }
-
     public User registerUser(String name, String email, String password) {
         if (name == null || name.isEmpty() || email == null || email.isEmpty() || password == null || password.isEmpty()) {
             return null;
         } else {
             if (userRepository.findByEmail(email).isPresent() || userRepository.findByName(name).isPresent()) {
-                System.out.println("User already exists");
+                System.err.println("User already exists");
                 return null;
-            }else {
+            } else {
                 User user = new User();
                 user.setName(name);
                 user.setEmail(email);
@@ -29,7 +26,7 @@ public class UserService {
             }
         }
     }
-    public User authenticate(String email, String password){
+    public User authenticate(String email, String password) {
         return userRepository.findByEmailAndPassword(email, password).orElse(null);
     }
 }

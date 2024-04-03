@@ -17,11 +17,11 @@ public class HomeController {
 
     @GetMapping("/about")
     public String About(Model model){
-        return "About";
+        return "about";
     }
     @GetMapping("/contact")
     public String Contact(Model model){
-        return "Contact";
+        return "contact";
     }
 
     @GetMapping("/dashboard")
