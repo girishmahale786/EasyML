@@ -1,31 +1,29 @@
 package com.easyml.controller;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.ui.Model;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
 
 @Controller
 public class HomeController {
 
     @GetMapping("/")
-    public String home(Model model){
+    public String home(Model model) {
         return "home";
     }
 
     @GetMapping("/about")
-    public String About(Model model){
+    public String About(Model model) {
         return "about";
     }
+
     @GetMapping("/contact")
-    public String Contact(Model model){
+    public String Contact(Model model) {
         return "contact";
     }
 
     @GetMapping("/dashboard")
-    public String dashboard(Model model){
+    public String dashboard(Model model) {
         return "dashboard";
     }
 

@@ -23,9 +23,6 @@ public class User {
     @Column(nullable = false, columnDefinition = "boolean default true")
     private boolean isActive;
 
-    // Constructors, getters, and setters
-
-    // Constructors
     public User() {
     }
 
@@ -43,24 +40,24 @@ public class User {
         return isStaff;
     }
 
-    public boolean isSuperuser() {
-        return isSuperuser;
+    public void setStaff(boolean staff) {
+        isStaff = staff;
     }
 
-    public boolean isActive() {
-        return isActive;
+    public boolean isSuperuser() {
+        return isSuperuser;
     }
 
     public void setSuperuser(boolean superuser) {
         isSuperuser = superuser;
     }
 
-    public void setActive(boolean active) {
-        isActive = active;
+    public boolean isActive() {
+        return isActive;
     }
 
-    public void setStaff(boolean staff) {
-        isStaff = staff;
+    public void setActive(boolean active) {
+        isActive = active;
     }
 
     @Access(AccessType.PROPERTY)
@@ -111,13 +108,6 @@ public class User {
 
     @Override
     public String toString() {
-        return "User{" +
-                "id=" + id +
-                ", email='" + email + '\'' +
-                ", name='" + name + '\'' +
-                ", isStaff=" + isStaff +
-                ", isSuperuser=" + isSuperuser +
-                ", isActive=" + isActive +
-                '}';
+        return "User{" + "id=" + id + ", email='" + email + '\'' + ", name='" + name + '\'' + ", isStaff=" + isStaff + ", isSuperuser=" + isSuperuser + ", isActive=" + isActive + '}';
     }
 }
