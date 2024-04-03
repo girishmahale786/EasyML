@@ -15,6 +15,9 @@
     <description>EasyML</description>
     <properties>
         <java.version>17</java.version>
+        <flyway.user>postgres</flyway.user>
+        <flyway.password>admin</flyway.password>
+        <flyway.schemas>easyml</flyway.schemas>
     </properties>
     <dependencies>
         <dependency>
@@ -37,6 +40,26 @@
             <artifactId>spring-boot-starter-test</artifactId>
             <scope>test</scope>
         </dependency>
+        <dependency>
+            <groupId>org.postgresql</groupId>
+            <artifactId>postgresql</artifactId>
+            <scope>runtime</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-data-jpa</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.flywaydb</groupId>
+            <artifactId>flyway-core</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>javax.xml.bind</groupId>
+            <artifactId>jaxb-api</artifactId>
+            <version>2.3.0</version>
+        </dependency>
+
     </dependencies>
 
     <build>
@@ -45,7 +68,21 @@
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
             </plugin>
+            <plugin>
+                <groupId>org.flywaydb</groupId>
+                <artifactId>flyway-maven-plugin</artifactId>
+                <version>9.22.3</version>
+                <configuration>
+                    <url>jdbc:postgresql://localhost:5432/easyml</url>
+                    <user>postgres</user>
+                    <password>admin</password>
+                    <schemas>
+                        <schema>easyml</schema>
+                    </schemas>
+                </configuration>
+            </plugin>
         </plugins>
+
     </build>
 
 </project>
