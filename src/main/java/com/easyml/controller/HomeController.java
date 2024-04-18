@@ -26,5 +26,4 @@ public class HomeController {
     public String dashboard(Model model) {
         return "dashboard";
     }
-
 }
