@@ -13,12 +13,12 @@ public class HomeController {
     }
 
     @GetMapping("/about")
-    public String About(Model model) {
+    public String about(Model model) {
         return "about";
     }
 
     @GetMapping("/contact")
-    public String Contact(Model model) {
+    public String contact(Model model) {
         return "contact";
     }
 
