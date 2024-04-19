@@ -30,7 +30,7 @@ public class LoginController {
     }
 
     @PostMapping("/register")
-    public String register(@ModelAttribute User users, Model model, RedirectAttributes redirectAttributes) {
+    public String register(@ModelAttribute User users, RedirectAttributes redirectAttributes) {
         User registeredUser = userService.registerUser(users.getName(), users.getEmail(), users.getPassword());
         if (registeredUser == null) {
             redirectAttributes.addFlashAttribute("errorMsg", "User already exists");
@@ -41,7 +41,7 @@ public class LoginController {
     }
 
     @PostMapping("/login")
-    public String authenticate(@ModelAttribute User users, Model model, RedirectAttributes redirectAttributes) {
+    public String authenticate(@ModelAttribute User users, RedirectAttributes redirectAttributes) {
         User authenticated = userService.authenticate(users.getEmail(), users.getPassword());
         if (authenticated == null) {
             redirectAttributes.addFlashAttribute("errorMsg", "Invalid authentication credentials");
