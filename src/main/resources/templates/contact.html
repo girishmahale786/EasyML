@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>enquiry</title>
+</head>
+<body>
+<form action="/login" method="post" th:object="${Enquiry}">
+    <div class="input-boxes">
+        <div class="input-box">
+            <i class="fas fa-envelope "></i>
+            <input name="email" placeholder="Enter your email" required type="email">
+        </div>
+        <div class="input-box">
+            <i class="fas fa-lock"></i>
+            <input name="password" placeholder="Enter your password" required type="password">
+        </div>
+        <div class="text "><a href="#">Forgot password?</a></div>
+        <div class="button input-box">
+            <input type="submit" value="Submit">
+        </div>
+
+    </div>
+</form>
+</body>
+</html>
