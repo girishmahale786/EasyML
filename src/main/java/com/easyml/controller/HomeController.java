@@ -34,15 +34,14 @@ public class HomeController {
         return "contact";
     }
 
-    @PostMapping("/contact")
-    public String enquiry(@ModelAttribute Enquiry enquiry, Model model , RedirectAttributes redirectAttributes){
-        Enquiry savedEnquiry = service.saveEnquiry(enquiry.getName(),enquiry.getEmail(),enquiry.getEnquiryText());
+    @PostMapping("/enquiry")
+    public String enquiry(@ModelAttribute Enquiry enquiry, Model model, RedirectAttributes redirectAttributes) {
+        Enquiry savedEnquiry = service.saveEnquiry(enquiry.getName(), enquiry.getEmail(), enquiry.getEnquiryText());
         if (savedEnquiry == null) {
-            redirectAttributes.addFlashAttribute("errorMsg", "User already exists");
+            redirectAttributes.addFlashAttribute("errorMsg", "Enquiry could not be submitted");
             redirectAttributes.addFlashAttribute("backLink", "/login");
             return "redirect:/error";
-        }
-        else {
+        } else {
             model.addAttribute("success", true);
         }
         return "contact";
