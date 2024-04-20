@@ -1,0 +1,3 @@
+[submodule "src/main/resources/python"]
+	path = src/main/resources/python
+	url = https://github.com/vaibhav7766/easyml
