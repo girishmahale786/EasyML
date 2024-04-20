@@ -11,14 +11,15 @@ public class Enquiry {
     private Long id;
     @Column(nullable = false)
     private String name;
-    @Column(nullable = false, unique = true)
+    @Column(nullable = false)
     private String email;
     @Column(nullable = false)
     private String enquiryText;
 
-    public Enquiry(){
+    public Enquiry() {
 
     }
+
     public Enquiry(Long id, String name, String email, String enquiryText) {
         this.id = id;
         this.name = name;

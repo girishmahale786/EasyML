@@ -1,21 +1,26 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <title>enquiry</title>
 </head>
 <body>
-<form action="/login" method="post" th:object="${Enquiry}">
+<form action="/enquiry" method="post" th:object="${Enquiry}">
     <div class="input-boxes">
+        <div class="input-box">
+            <i class="fas fa-lock"></i>
+            <input name="name" placeholder="Enter your name" required type="text">
+        </div>
         <div class="input-box">
             <i class="fas fa-envelope "></i>
             <input name="email" placeholder="Enter your email" required type="email">
         </div>
+
         <div class="input-box">
             <i class="fas fa-lock"></i>
-            <input name="password" placeholder="Enter your password" required type="password">
+            <input name="enquiryText" placeholder="enquiry text"  required type="text">
         </div>
-        <div class="text "><a href="#">Forgot password?</a></div>
+
         <div class="button input-box">
             <input type="submit" value="Submit">
         </div>
