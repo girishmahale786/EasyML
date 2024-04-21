@@ -45,11 +45,6 @@ public class HomeController {
             model.addAttribute("success", true);
         }
         return "contact";
-
     }
 
-    @GetMapping("/dashboard")
-    public String dashboard(Model model) {
-        return "dashboard";
-    }
 }
