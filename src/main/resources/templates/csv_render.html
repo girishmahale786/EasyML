@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <title>csv_render</title>
+</head>
+<body>
+
+<table class="table-auto">
+    <thead>
+    <tr>
+        <th>Song</th>
+        <th>Artist</th>
+        <th>Year</th>
+    </tr>
+    </thead>
+    <tbody>
+
+    <tr th:each="student: ${students}">
+        <td th:text="${student}" />
+<!--        <td th:text="${student.name}" />-->
+    </tr>
+
+    </tbody>
+</table>
+
+</body>
+</html>
