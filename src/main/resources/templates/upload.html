@@ -1,19 +1,19 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 
-<head>
-    <meta charset="UTF-8">
-    <meta content="width=device-width, initial-scale=1.0" name="viewport">
-    <title>EasyML - Choose Upload Type</title>
-    <link href="https://cdn.tailwindcss.com" rel="stylesheet">
-    <script src="https://cdn.tailwindcss.com"></script>
-    <link
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>EasyML - Choose Upload Type</title>
+
+        <script src="https://cdn.tailwindcss.com"></script>
+        <link
             href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600&display=swap"
             rel="stylesheet">
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css"
-          rel="stylesheet">
+        <link rel="stylesheet"
+            href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
 
-    <style>
+        <style>
         /* Assuming you want a similar dashed border as shown in the image */
         .dashed-border {
             border: 2px dashed #4F46E5;
@@ -44,104 +44,101 @@
             opacity: 0;
             cursor: pointer;
         }
-    </style>
+        </style>
 
-</head>
+    </head>
 
-<body class="bg-color text-white font-sans">
+    <body class="bg-color text-white font-sans">
 
-<div class="min-h-screen flex flex-col">
-    <!-- Navigation -->
-    <nav
-            class="flex items-center justify-self-auto justify-left  w-full  ps-10 py-4 pt-4 pb-2 border-b border-blue-800">
-        <div class="flex items-center space-x-5 px-5">
-            <img alt="Logo" class="w-12 h-12"
-                 src="https://placehold.co/50x50">
-            <div class="flex flex-col ">
-                <span class="font-semibold text-xl">EasyML</span>
-                <span class="text-blue-300 text-sm">Predict Your
+        <div class="min-h-screen flex flex-col">
+            <!-- Navigation -->
+            <nav
+                class="flex items-center justify-self-auto justify-left  w-full  ps-10 py-4 pt-4 pb-2 border-b border-blue-800">
+                <div class="flex items-center space-x-5 px-5">
+                    <img src="https://placehold.co/50x50" alt="Logo"
+                        class="w-12 h-12">
+                    <div class="flex flex-col ">
+                        <span class="font-semibold text-xl">EasyML</span>
+                        <span class="text-blue-300 text-sm">Predict Your
                             World</span>
-            </div>
-        </div>
-        <div class="flex items-left space-x-5 px-10">
-            <a class="text-blue-300 text-sm space-x-15"
-               href="#">Home</a>
-            <button class="text-blue-300">
-                <i class="fas fa-bars"></i>
-            </button>
-        </div>
+                    </div>
+                </div>
+                <div class="flex items-left space-x-5 px-10">
+                    <a href="#"
+                        class="text-blue-300 text-sm space-x-15">Home</a>
+                    <button class="text-blue-300">
+                        <i class="fas fa-bars"></i>
+                    </button>
+                </div>
 
-    </nav>
+            </nav>
 
-    <!-- Main content -->
-    <div class="flex items-center justify-center px-23 py-24">
-        <!-- File upload area -->
-        <form action="/upload" enctype="multipart/form-data"
-              method="post">
-            <label
-                    class="dashed-border rounded-lg flex flex-col items-center justify-center text-center p-4 mr-6 file-upload-btn">
-                <i
-                        class="fas fa-cloud-upload-alt fa-2x text-blue-300 mb-2"></i>
-                <span class="text-blue-300 text-sm">Choose a file or
+            <!-- Main content -->
+            <div class="flex items-center justify-center px-23 py-24">
+                <!-- File upload area -->
+                <form action="/upload" method="post"
+                    enctype="multipart/form-data">
+                    <label
+                        class="dashed-border rounded-lg flex flex-col items-center justify-center text-center p-4 mr-6 file-upload-btn">
+                        <i
+                            class="fas fa-cloud-upload-alt fa-2x text-blue-300 mb-2"></i>
+                        <span class="text-blue-300 text-sm">Choose a file or
                             drag it
                             here.</span>
-                <input name="csv" onchange="document.getElementById('file-name').textContent = this.files[0].name"
-                       type="file">
-            </label>
-            <label>
-                Project Name: <input name="project_name" type="text">
-            </label>
-            <button type="submit"> Submit</button>
-        </form>
-        <!-- Upload options -->
+                        <input type="file" name="csv" accept=".csv"
+                            onchange="document.getElementById('file-name').textContent = this.files[0].name">
+                    </label>
+                    <button type="submit"> Submit </button>
+                </form>
+                <!-- Upload options -->
 
-        <div class="text-blue-300 text-sm mb-4">OR Upload From</div>
+                <div class="text-blue-300 text-sm mb-4">OR Upload From</div>
 
-        <div>
-            <div class="grid grid-cols-3 gap-2">
-                <button
-                        class="flex flex-col items-center justify-center p-2">
-                    <i class="fab fa-google-drive fa-2x mb-1"></i>
-                    <span class="text-xs">Google Drive</span>
-                </button>
-                <button
-                        class="flex flex-col items-center justify-center p-2">
-                    <i class="fab fa-dropbox fa-2x mb-1"></i>
-                    <span class="text-xs">Dropbox</span>
-                </button>
-                <button
-                        class="flex flex-col items-center justify-center p-2">
-                    <i class="fab fa-microsoft fa-2x mb-1"></i>
-                    <span class="text-xs">One Drive</span>
-                </button>
-                <button
-                        class="flex flex-col items-center justify-center p-2">
-                    <i class="fab fa-aws fa-2x mb-1"></i>
-                    <span class="text-xs">Amazon S3</span>
-                </button>
-                <button
-                        class="flex flex-col items-center justify-center p-2">
-                    <i class="fas fa-database fa-2x mb-1"></i>
-                    <span class="text-xs">Azure Storage</span>
-                </button>
+                <div>
+                    <div class="grid grid-cols-3 gap-2">
+                        <button
+                            class="flex flex-col items-center justify-center p-2">
+                            <i class="fab fa-google-drive fa-2x mb-1"></i>
+                            <span class="text-xs">Google Drive</span>
+                        </button>
+                        <button
+                            class="flex flex-col items-center justify-center p-2">
+                            <i class="fab fa-dropbox fa-2x mb-1"></i>
+                            <span class="text-xs">Dropbox</span>
+                        </button>
+                        <button
+                            class="flex flex-col items-center justify-center p-2">
+                            <i class="fab fa-microsoft fa-2x mb-1"></i>
+                            <span class="text-xs">One Drive</span>
+                        </button>
+                        <button
+                            class="flex flex-col items-center justify-center p-2">
+                            <i class="fab fa-aws fa-2x mb-1"></i>
+                            <span class="text-xs">Amazon S3</span>
+                        </button>
+                        <button
+                            class="flex flex-col items-center justify-center p-2">
+                            <i class="fas fa-database fa-2x mb-1"></i>
+                            <span class="text-xs">Azure Storage</span>
+                        </button>
+                    </div>
+                </div>
             </div>
+
+
+
         </div>
-    </div>
 
-</div>
+        <!-- Footer -->
+        <footer
+            class="flex items-center justify-between px-4 py-2 footer-color">
+            <button
+                class="border border-blue-700 text-blue-300 rounded py-2 px-4">Prev</button>
+            <span>&copy; EasyML 2024</span>
+            <button
+                class="border border-blue-700 text-blue-300 rounded py-2 px-4">Next</button>
+        </footer>
 
-<!-- Footer -->
-<footer
-        class="flex items-center justify-between px-4 py-2 footer-color">
-    <button
-            class="border border-blue-700 text-blue-300 rounded py-2 px-4">Prev
-    </button>
-    <span>&copy; EasyML 2024</span>
-    <button
-            class="border border-blue-700 text-blue-300 rounded py-2 px-4">Next
-    </button>
-</footer>
-
-</body>
+    </body>
 
 </html>
