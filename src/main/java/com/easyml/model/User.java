@@ -2,6 +2,7 @@ package com.easyml.model;
 
 import jakarta.persistence.*;
 
+import java.util.List;
 import java.util.Objects;
 
 @Entity
@@ -22,6 +23,8 @@ public class User {
     private boolean isSuperuser;
     @Column(nullable = false, columnDefinition = "boolean default true")
     private boolean isActive;
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+    private List<Project> projects;
 
     public User() {
     }
@@ -93,6 +96,14 @@ public class User {
         this.name = name;
     }
 
+    public List<Project> getProjects() {
+        return projects;
+    }
+
+    public void setProjects(List<Project> projects) {
+        this.projects = projects;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -108,6 +119,15 @@ public class User {
 
     @Override
     public String toString() {
-        return "User{" + "id=" + id + ", email='" + email + '\'' + ", name='" + name + '\'' + ", isStaff=" + isStaff + ", isSuperuser=" + isSuperuser + ", isActive=" + isActive + '}';
+        return "User{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", email='" + email + '\'' +
+                ", password='" + password + '\'' +
+                ", isStaff=" + isStaff +
+                ", isSuperuser=" + isSuperuser +
+                ", isActive=" + isActive +
+                ", projects=" + projects +
+                '}';
     }
 }
