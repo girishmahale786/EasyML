@@ -2,29 +2,47 @@ package com.easyml.controller;
 
 import com.easyml.model.User;
 import com.easyml.service.UserService;
+import com.easyml.util.EncryptionUtil;
+import jakarta.servlet.http.Cookie;
+import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.CookieValue;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 @Controller
-public class LoginController {
+public class UserController {
     private final UserService userService;
 
-    public LoginController(UserService userService) {
+    public UserController(UserService userService) {
         this.userService = userService;
     }
 
     @GetMapping("/login")
-    public String login(Model model) {
+    public String login(Model model, @CookieValue(value = "user_id", required = false) String userId) {
+        if (userId != null) {
+            return "redirect:/dashboard";
+        }
         model.addAttribute("LoginRequest", new User());
         return "login";
     }
 
+    @GetMapping("/logout")
+    public String logout(Model model, HttpServletResponse response) {
+        Cookie deleteUser = new Cookie("user_id", null);
+        deleteUser.setMaxAge(0);
+        response.addCookie(deleteUser);
+        return "redirect:/login";
+    }
+
     @GetMapping("/register")
-    public String register(Model model) {
+    public String register(Model model, @CookieValue(value = "user_id", required = false) String userId) {
+        if (userId != null) {
+            return "redirect:/dashboard";
+        }
         model.addAttribute("RegisterRequest", new User());
         return "login";
     }
@@ -41,15 +59,19 @@ public class LoginController {
     }
 
     @PostMapping("/login")
-    public String authenticate(@ModelAttribute User users, RedirectAttributes redirectAttributes) {
+    public String login(@ModelAttribute User users, RedirectAttributes redirectAttributes, HttpServletResponse response) throws Exception {
         User authenticated = userService.authenticate(users.getEmail(), users.getPassword());
         if (authenticated == null) {
             redirectAttributes.addFlashAttribute("errorMsg", "Invalid authentication credentials");
             redirectAttributes.addFlashAttribute("backLink", "/login");
             return "redirect:/error";
-        } else {
-            redirectAttributes.addFlashAttribute("userLogin", authenticated.getName());
-            return "redirect:/dashboard";
         }
+        Long userId = authenticated.getId();
+        Cookie userCookie = new Cookie("user_id", EncryptionUtil.encrypt(userId.toString()));
+        userCookie.setMaxAge(60 * 60 * 24);
+        userCookie.setSecure(true);
+        userCookie.setHttpOnly(true);
+        response.addCookie(userCookie);
+        return "redirect:/dashboard";
     }
 }

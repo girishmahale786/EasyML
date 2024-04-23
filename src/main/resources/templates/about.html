@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>About Us</title>
+    <th:block th:insert="~{base :: scripts}"></th:block>
+    <link crossorigin="anonymous" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
+          integrity="sha512-SnH5WK+bZxgPHs44uWIX+LLJAJ9/2PkPKZ5QiAj6Ta86w+fsb2TkcmfRyVX3pBnMFcV7oQPJkl9QevSCWr3W6A=="
+          referrerpolicy="no-referrer" rel="stylesheet"/>
+</head>
+<body>
+<header th:replace="~{base :: header}"></header>
+<main class="min-h-screen bg-[#111827]">
+    <section class="text-gray-400 bg-gray-900 body-font">
+        <div class="container px-5 py-24 mx-auto">
+            <div class="flex flex-col text-center w-full mb-20">
+                <h1 class="text-2xl font-medium title-font mb-4 text-white tracking-widest">OUR TEAM</h1>
+                <p class="lg:w-2/3 mx-auto leading-relaxed text-base">Crafted from the depths of ingenuity and bound by
+                    the spirit of camaraderie, Complex Masterminds stands as a testament to our unity and prowess. We
+                    are not just a team; we are a force to be reckoned with. Together, we forge our path, leaving an
+                    indelible mark on the world of strategy.</p>
+            </div>
+            <div class="flex flex-wrap -m-4">
+                <div class="p-4 lg:w-1/3">
+                    <div class="h-full flex sm:flex-row flex-col items-center sm:justify-start justify-center text-center sm:text-left">
+                        <img alt="team"
+                             class="flex-shrink-0 rounded-lg w-48 h-48 object-cover object-center sm:mb-0 mb-4"
+                             src="https://dummyimage.com/200x200">
+                        <div class="flex-grow sm:pl-8">
+                            <h2 class="title-font font-medium text-lg text-white">Sahil Goyal</h2>
+                            <h3 class="text-gray-500 mb-3"> AI Quantum Explorer </h3>
+                            <p class="mb-4">Navigating the quantum realm with AI prowess.</p>
+                            <span class="inline-flex">
+                              <a class="text-gray-500">
+                                  <i class="fa-brands fa-github fa-lg"></i>
+                                </a>
+                              <a class="ml-2 text-gray-500">
+                                  <i class="fa-brands fa-linkedin-in fa-lg"></i>
+                              </a>
+                              <a class="ml-2 text-gray-500">
+                                    <i class="fa-brands fa-instagram fa-lg"></i>
+                              </a>
+                            </span>
+                        </div>
+                    </div>
+                </div>
+                <div class="p-4 lg:w-1/3">
+                    <div class="h-full flex sm:flex-row flex-col items-center sm:justify-start justify-center text-center sm:text-left">
+                        <img alt="team"
+                             class="flex-shrink-0 rounded-lg w-48 h-48 object-cover object-center sm:mb-0 mb-4"
+                             src="https://dummyimage.com/201x201">
+                        <div class="flex-grow sm:pl-8">
+                            <h2 class="title-font font-medium text-lg text-white">Vaibhav Sharma</h2>
+                            <h3 class="text-gray-500 mb-3">Security Alchemist</h3>
+                            <p class="mb-4">Transforming data into digital fortresses.</p>
+                            <span class="inline-flex">
+                              <a class="text-gray-500">
+                                  <i class="fa-brands fa-github fa-lg"></i>
+                                </a>
+                              <a class="ml-2 text-gray-500">
+                                  <i class="fa-brands fa-linkedin-in fa-lg"></i>
+                              </a>
+                              <a class="ml-2 text-gray-500">
+                                    <i class="fa-brands fa-instagram fa-lg"></i>
+                              </a>
+                            </span>
+                        </div>
+                    </div>
+                </div>
+                <div class="p-4 lg:w-1/3">
+                    <div class="h-full flex sm:flex-row flex-col items-center sm:justify-start justify-center text-center sm:text-left">
+                        <img alt="team"
+                             class="flex-shrink-0 rounded-lg w-48 h-48 object-cover object-center sm:mb-0 mb-4"
+                             src="https://media.licdn.com/dms/image/C4D03AQEHELbtdCr6Nw/profile-displayphoto-shrink_400_400/0/1655303869264?e=1719446400&v=beta&t=ATD1fxilJirB8_m2B1t6sLITvuEYt81oTfiNU8eH1Lw">
+                        <div class="flex-grow sm:pl-8">
+                            <h2 class="title-font font-medium text-lg text-white">Girish Mahale</h2>
+                            <h3 class="text-gray-500 mb-3">Full Stack Wizard</h3>
+                            <p class="mb-4">Weaving magic across the entire tech stack.</p>
+                            <span class="inline-flex">
+                              <a class="text-gray-500">
+                                  <i class="fa-brands fa-github fa-lg"></i>
+                                </a>
+                              <a class="ml-2 text-gray-500">
+                                  <i class="fa-brands fa-linkedin-in fa-lg"></i>
+                              </a>
+                              <a class="ml-2 text-gray-500">
+                                    <i class="fa-brands fa-instagram fa-lg"></i>
+                              </a>
+                            </span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+</main>
+<footer th:replace="~{base :: footer}"></footer>
+</body>
+</html>

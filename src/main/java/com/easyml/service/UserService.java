@@ -2,8 +2,11 @@ package com.easyml.service;
 
 import com.easyml.model.User;
 import com.easyml.repository.UserRepository;
+import com.easyml.util.EncryptionUtil;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.CookieValue;
 
 
 @Service
@@ -47,5 +50,19 @@ public class UserService {
             return isPasswordValid(password, user.getPassword()) ? user : null;
         }
         return null;
+    }
+
+    public User getUser(Long userId) {
+        return userRepository.findById(userId).orElse(null);
+    }
+
+    public void setUserLogin(Model model, @CookieValue(value = "user_id", required = false) String userId) throws Exception {
+        model.addAttribute("loggedIn", false);
+        if (userId != null) {
+            Long id = Long.valueOf(EncryptionUtil.decrypt(userId));
+            User user = getUser(id);
+            model.addAttribute("loggedIn", true);
+            model.addAttribute("user", user);
+        }
     }
 }
