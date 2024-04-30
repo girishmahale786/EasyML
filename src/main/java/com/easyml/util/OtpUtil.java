@@ -1,7 +1,8 @@
-package com.example.registerapp.util;
+package com.easyml.util;
+
+import org.springframework.stereotype.Component;
 
 import java.util.Random;
-import org.springframework.stereotype.Component;
 
 @Component
 public class OtpUtil {

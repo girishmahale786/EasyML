@@ -1,7 +1,7 @@
 package com.easyml.model;
 
 import jakarta.persistence.*;
-
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Objects;
 
@@ -23,20 +23,42 @@ public class User {
     private boolean isSuperuser;
     @Column(nullable = false, columnDefinition = "boolean default true")
     private boolean isActive;
+    @Column(nullable = true)
+    private String otp;
+    @Column(nullable = true)
+    private LocalDateTime otpGeneratedTime;
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     private List<Project> projects;
 
     public User() {
     }
 
-    public User(Long id, String email, String password, String name, boolean isStaff, boolean isSuperuser, boolean isActive) {
+    public User(Long id, String name, String email, String password, boolean isStaff, boolean isActive, String otp, LocalDateTime otpGeneratedTime, boolean isSuperuser) {
         this.id = id;
+        this.name = name;
         this.email = email;
         this.password = password;
-        this.name = name;
         this.isStaff = isStaff;
-        this.isSuperuser = isSuperuser;
         this.isActive = isActive;
+        this.otp = otp;
+        this.otpGeneratedTime = otpGeneratedTime;
+        this.isSuperuser = isSuperuser;
+    }
+
+    public String getOtp() {
+        return otp;
+    }
+
+    public void setOtp(String otp) {
+        this.otp = otp;
+    }
+
+    public LocalDateTime getOtpGeneratedTime() {
+        return otpGeneratedTime;
+    }
+
+    public void setOtpGeneratedTime(LocalDateTime otpGeneratedTime) {
+        this.otpGeneratedTime = otpGeneratedTime;
     }
 
     public boolean isStaff() {
