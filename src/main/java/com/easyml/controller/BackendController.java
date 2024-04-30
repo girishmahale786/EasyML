@@ -34,8 +34,9 @@ public class BackendController {
     }
 
     @GetMapping("/upload")
-    public String upload(Model model, @CookieValue(value = "user_id", required = false) String userId) {
+    public String upload(Model model, @CookieValue(value = "user_id", required = false) String userId, RedirectAttributes redirectAttributes) {
         if (userId == null) {
+            userService.setFlashError(redirectAttributes, "Can't access this page. Sign in to continue...");
             return "redirect:/login";
         }
         return "upload";
@@ -44,6 +45,7 @@ public class BackendController {
     @PostMapping("/upload")
     public String upload(Model model, @RequestParam("project_name") String projectName, @RequestParam("csv") MultipartFile csv, @CookieValue(value = "user_id", required = false) String userId, RedirectAttributes redirectAttributes) throws Exception {
         if (userId == null) {
+            userService.setFlashError(redirectAttributes, "Can't access this page. Sign in to continue...");
             return "redirect:/login";
         }
         Long id = Long.valueOf(EncryptionUtil.decrypt(userId));
@@ -51,15 +53,13 @@ public class BackendController {
         int[] dims = backendService.getDims();
 
         if (dims[0] <= 3 || dims[1] <= 3) {
-            redirectAttributes.addFlashAttribute("errorMsg", "CSV doesn't have sufficient no. of rows and columns.");
-            redirectAttributes.addFlashAttribute("backLink", "/upload");
-            return "redirect:/error";
+            userService.setError(model, "CSV doesn't have sufficient no. of rows and columns.");
+            return "upload";
         }
         Project project = apiService.createProject(id, projectName, csv);
         if (project == null) {
-            redirectAttributes.addFlashAttribute("errorMsg", "CSV didn't uploaded to the database, try again.");
-            redirectAttributes.addFlashAttribute("backLink", "/upload");
-            return "redirect:/error";
+            userService.setError(model, "CSV didn't uploaded to the database, try again.");
+            return "upload";
         }
         return String.format("redirect:/preview?project_id=%d", project.getId());
 //        Map preprocessed = apiService.getPreprocess("remove_nulls", 1L,"mean");
@@ -69,8 +69,9 @@ public class BackendController {
     }
 
     @GetMapping("/dashboard")
-    public String dashboard(Model model, @CookieValue(value = "user_id", required = false) String userId) {
+    public String dashboard(Model model, @CookieValue(value = "user_id", required = false) String userId, RedirectAttributes redirectAttributes) {
         if (userId == null) {
+            userService.setFlashError(redirectAttributes, "Can't access this page. Sign in to continue...");
             return "redirect:/login";
         }
         return "dashboard";
@@ -80,6 +81,7 @@ public class BackendController {
     @GetMapping("/preview")
     public String preview(Model model, @RequestParam(value = "project_id", required = false) Long projectId, @CookieValue(value = "user_id", required = false) String userId, RedirectAttributes redirectAttributes) throws Exception {
         if (userId == null) {
+            userService.setFlashError(redirectAttributes, "Can't access this page. Sign in to continue...");
             return "redirect:/login";
         }
         Long id = Long.valueOf(EncryptionUtil.decrypt(userId));
@@ -87,9 +89,8 @@ public class BackendController {
         List<Project> projects = user.getProjects();
         List<Long> projectIds = projects.stream().map(Project::getId).toList();
         if (!projectIds.contains(projectId)) {
-            redirectAttributes.addFlashAttribute("errorMsg", "Given project id does not exists");
-            redirectAttributes.addFlashAttribute("backLink", "/dashboard");
-            return "redirect:/error";
+            userService.setError(model, String.format("Project with %d id does not exists!", projectId));
+            return "preview";
         }
         Project project = projectService.getProject(projectId);
         backendService.readCSV(null, project.getDatasetUrl());
@@ -103,14 +104,13 @@ public class BackendController {
     }
 
     @GetMapping("/projects")
-    public String projects(Model model, @CookieValue(value = "user_id", required = false) String userId) throws Exception {
+    public String projects(Model model, @CookieValue(value = "user_id", required = false) String userId, RedirectAttributes redirectAttributes) throws Exception {
         if (userId == null) {
+            userService.setFlashError(redirectAttributes, "Can't access this page. Sign in to continue...");
             return "redirect:/login";
         }
-        Long id = Long.valueOf(EncryptionUtil.decrypt(userId));
-        User user = userService.getUser(id);
-        model.addAttribute("loggedIn", true);
-        model.addAttribute("user", user);
+        userService.setUserLogin(model, userId);
+        User user = (User) model.getAttribute("user");
         model.addAttribute("projects", user.getProjects());
         return "projects";
     }

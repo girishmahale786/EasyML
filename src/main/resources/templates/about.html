@@ -1,16 +1,4 @@
-<!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
-<head>
-    <meta charset="UTF-8">
-    <title>About Us</title>
-    <th:block th:insert="~{base :: scripts}"></th:block>
-    <link crossorigin="anonymous" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
-          integrity="sha512-SnH5WK+bZxgPHs44uWIX+LLJAJ9/2PkPKZ5QiAj6Ta86w+fsb2TkcmfRyVX3pBnMFcV7oQPJkl9QevSCWr3W6A=="
-          referrerpolicy="no-referrer" rel="stylesheet"/>
-</head>
-<body>
-<header th:replace="~{base :: header}"></header>
-<main class="min-h-screen bg-[#111827]">
+<section th:fragment="content">
     <section class="text-gray-400 bg-gray-900 body-font">
         <div class="container px-5 py-24 mx-auto">
             <div class="flex flex-col text-center w-full mb-20">
@@ -93,7 +81,4 @@
             </div>
         </div>
     </section>
-</main>
-<footer th:replace="~{base :: footer}"></footer>
-</body>
-</html>
+</section>
