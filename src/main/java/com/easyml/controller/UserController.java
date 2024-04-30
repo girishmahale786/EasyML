@@ -5,12 +5,11 @@ import com.easyml.service.UserService;
 import com.easyml.util.EncryptionUtil;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletResponse;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.CookieValue;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 @Controller
@@ -57,7 +56,11 @@ public class UserController {
         }
         return "redirect:/login";
     }
-
+    @GetMapping("/verify-account")
+    public ResponseEntity<String> verifyAccount(@RequestParam String email,
+                                                @RequestParam String otp) {
+        return new ResponseEntity<>(userService.verifyAccount(email, otp), HttpStatus.OK);
+    }
     @PostMapping("/login")
     public String login(@ModelAttribute User users, RedirectAttributes redirectAttributes, HttpServletResponse response) throws Exception {
         User authenticated = userService.authenticate(users.getEmail(), users.getPassword());

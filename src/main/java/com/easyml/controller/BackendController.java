@@ -17,6 +17,7 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.util.List;
+import java.util.Map;
 
 @Controller
 public class BackendController {
@@ -61,6 +62,10 @@ public class BackendController {
             return "redirect:/error";
         }
         return String.format("redirect:/preview?project_id=%d", project.getId());
+//        Map preprocessed = apiService.getPreprocess("remove_nulls", 1L,"mean");
+//        model.addAttribute("preprocessed", preprocessed);
+//        return "visualization";
+
     }
 
     @GetMapping("/dashboard")
@@ -110,4 +115,10 @@ public class BackendController {
         return "projects";
     }
 
+    @GetMapping("/preprocess")
+    public String preprocess(Model model, @CookieValue(value = "user_id", required = false) String userId) throws Exception {
+        Map preprocessed = apiService.getPreprocess("remove_nulls", 1L,"mean");
+        model.addAttribute("preprocessed", preprocessed);
+        return "visualization";
+    }
 }

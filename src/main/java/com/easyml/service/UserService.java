@@ -2,21 +2,32 @@ package com.easyml.service;
 
 import com.easyml.model.User;
 import com.easyml.repository.UserRepository;
+import com.easyml.util.EmailUtil;
 import com.easyml.util.EncryptionUtil;
+import com.easyml.util.OtpUtil;
+import jakarta.mail.MessagingException;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.CookieValue;
+
+import java.time.Duration;
+import java.time.LocalDateTime;
 
 
 @Service
 public class UserService {
     private final UserRepository userRepository;
     private final BCryptPasswordEncoder bCryptPasswordEncoder;
+    private final OtpUtil otpUtil;
+    private final EmailUtil emailUtil;
 
-    public UserService(UserRepository userRepository) {
+    public UserService(UserRepository userRepository, OtpUtil otpUtil, EmailUtil emailUtil) {
         this.userRepository = userRepository;
         this.bCryptPasswordEncoder = new BCryptPasswordEncoder();
+        this.otpUtil = otpUtil;
+        this.emailUtil = emailUtil;
     }
 
     public String encodePassword(String password) {
@@ -35,18 +46,54 @@ public class UserService {
                 System.err.println("User already exists");
                 return null;
             } else {
+                String otp = otpUtil.generateOtp();
+                try {
+                    emailUtil.sendOtpEmail(email, otp);
+                } catch (MessagingException e) {
+                    throw new RuntimeException("Unable to send otp please try again");
+                }
                 User user = new User();
                 user.setName(name);
                 user.setEmail(email);
                 user.setPassword(encodePassword(password));
+                user.setOtp(otp);
+                user.setOtpGeneratedTime(LocalDateTime.now());
                 return userRepository.save(user);
             }
         }
+    }
+    public String regenerateOtp(String email) {
+        User user = userRepository.findByEmail(email)
+                .orElseThrow(() -> new RuntimeException("User not found with this email: " + email));
+        String otp = otpUtil.generateOtp();
+        try {
+            emailUtil.sendOtpEmail(email, otp);
+        } catch (MessagingException e) {
+            throw new RuntimeException("Unable to send otp please try again");
+        }
+        user.setOtp(otp);
+        user.setOtpGeneratedTime(LocalDateTime.now());
+        userRepository.save(user);
+        return "Email sent... please verify account within 1 minute";
+    }
+    public String verifyAccount(String email, String otp) {
+        User user = userRepository.findByEmail(email)
+                .orElseThrow(() -> new RuntimeException("User not found with this email: " + email));
+        if (user.getOtp().equals(otp) && Duration.between(user.getOtpGeneratedTime(),
+                LocalDateTime.now()).getSeconds() < (3*60)) {
+            user.setActive(true);
+            userRepository.save(user);
+            return "OTP verified you can login";
+        }
+        return "Please regenerate otp and try again";
     }
 
     public User authenticate(String email, String password) {
         User user = userRepository.findByEmail(email).orElse(null);
         if (user != null) {
+            if (!user.isActive()) {
+                return null;
+            }
             return isPasswordValid(password, user.getPassword()) ? user : null;
         }
         return null;

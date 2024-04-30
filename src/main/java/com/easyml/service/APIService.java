@@ -54,5 +54,23 @@ public class APIService {
         return gson.fromJson(jsonResponse, Map.class);
     }
 
+//    public Map getPreprocess(String , Long project_id, String x, String y) {
+//        String plotUrl = String.format("%s/visualize/%s?project_id=%d", apiBase, plot, project_id);
+//        if (x != null) {
+//            plotUrl = String.format("%s&x=%s", plotUrl, x);
+//        }
+//        if (y != null) {
+//            plotUrl = String.format("%s&y=%s", plotUrl, y);
+//        }
+//        String jsonResponse = restTemplate.getForObject(plotUrl, String.class);
+//        return gson.fromJson(jsonResponse, Map.class);
+//    }
+
+    public Map getPreprocess(String option, Long project_id, String mode) {
+        String preprocessUrl = String.format("%s/preprocess/%s?project_id=%d&mode=%s", apiBase, option, project_id, mode);
+        String jsonResponse = restTemplate.getForObject(preprocessUrl, String.class);
+        return gson.fromJson(jsonResponse, Map.class);
+    }
+
 }
 
