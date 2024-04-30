@@ -11,6 +11,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.CookieValue;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.time.Duration;
 import java.time.LocalDateTime;
@@ -111,5 +112,15 @@ public class UserService {
             model.addAttribute("loggedIn", true);
             model.addAttribute("user", user);
         }
+    }
+
+    public void setError(Model model, String errorMsg) {
+        model.addAttribute("error", true);
+        model.addAttribute("errorMsg", errorMsg);
+    }
+
+    public void setFlashError(RedirectAttributes redirectAttributes, String errorMsg) {
+        redirectAttributes.addFlashAttribute("error", true);
+        redirectAttributes.addFlashAttribute("errorMsg", errorMsg);
     }
 }

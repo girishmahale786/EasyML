@@ -1,13 +1,4 @@
-<!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
-<head>
-    <meta charset="UTF-8">
-    <title>Contact Us</title>
-    <th:block th:insert="~{base :: scripts}"></th:block>
-</head>
-<body>
-<header th:replace="~{base :: header}"></header>
-<main class="min-h-screen bg-[#111827]">
+<section th:fragment="content">
     <section class="text-gray-400 bg-gray-900 body-font relative">
         <div class="container px-5 py-20 mx-auto flex sm:flex-nowrap flex-wrap">
             <div class="lg:w-2/3 md:w-1/2 bg-gray-900 rounded-lg overflow-hidden sm:mr-10 p-10 flex items-end justify-start relative">
@@ -65,7 +56,4 @@
             </div>
         </div>
     </section>
-</main>
-<footer th:replace="~{base :: footer}"></footer>
-</body>
-</html>
+</section>

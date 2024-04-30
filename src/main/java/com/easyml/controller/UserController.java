@@ -21,8 +21,9 @@ public class UserController {
     }
 
     @GetMapping("/login")
-    public String login(Model model, @CookieValue(value = "user_id", required = false) String userId) {
+    public String login(Model model, @CookieValue(value = "user_id", required = false) String userId, RedirectAttributes redirectAttributes) {
         if (userId != null) {
+            userService.setFlashError(redirectAttributes, "Signed in already, please proceed to dashboard.");
             return "redirect:/dashboard";
         }
         model.addAttribute("LoginRequest", new User());
@@ -30,16 +31,18 @@ public class UserController {
     }
 
     @GetMapping("/logout")
-    public String logout(Model model, HttpServletResponse response) {
+    public String logout(Model model, HttpServletResponse response, RedirectAttributes redirectAttributes) {
         Cookie deleteUser = new Cookie("user_id", null);
         deleteUser.setMaxAge(0);
         response.addCookie(deleteUser);
+        userService.setFlashError(redirectAttributes, "Logged out successfully.");
         return "redirect:/login";
     }
 
     @GetMapping("/register")
-    public String register(Model model, @CookieValue(value = "user_id", required = false) String userId) {
+    public String register(Model model, @CookieValue(value = "user_id", required = false) String userId, RedirectAttributes redirectAttributes) {
         if (userId != null) {
+            userService.setFlashError(redirectAttributes, "Signed in already, please proceed to dashboard.");
             return "redirect:/dashboard";
         }
         model.addAttribute("RegisterRequest", new User());
@@ -50,9 +53,8 @@ public class UserController {
     public String register(@ModelAttribute User users, RedirectAttributes redirectAttributes) {
         User registeredUser = userService.registerUser(users.getName(), users.getEmail(), users.getPassword());
         if (registeredUser == null) {
-            redirectAttributes.addFlashAttribute("errorMsg", "User already exists");
-            redirectAttributes.addFlashAttribute("backLink", "/login");
-            return "redirect:/error";
+            userService.setFlashError(redirectAttributes, "User with this email already exists!");
+            return "redirect:/login";
         }
         return "redirect:/login";
     }
@@ -65,9 +67,8 @@ public class UserController {
     public String login(@ModelAttribute User users, RedirectAttributes redirectAttributes, HttpServletResponse response) throws Exception {
         User authenticated = userService.authenticate(users.getEmail(), users.getPassword());
         if (authenticated == null) {
-            redirectAttributes.addFlashAttribute("errorMsg", "Invalid authentication credentials");
-            redirectAttributes.addFlashAttribute("backLink", "/login");
-            return "redirect:/error";
+            userService.setFlashError(redirectAttributes, "Invalid authentication credentials!");
+            return "redirect:/login";
         }
         Long userId = authenticated.getId();
         Cookie userCookie = new Cookie("user_id", EncryptionUtil.encrypt(userId.toString()));
@@ -75,6 +76,7 @@ public class UserController {
         userCookie.setSecure(true);
         userCookie.setHttpOnly(true);
         response.addCookie(userCookie);
+        userService.setFlashError(redirectAttributes, "Signed in successfully!");
         return "redirect:/dashboard";
     }
 }

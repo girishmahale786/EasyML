@@ -2,22 +2,23 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>Easy ML</title>
-    <th:block th:fragment="scripts">
-        <script src="https://cdn.tailwindcss.com"></script>
-    </th:block>
+    <title>EasyML</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link crossorigin="anonymous" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
+          integrity="sha512-SnH5WK+bZxgPHs44uWIX+LLJAJ9/2PkPKZ5QiAj6Ta86w+fsb2TkcmfRyVX3pBnMFcV7oQPJkl9QevSCWr3W6A=="
+          referrerpolicy="no-referrer" rel="stylesheet"/>
 </head>
 <body>
-<header class="text-gray-400 bg-gray-900 body-font" th:fragment="header">
+<header class="text-gray-400 bg-gray-900 body-font">
     <div class="container mx-auto flex flex-wrap p-5 flex-col md:flex-row items-center">
-        <a href="/" class="flex title-font font-medium items-center text-white mb-4 md:mb-0">
+        <a class="flex title-font font-medium items-center text-white mb-4 md:mb-0" href="/">
             <svg class="w-10 h-10 text-white p-2 bg-indigo-500 rounded-full" fill="none" stroke="currentColor"
                  stroke-linecap="round"
                  stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24"
                  xmlns="http://www.w3.org/2000/svg">
                 <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"></path>
             </svg>
-            <span class="ml-3 text-xl">Easy ML</span>
+            <span class="ml-3 text-xl">EasyML</span>
         </a>
         <nav class="md:mr-auto md:ml-4 md:py-1 md:pl-4 md:border-l md:border-gray-700	flex flex-wrap items-center text-base justify-center">
             <a class="mr-5 hover:text-white" href="/dashboard">Dashboard</a>
@@ -49,8 +50,24 @@
         </div>
     </div>
 </header>
+<main class="relative min-h-screen bg-[#111827]">
+    <section class="absolute z-50 inset-x-0 top-0 body-font transition-opacity duration-500 ease-in-out opacity-0"
+             id="errorMsg"
+             th:if="${error}">
+        <div class="container w-fit mx-auto bg-gray-800 rounded">
+            <div class="bg-gray-800 rounded flex py-3 px-6 h-full items-center">
+                <i class="text-red-500 flex-shrink-0 mr-3 fa-xl fa-solid fa-circle-exclamation"></i>
+                <span class="title-font font-medium text-red-500" th:text="${errorMsg}"></span>
+            </div>
+            <div class="h-1 rounded w-full bg-gray-800">
+                <div class="h-full rounded bg-red-500 w-full transition-all ease-linear duration-75" id="progressBar"></div>
+            </div>
+        </div>
 
-<footer class="text-gray-400 bg-gray-900 body-font" th:fragment="footer">
+    </section>
+    <section id="page" th:replace="~{${page} :: content}"></section>
+</main>
+<footer class="text-gray-400 bg-gray-900 body-font">
     <div class="container px-5 py-8 mx-auto flex items-center sm:flex-row flex-col">
         <a class="flex title-font font-medium items-center md:justify-start justify-center text-white">
             <svg class="w-10 h-10 text-white p-2 bg-indigo-500 rounded-full" fill="none" stroke="currentColor"
@@ -96,5 +113,29 @@
     </span>
     </div>
 </footer>
+<script th:inline="javascript">
+    setTimeout(function () {
+        let progressBar = document.getElementById("progressBar");
+        let errorMsg = document.getElementById("errorMsg");
+        let progress = 100;
+        if (errorMsg) {
+            setInterval(function(){
+                progress -= 1;
+                progressBar.style.width = progress + "%";
+            }, 55);
+            errorMsg.classList.remove("opacity-0");
+            errorMsg.classList.add("opacity-100");
+            setTimeout(function () {
+                errorMsg.classList.remove("opacity-100");
+                setTimeout(function () {
+                    errorMsg.classList.add("opacity-0");
+                    setTimeout(function () {
+                        errorMsg.remove();
+                    }, 600);
+                }, 500);
+            }, 5000);
+        }
+    }, 500);
+</script>
 </body>
 </html>

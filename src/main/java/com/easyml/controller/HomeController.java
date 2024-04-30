@@ -25,33 +25,35 @@ public class HomeController {
     @GetMapping("/")
     public String home(Model model, @CookieValue(value = "user_id", required = false) String userId) throws Exception {
         userService.setUserLogin(model, userId);
-        return "home";
+        model.addAttribute("page", "home");
+        return "base";
     }
 
     @GetMapping("/about")
     public String about(Model model, @CookieValue(value = "user_id", required = false) String userId) throws Exception {
         userService.setUserLogin(model, userId);
-        return "about";
+        model.addAttribute("page", "about");
+        return "base";
     }
 
     @GetMapping("/contact")
     public String contact(Model model, @CookieValue(value = "user_id", required = false) String userId) throws Exception {
         userService.setUserLogin(model, userId);
         model.addAttribute("EnquiryRequest", new Enquiry());
-        return "contact";
+        model.addAttribute("page", "contact");
+        return "base";
     }
 
     @PostMapping("/enquiry")
     public String enquiry(@ModelAttribute Enquiry enquiry, Model model, RedirectAttributes redirectAttributes) {
         Enquiry savedEnquiry = enquiryService.saveEnquiry(enquiry.getName(), enquiry.getEmail(), enquiry.getEnquiryText());
         if (savedEnquiry == null) {
-            redirectAttributes.addFlashAttribute("errorMsg", "Enquiry could not be submitted");
-            redirectAttributes.addFlashAttribute("backLink", "/login");
-            return "redirect:/error";
+            userService.setFlashError(redirectAttributes, "Enquiry could not be submitted!");
+            return "redirect:/contact";
         } else {
             model.addAttribute("success", true);
         }
-        return "contact";
+        return "redirect:/contact";
     }
 
 }
