@@ -22,10 +22,10 @@ public class User {
     private boolean isStaff;
     @Column(nullable = false, columnDefinition = "boolean default false")
     private boolean isSuperuser;
-    @Column(nullable = false, columnDefinition = "boolean default true")
+    @Column(nullable = false, columnDefinition = "boolean default false")
     private boolean isActive;
     @Column(nullable = true)
-    private String otp;
+    private Integer otp;
     @Column(nullable = true)
     private LocalDateTime otpGeneratedTime;
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
@@ -34,7 +34,7 @@ public class User {
     public User() {
     }
 
-    public User(Long id, String name, String email, String password, boolean isStaff, boolean isActive, String otp, LocalDateTime otpGeneratedTime, boolean isSuperuser) {
+    public User(Long id, String name, String email, String password, boolean isStaff, boolean isActive, Integer otp, LocalDateTime otpGeneratedTime, boolean isSuperuser) {
         this.id = id;
         this.name = name;
         this.email = email;
@@ -46,11 +46,11 @@ public class User {
         this.isSuperuser = isSuperuser;
     }
 
-    public String getOtp() {
+    public Integer getOtp() {
         return otp;
     }
 
-    public void setOtp(String otp) {
+    public void setOtp(Integer otp) {
         this.otp = otp;
     }
 

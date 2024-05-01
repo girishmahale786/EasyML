@@ -2,56 +2,56 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>EasyML</title>
-    <script src="https://cdn.tailwindcss.com"></script>
+    <title th:text="${title != null} ? 'EasyML | ' + ${title} : 'EasyML'">EasyML</title>
+    <link href="/static/img/favicon.ico" rel="icon" type="image/x-icon">
     <link crossorigin="anonymous" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
           integrity="sha512-SnH5WK+bZxgPHs44uWIX+LLJAJ9/2PkPKZ5QiAj6Ta86w+fsb2TkcmfRyVX3pBnMFcV7oQPJkl9QevSCWr3W6A=="
           referrerpolicy="no-referrer" rel="stylesheet"/>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Quicksand:wght@300;400;500;600;700&display=swap');
+
+        @keyframes animate {
+            0% {
+                transform: translateY(-100%);
+            }
+
+            100% {
+                transform: translateY(100%);
+            }
+        }
+    </style>
+
 </head>
-<body>
-<header class="text-gray-400 bg-gray-900 body-font">
-    <div class="container mx-auto flex flex-wrap p-5 flex-col md:flex-row items-center">
-        <a class="flex title-font font-medium items-center text-white mb-4 md:mb-0" href="/">
-            <svg class="w-10 h-10 text-white p-2 bg-indigo-500 rounded-full" fill="none" stroke="currentColor"
-                 stroke-linecap="round"
-                 stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24"
-                 xmlns="http://www.w3.org/2000/svg">
-                <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"></path>
-            </svg>
-            <span class="ml-3 text-xl">EasyML</span>
-        </a>
-        <nav class="md:mr-auto md:ml-4 md:py-1 md:pl-4 md:border-l md:border-gray-700	flex flex-wrap items-center text-base justify-center">
-            <a class="mr-5 hover:text-white" href="/dashboard">Dashboard</a>
-            <a class="mr-5 hover:text-white" href="/about">About</a>
-            <a class="mr-5 hover:text-white" href="/contact">Contact</a>
-        </nav>
-        <a href="/login" th:if="${!loggedIn}">
-            <button class="inline-flex items-center bg-gray-800 border-0 py-1 px-2 focus:outline-none hover:bg-gray-700 rounded text-base mt-4 md:mt-0">
-                <span class="px-2"> Login </span>
-                <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="1.5"
-                     viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                    <path d="m12.75 15 3-3m0 0-3-3m3 3h-7.5M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" stroke-linecap="round"
-                          stroke-linejoin="round"/>
-                </svg>
-            </button>
-        </a>
-        <div th:if="${loggedIn}">
-            <span class="px-1"> Welcome <strong th:text="${user.getName()}"></strong> </span>
-            <a href="/logout">
-                <button class="inline-flex items-center bg-gray-800 border-0 py-1 px-2 focus:outline-none hover:bg-gray-700 rounded text-base mt-4 md:mt-0">
-                    <span class="px-2"> Logout </span>
-                    <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="1.5"
-                         viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                        <path d="M5.636 5.636a9 9 0 1 0 12.728 0M12 3v9" stroke-linecap="round"
-                              stroke-linejoin="round"/>
-                    </svg>
+<body class="bg-black">
+<th:block th:if="${page} != 'auth_base'">
+    <header class="text-white body-font">
+        <div class="container mx-auto flex flex-wrap p-5 flex-col md:flex-row items-center">
+            <a class="flex title-font font-medium items-center mb-4 md:mb-0">
+                <div class="flex justify-center items-center w-9 h-9 rounded bg-[#9eff00]">
+                    <i class="fa-solid fa-cube fa-xl text-black"></i>
+                </div>
+                <span class="ml-3 text-xl">EasyML</span>
+            </a>
+            <nav class="md:ml-auto md:mr-auto flex flex-wrap items-center text-base justify-center">
+                <a class="mr-5 hover:text-[#9eff00]">Home</a>
+                <a class="mr-5 hover:text-[#9eff00]">Services</a>
+                <a class="mr-5 hover:text-[#9eff00]">Work</a>
+                <a class="mr-5 hover:text-[#9eff00]">Process</a>
+                <a class="mr-5 hover:text-[#9eff00]">About</a>
+                <a class="mr-5 hover:text-[#9eff00]">Careers</a>
+            </nav>
+            <a href="/login">
+                <button class="inline-flex text-black font-bold items-center bg-[#9eff00] border-0 py-1 px-4 focus:outline-none rounded text-base mt-4 md:mt-0">
+                    Login
                 </button>
             </a>
         </div>
-    </div>
-</header>
-<main class="relative min-h-screen bg-[#111827]">
-    <section class="absolute z-50 inset-x-0 top-0 body-font transition-opacity duration-500 ease-in-out opacity-0"
+    </header>
+</th:block>
+
+<main class="font-['Quicksand'] flex justify-center items-center relative min-h-screen bg-black">
+    <section class="absolute z-50 inset-x-0 top-10 body-font transition-opacity duration-500 ease-in-out opacity-0"
              id="errorMsg"
              th:if="${error}">
         <div class="container w-fit mx-auto bg-gray-800 rounded">
@@ -64,56 +64,50 @@
                      id="progressBar"></div>
             </div>
         </div>
-
     </section>
-    <section id="page" th:replace="~{${page} :: content}"></section>
+    <section th:replace="~{${page} :: content}"></section>
 </main>
-<footer class="text-gray-400 bg-gray-900 body-font">
-    <div class="container px-5 py-8 mx-auto flex items-center sm:flex-row flex-col">
-        <a class="flex title-font font-medium items-center md:justify-start justify-center text-white">
-            <svg class="w-10 h-10 text-white p-2 bg-indigo-500 rounded-full" fill="none" stroke="currentColor"
-                 stroke-linecap="round"
-                 stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24"
-                 xmlns="http://www.w3.org/2000/svg">
-                <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"></path>
-            </svg>
-            <span class="ml-3 text-xl">Easy ML</span>
-        </a>
-        <p class="text-sm text-gray-400 sm:ml-4 sm:pl-4 sm:border-l-2 sm:border-gray-800 sm:py-2 sm:mt-0 mt-4">&copy;
-            2024 Easy ML —
-            <a class="text-gray-500 ml-1" href="https://twitter.com/easyml" rel="noopener noreferrer" target="_blank">@easyml</a>
-        </p>
-        <span class="inline-flex sm:ml-auto sm:mt-0 mt-4 justify-center sm:justify-start">
-      <a class="text-gray-400">
-        <svg class="w-5 h-5" fill="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-             viewBox="0 0 24 24">
-          <path d="M18 2h-3a5 5 0 00-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 011-1h3z"></path>
-        </svg>
-      </a>
-      <a class="ml-3 text-gray-400">
-        <svg class="w-5 h-5" fill="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-             viewBox="0 0 24 24">
-          <path d="M23 3a10.9 10.9 0 01-3.14 1.53 4.48 4.48 0 00-7.86 3v1A10.66 10.66 0 013 4s-4 9 5 13a11.64 11.64 0 01-7 2c9 5 20 0 20-11.5a4.5 4.5 0 00-.08-.83A7.72 7.72 0 0023 3z"></path>
-        </svg>
-      </a>
-      <a class="ml-3 text-gray-400">
-        <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
-             stroke-width="2" viewBox="0 0 24 24">
-          <rect height="20" rx="5" ry="5" width="20" x="2" y="2"></rect>
-          <path d="M16 11.37A4 4 0 1112.63 8 4 4 0 0116 11.37zm1.5-4.87h.01"></path>
-        </svg>
-      </a>
-      <a class="ml-3 text-gray-400">
-        <svg class="w-5 h-5" fill="currentColor" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
-             stroke-width="0" viewBox="0 0 24 24">
-          <path d="M16 8a6 6 0 016 6v7h-4v-7a2 2 0 00-2-2 2 2 0 00-2 2v7h-4v-7a6 6 0 016-6zM2 9h4v12H2z"
-                stroke="none"></path>
-          <circle cx="4" cy="4" r="2" stroke="none"></circle>
-        </svg>
-      </a>
-    </span>
-    </div>
-</footer>
+
+<th:block th:if="${page} != 'auth_base'">
+    <footer class="text-gray-600 body-font mt-10">
+        <div class="container mx-auto flex flex-wrap p-5 flex-col md:flex-row items-center">
+            <a class="flex title-font font-medium items-center mb-4 md:mb-0" href="/">
+                <div class="flex justify-center items-center w-9 h-9 rounded bg-[#9eff00]">
+                    <i class="fa-solid fa-cube fa-xl text-black"></i>
+                </div>
+                <span class="ml-3 text-xl">EasyML</span>
+            </a>
+            <nav class="md:ml-auto md:mr-auto flex flex-wrap items-center text-base justify-center">
+                <a class="mr-5 hover:text-[#9eff00]">Home</a>
+                <a class="mr-5 hover:text-[#9eff00]">Services</a>
+                <a class="mr-5 hover:text-[#9eff00]">Work</a>
+                <a class="mr-5 hover:text-[#9eff00]">Process</a>
+                <a class="mr-5 hover:text-[#9eff00]">About</a>
+                <a class="mr-5 hover:text-[#9eff00]">Careers</a>
+                <a class="mr-5 hover:text-[#9eff00]">Contact</a>
+            </nav>
+            <button
+                    class="inline-flex items-center bg-black border-0 py-1 px-10 focus:outline-none rounded text-base mt-4 md:mt-0">
+                <span class="mx-2"> Stay Connected </span>
+                <a class="text-[#9eff00]"> <i class="px-2 fa-brands fa-github"></i> </a>
+                <a class="text-[#9eff00]"> <i class="px-2 fa-brands fa-linkedin"></i> </a>
+                <a class="text-[#9eff00]"> <i class="px-2 fa-brands fa-instagram"></i> </a>
+            </button>
+        </div>
+        <div class="bg-black">
+            <div class="container mx-auto py-4 px-5 flex flex-wrap flex-col sm:flex-row">
+                <p class="text-gray-500 text-sm text-center sm:text-left">
+                    &copy; 2024 EasyML —
+                    <a class="text-gray-600 ml-1" href="#" rel="noopener noreferrer" target="_blank">@easyml</a>
+                </p>
+                <span class="inline-flex sm:ml-auto sm:mt-0 justify-center sm:justify-start">
+                <a class="mr-6" href="#">contact@easyml.com</a>
+                <a href="#">+91 123456789</a>
+            </span>
+            </div>
+        </div>
+    </footer>
+</th:block>
 <script th:inline="javascript">
     setTimeout(function () {
         let progressBar = document.getElementById("progressBar");

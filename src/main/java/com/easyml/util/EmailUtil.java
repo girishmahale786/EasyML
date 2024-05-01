@@ -15,17 +15,12 @@ public class EmailUtil {
         this.javaMailSender = javaMailSender;
     }
 
-    public void sendOtpEmail(String email, String otp) throws MessagingException {
+    public void sendEmail(String email, String subject, String message, Boolean isHtml) throws MessagingException {
         MimeMessage mimeMessage = javaMailSender.createMimeMessage();
         MimeMessageHelper mimeMessageHelper = new MimeMessageHelper(mimeMessage);
         mimeMessageHelper.setTo(email);
-        mimeMessageHelper.setSubject("Verify OTP");
-        mimeMessageHelper.setText("""
-                <div>
-                  "Your OTP is: %s"
-                </div>
-                """.formatted(otp), true);
-
+        mimeMessageHelper.setSubject(subject);
+        mimeMessageHelper.setText(message, isHtml);
         javaMailSender.send(mimeMessage);
     }
 }

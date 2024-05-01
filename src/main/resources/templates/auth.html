@@ -1,0 +1,135 @@
+<div class="absolute w-[400px] h bg-[#222222] z-10 flex justify-center items-center p-[40px] rounded-[4px] shadow-[0_15px_35px_rgba(0,0,0,9)]"
+     th:fragment="login">
+    <div class="relative w-full flex justify-center items-center flex-col gap-[40px]">
+        <h2 class="font-bold text-[2em] text-[#9eff00] uppercase">Sign In</h2>
+        <form action="/login" class="w-full flex flex-col gap-[25px]" method="post" th:object="${formObject}">
+            <div class="relative w-full">
+                <input class="relative w-full peer bg-[#333333] border-0 outline-0 pt-[25px] px-[10px] pb-[7.5px] rounded-[4px] text-white font-[500] text-[1em]"
+                       id="email" name="email" required type="email">
+                <label class="absolute left-0 px-[10px] py-[15px] transition duration-500 ease-in-out text-[#aaaaaa] pointer-events-none not-italic peer-focus:translate-y-[-7.5px] peer-focus:text-[0.8em] peer-focus:text-white peer-valid:translate-y-[-7.5px] peer-valid:text-[0.8em] peer-valid:text-white"
+                       for="email">Email</label>
+            </div>
+            <div class="relative w-full">
+                <input class="relative w-full peer bg-[#333333] border-0 outline-0 pt-[25px] px-[10px] pb-[7.5px] rounded-[4px] text-white font-[500] text-[1em]"
+                       id="password" name="password" required type="password">
+                <label class="absolute left-0 px-[10px] py-[15px] transition duration-500 ease-in-out text-[#aaaaaa] pointer-events-none not-italic peer-focus:translate-y-[-7.5px] peer-focus:text-[0.8em] peer-focus:text-white peer-valid:translate-y-[-7.5px] peer-valid:text-[0.8em] peer-valid:text-white"
+                       for="password">Password</label>
+            </div>
+            <div class="relative w-full flex justify-between">
+                <a class="text-[#9eff00] font-[600] no-underline hover:opacity-60" href="/register">Signup</a>
+                <a class="text-white no-underline hover:opacity-60" href="/reset-password">Forgot Password?</a>
+            </div>
+            <div class="relative w-full">
+                <input class="relative w-full bg-[#9eff00] border-0 outline-0 p-[10px] rounded-[4px] text-black font-[600] text-[1.35em] tracking-[0.05em] cursor-pointer active:opacity-60"
+                       type="submit" value="Login">
+            </div>
+        </form>
+    </div>
+</div>
+
+<div class="absolute w-[400px] h bg-[#222222] z-10 flex justify-center items-center p-[40px] rounded-[4px] shadow-[0_15px_35px_rgba(0,0,0,9)]"
+     th:fragment="signup">
+    <div class="relative w-full flex justify-center items-center flex-col gap-[40px]">
+        <h2 class="font-bold text-[2em] text-[#9eff00] uppercase">Sign Up</h2>
+        <form action="/register" class="w-full flex flex-col gap-[25px]" method="post" th:object="${formObject}">
+            <div class="relative w-full">
+                <input class="relative w-full peer bg-[#333333] border-0 outline-0 pt-[25px] px-[10px] pb-[7.5px] rounded-[4px] text-white font-[500] text-[1em]"
+                       id="name" name="name" required type="text">
+                <label class="absolute left-0 px-[10px] py-[15px] transition duration-500 ease-in-out text-[#aaaaaa] pointer-events-none not-italic peer-focus:translate-y-[-7.5px] peer-focus:text-[0.8em] peer-focus:text-white peer-valid:translate-y-[-7.5px] peer-valid:text-[0.8em] peer-valid:text-white"
+                       for="name">Full Name</label>
+            </div>
+            <div class="relative w-full">
+                <input class="relative w-full peer bg-[#333333] border-0 outline-0 pt-[25px] px-[10px] pb-[7.5px] rounded-[4px] text-white font-[500] text-[1em]"
+                       id="email" name="email" required type="email">
+                <label class="absolute left-0 px-[10px] py-[15px] transition duration-500 ease-in-out text-[#aaaaaa] pointer-events-none not-italic peer-focus:translate-y-[-7.5px] peer-focus:text-[0.8em] peer-focus:text-white peer-valid:translate-y-[-7.5px] peer-valid:text-[0.8em] peer-valid:text-white"
+                       for="email">Email</label>
+            </div>
+            <div class="relative w-full">
+                <input class="relative w-full peer bg-[#333333] border-0 outline-0 pt-[25px] px-[10px] pb-[7.5px] rounded-[4px] text-white font-[500] text-[1em]"
+                       id="password" name="password" required type="password">
+                <label class="absolute left-0 px-[10px] py-[15px] transition duration-500 ease-in-out text-[#aaaaaa] pointer-events-none not-italic peer-focus:translate-y-[-7.5px] peer-focus:text-[0.8em] peer-focus:text-white peer-valid:translate-y-[-7.5px] peer-valid:text-[0.8em] peer-valid:text-white"
+                       for="password">Password</label>
+            </div>
+            <div class="relative w-full flex justify-between">
+                <a class="text-[#9eff00] font-[600] no-underline hover:opacity-60" href="/login">Login</a>
+            </div>
+            <div class="relative w-full">
+                <input class="relative w-full bg-[#9eff00] border-0 outline-0 p-[10px] rounded-[4px] text-black font-[600] text-[1.35em] tracking-[0.05em] cursor-pointer active:opacity-60"
+                       type="submit" value="Register">
+            </div>
+        </form>
+    </div>
+</div>
+
+<div class="absolute w-[400px] h bg-[#222222] z-10 flex justify-center items-center p-[40px] rounded-[4px] shadow-[0_15px_35px_rgba(0,0,0,9)]"
+     th:fragment="reset_password">
+    <div class="relative w-full flex justify-center items-center flex-col gap-[40px]">
+        <h2 class="font-bold text-[2em] text-[#9eff00] uppercase">Reset Password</h2>
+        <form action="/reset-password" class="w-full flex flex-col gap-[25px]" method="post" th:object="${formObject}">
+            <div class="relative w-full">
+                <input class="relative w-full peer bg-[#333333] border-0 outline-0 pt-[25px] px-[10px] pb-[7.5px] rounded-[4px] text-white font-[500] text-[1em]"
+                       id="email" name="email" required type="email">
+                <label class="absolute left-0 px-[10px] py-[15px] transition duration-500 ease-in-out text-[#aaaaaa] pointer-events-none not-italic peer-focus:translate-y-[-7.5px] peer-focus:text-[0.8em] peer-focus:text-white peer-valid:translate-y-[-7.5px] peer-valid:text-[0.8em] peer-valid:text-white"
+                       for="email">Email</label>
+            </div>
+            <div class="relative w-full flex justify-between">
+                <a class="text-[#9eff00] font-[600] no-underline hover:opacity-60" href="/login">Login</a>
+            </div>
+            <div class="relative w-full">
+                <input class="relative w-full bg-[#9eff00] border-0 outline-0 p-[10px] rounded-[4px] text-black font-[600] text-[1.35em] tracking-[0.05em] cursor-pointer active:opacity-60"
+                       type="submit" value="Send OTP">
+            </div>
+        </form>
+    </div>
+</div>
+
+<div class="absolute w-[400px] h bg-[#222222] z-10 flex justify-center items-center p-[40px] rounded-[4px] shadow-[0_15px_35px_rgba(0,0,0,9)]"
+     th:fragment="verify_otp">
+    <div class="relative w-full flex justify-center items-center flex-col gap-[40px]">
+        <h2 class="font-bold text-[2em] text-[#9eff00] uppercase">OTP Verification</h2>
+        <form action="/verify-otp" class="w-full flex flex-col gap-[25px]" method="post" th:object="${formObject}">
+            <div class="relative w-full">
+                <input class="relative w-full peer bg-[#333333] border-0 outline-0 pt-[25px] px-[10px] pb-[7.5px] rounded-[4px] text-white font-[500] text-[1em]"
+                       id="otp" name="otp" required type="password">
+                <label class="absolute left-0 px-[10px] py-[15px] transition duration-500 ease-in-out text-[#aaaaaa] pointer-events-none not-italic peer-focus:translate-y-[-7.5px] peer-focus:text-[0.8em] peer-focus:text-white peer-valid:translate-y-[-7.5px] peer-valid:text-[0.8em] peer-valid:text-white"
+                       for="otp">One Time Password (OTP)</label>
+            </div>
+            <div class="relative w-full flex justify-between">
+                <a class="text-[#9eff00] font-[600] no-underline hover:opacity-60" href="/resend-otp">Resend OTP</a>
+            </div>
+            <div class="relative w-full">
+                <input class="relative w-full bg-[#9eff00] border-0 outline-0 p-[10px] rounded-[4px] text-black font-[600] text-[1.35em] tracking-[0.05em] cursor-pointer active:opacity-60"
+                       type="submit" value="Send OTP">
+            </div>
+        </form>
+    </div>
+</div>
+
+<div class="absolute w-[400px] h bg-[#222222] z-10 flex justify-center items-center p-[40px] rounded-[4px] shadow-[0_15px_35px_rgba(0,0,0,9)]"
+     th:fragment="change_password">
+    <div class="relative w-full flex justify-center items-center flex-col gap-[40px]">
+        <h2 class="font-bold text-[2em] text-[#9eff00] uppercase">Change Password</h2>
+        <form action="/change-password" class="w-full flex flex-col gap-[25px]" method="post">
+            <div class="relative w-full">
+                <input class="relative w-full peer bg-[#333333] border-0 outline-0 pt-[25px] px-[10px] pb-[7.5px] rounded-[4px] text-white font-[500] text-[1em]"
+                       id="password" name="password" required type="password">
+                <label class="absolute left-0 px-[10px] py-[15px] transition duration-500 ease-in-out text-[#aaaaaa] pointer-events-none not-italic peer-focus:translate-y-[-7.5px] peer-focus:text-[0.8em] peer-focus:text-white peer-valid:translate-y-[-7.5px] peer-valid:text-[0.8em] peer-valid:text-white"
+                       for="email">New Password</label>
+            </div>
+            <div class="relative w-full">
+                <input class="relative w-full peer bg-[#333333] border-0 outline-0 pt-[25px] px-[10px] pb-[7.5px] rounded-[4px] text-white font-[500] text-[1em]"
+                       id="password2" name="password2" required type="password">
+                <label class="absolute left-0 px-[10px] py-[15px] transition duration-500 ease-in-out text-[#aaaaaa] pointer-events-none not-italic peer-focus:translate-y-[-7.5px] peer-focus:text-[0.8em] peer-focus:text-white peer-valid:translate-y-[-7.5px] peer-valid:text-[0.8em] peer-valid:text-white"
+                       for="password2">Retype New Password</label>
+            </div>
+            <div class="relative w-full flex justify-between">
+                <a class="text-[#9eff00] font-[600] no-underline hover:opacity-60" href="/login">Login</a>
+                <a class="text-white no-underline hover:opacity-60" href="/register">Signup</a>
+            </div>
+            <div class="relative w-full">
+                <input class="relative w-full bg-[#9eff00] border-0 outline-0 p-[10px] rounded-[4px] text-black font-[600] text-[1.35em] tracking-[0.05em] cursor-pointer active:opacity-60"
+                       type="submit" value="Confirm">
+            </div>
+        </form>
+    </div>
+</div>
