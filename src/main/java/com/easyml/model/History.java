@@ -1,7 +1,6 @@
 package com.easyml.model;
 
 import jakarta.persistence.*;
-import java.util.List;
 
 @Entity
 @Table(name = "history")
@@ -9,27 +8,29 @@ public class History {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long id;
+    private Long id;
     @Column(nullable = false)
     private String preprocessing;
-    @Column(nullable = false)
-    private long projectId;
 
-    public History(long id, String preprocessing, long projectId) {
-        this.id = id;
-        this.preprocessing = preprocessing;
-        this.projectId = projectId;
-    }
+    @ManyToOne
+    @JoinColumn(name = "project_id", nullable = false)
+    private Project project;
 
     public History() {
 
     }
 
-    public long getId() {
+    public History(Long id, String preprocessing, Project project) {
+        this.id = id;
+        this.preprocessing = preprocessing;
+        this.project = project;
+    }
+
+    public Long getId() {
         return id;
     }
 
-    public void setId(long id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
@@ -41,11 +42,11 @@ public class History {
         this.preprocessing = preprocessing;
     }
 
-    public long getProjectId() {
-        return projectId;
+    public Project getProject() {
+        return project;
     }
 
-    public void setProject_id(long projectId) {
-        this.projectId = projectId;
+    public void setProject(Project project) {
+        this.project = project;
     }
 }

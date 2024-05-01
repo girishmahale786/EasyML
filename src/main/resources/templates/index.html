@@ -2,15 +2,16 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
     <title>EasyML - Predict Your World</title>
     <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="https://pro.fontawesome.com/releases/v5.10.0/css/all.css">
+    <link href="https://pro.fontawesome.com/releases/v5.10.0/css/all.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500&display=swap" rel="stylesheet">
     <style>
         body {
             font-family: 'Roboto', sans-serif;
         }
+
         .option-box {
             display: flex;
             flex-direction: column;
@@ -23,65 +24,69 @@
             cursor: pointer;
             transition: transform 0.3s ease;
         }
+
         .option-box:hover {
             transform: translateY(-5px);
         }
+
         .option-box.selected {
             background-color: #4E7CFF; /* Tailwind teal-400 */
             color: #fff;
         }
+
         .bg-color {
             background-color: #282C51; /* Tailwind teal-400 */
         }
-        
+
         .checkbox:checked + .checkbox-label {
             background-color: #4F46E5; /* Tailwind color indigo-600 */
             color: white;
         }
+
         .checkbox-label {
             transition: background-color 0.2s, color 0.2s;
         }
-        
+
     </style>
 </head>
 <body class="bg-color text-white">
 
-    <div class="w-full h-screen flex flex-col items-center justify-center">
-        <nav class="flex items-center justify-between w-full px-10 py-4 border-b border-blue-800">
-            <div class="flex items-center space-x-5">
-                <img src="https://placehold.co/50x50" alt="Logo" class="w-12 h-12">
-                <div>
-                    <span class="font-semibold text-xl">EasyML</span>
-                    <span class="text-blue-300 text-sm">Predict Your World</span>
-                </div>
+<div class="w-full h-screen flex flex-col items-center justify-center">
+    <nav class="flex items-center justify-between w-full px-10 py-4 border-b border-blue-800">
+        <div class="flex items-center space-x-5">
+            <img alt="Logo" class="w-12 h-12" src="https://placehold.co/50x50">
+            <div>
+                <span class="font-semibold text-xl">EasyML</span>
+                <span class="text-blue-300 text-sm">Predict Your World</span>
             </div>
-            <div class="flex items-center space-x-5">
-                <a href="#" class="text-blue-300 text-sm">Home</a>
-                <button class="text-blue-300">
-                    <i class="fas fa-bars"></i>
-                </button>
-            </div>
-        </nav>
+        </div>
+        <div class="flex items-center space-x-5">
+            <a class="text-blue-300 text-sm" href="#">Home</a>
+            <button class="text-blue-300">
+                <i class="fas fa-bars"></i>
+            </button>
+        </div>
+    </nav>
 
-        <main class="flex flex-col items-center pt-24 flex-1 w-full">
-            <h1 class="text-4xl font-semibold mb-6">Home</h1>
-            <p class="text-white mb-10">Please select an appropriate action.</p>
-            <div class="grid grid-cols-3 gap-8 mb-10">
-                <div class="option-box" onclick="selectOption(this)">
-                    <i class="fas fa-cloud-upload-alt fa-3x text-white mb-4"></i>
-                    <p class="text-center font-semibold">Upload Training Data</p>
-                </div>
-                <div class="option-box" onclick="selectOption(this)">
-                    <i class="fas fa-cubes fa-3x text-white mb-4"></i>
-                    <p class="text-center font-semibold">Build Model</p>
-                </div>
-                <div class="option-box" onclick="selectOption(this)">
-                    <i class="fas fa-globe fa-3x text-white mb-4"></i>
-                    <p class="text-center font-semibold">Execute Your Model</p>
-                </div>
+    <main class="flex flex-col items-center pt-24 flex-1 w-full">
+        <h1 class="text-4xl font-semibold mb-6">Home</h1>
+        <p class="text-white mb-10">Please select an appropriate action.</p>
+        <div class="grid grid-cols-3 gap-8 mb-10">
+            <div class="option-box" onclick="selectOption(this)">
+                <i class="fas fa-cloud-upload-alt fa-3x text-white mb-4"></i>
+                <p class="text-center font-semibold">Upload Training Data</p>
             </div>
-        </main>
-    
+            <div class="option-box" onclick="selectOption(this)">
+                <i class="fas fa-cubes fa-3x text-white mb-4"></i>
+                <p class="text-center font-semibold">Build Model</p>
+            </div>
+            <div class="option-box" onclick="selectOption(this)">
+                <i class="fas fa-globe fa-3x text-white mb-4"></i>
+                <p class="text-center font-semibold">Execute Your Model</p>
+            </div>
+        </div>
+    </main>
+
     <footer class="text-white text-center py-4 w-full flex justify-between items-center px-10">
         <button class="px-10 py-2 border border-blue-700 rounded-full">Prev</button>
         <span>&copy; EasyML 2024</span>
@@ -99,6 +104,6 @@
             selectedBox.classList.add('selected');
         }
     </script>
-
+</div>
 </body>
 </html>

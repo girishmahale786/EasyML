@@ -52,7 +52,7 @@ public class BackendService {
         }
         if (csvUrl != null) {
             URL url = new URL(csvUrl);
-                reader = new BufferedReader(new InputStreamReader(url.openStream(), StandardCharsets.UTF_8));
+            reader = new BufferedReader(new InputStreamReader(url.openStream(), StandardCharsets.UTF_8));
         }
         CSVParser csvParser = new CSVParser(reader, CSVFormat.DEFAULT);
         List<List<String>> rows = new ArrayList<>();

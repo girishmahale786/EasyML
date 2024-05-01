@@ -2,6 +2,8 @@ package com.easyml.model;
 
 import jakarta.persistence.*;
 
+import java.util.List;
+
 @Entity
 @Table(name = "projects")
 public class Project {
@@ -13,40 +15,15 @@ public class Project {
     @Column(nullable = false)
     private String datasetUrl;
     @Column(nullable = false)
-    private String edit_dataset_url;
+    private String editDatasetUrl;
     @Column(nullable = false)
-    private String final_dataset_url;
+    private String finalDatasetUrl;
     @ManyToOne
     @JoinColumn(name = "user_id", nullable = false)
     private User user;
-    public Project() {
+    @OneToMany(mappedBy = "project", cascade = CascadeType.ALL)
+    private List<History> histories;
 
-    }
-
-    public Project(Long id, String name, String datasetUrl, String edit_dataset_url, String final_dataset_url, User user) {
-        this.id = id;
-        this.name = name;
-        this.datasetUrl = datasetUrl;
-        this.edit_dataset_url = edit_dataset_url;
-        this.final_dataset_url = final_dataset_url;
-        this.user = user;
-    }
-
-    public String getEdit_dataset_url() {
-        return edit_dataset_url;
-    }
-
-    public void setEdit_dataset_url(String edit_dataset_url) {
-        this.edit_dataset_url = edit_dataset_url;
-    }
-
-    public String getFinal_dataset_url() {
-        return final_dataset_url;
-    }
-
-    public void setFinal_dataset_url(String final_dataset_url) {
-        this.final_dataset_url = final_dataset_url;
-    }
     public Long getId() {
         return id;
     }
@@ -71,13 +48,40 @@ public class Project {
         this.datasetUrl = datasetUrl;
     }
 
+    public String getEditDatasetUrl() {
+        return editDatasetUrl;
+    }
+
+    public void setEditDatasetUrl(String editDatasetUrl) {
+        this.editDatasetUrl = editDatasetUrl;
+    }
+
+    public String getFinalDatasetUrl() {
+        return finalDatasetUrl;
+    }
+
+    public void setFinalDatasetUrl(String finalDatasetUrl) {
+        this.finalDatasetUrl = finalDatasetUrl;
+    }
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
+    }
+
+    public List<History> getHistories() {
+        return histories;
+    }
+
+    public void setHistories(List<History> histories) {
+        this.histories = histories;
+    }
+
     @Override
     public String toString() {
-        return "Project{" +
-                "id=" + id +
-                ", name='" + name + '\'' +
-                ", datasetUrl='" + datasetUrl + '\'' +
-                ", user=" + user +
-                '}';
+        return "Project{" + "id=" + id + ", name='" + name + '\'' + ", datasetUrl='" + datasetUrl + '\'' + ", editDatasetUrl='" + editDatasetUrl + '\'' + ", finalDatasetUrl='" + finalDatasetUrl + '\'' + ", user=" + user + ", histories=" + histories + '}';
     }
 }

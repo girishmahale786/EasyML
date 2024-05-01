@@ -6,7 +6,6 @@ import com.easyml.util.EmailUtil;
 import com.easyml.util.EncryptionUtil;
 import com.easyml.util.OtpUtil;
 import jakarta.mail.MessagingException;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.ui.Model;
@@ -63,6 +62,7 @@ public class UserService {
             }
         }
     }
+
     public String regenerateOtp(String email) {
         User user = userRepository.findByEmail(email)
                 .orElseThrow(() -> new RuntimeException("User not found with this email: " + email));
@@ -77,11 +77,12 @@ public class UserService {
         userRepository.save(user);
         return "Email sent... please verify account within 1 minute";
     }
+
     public String verifyAccount(String email, String otp) {
         User user = userRepository.findByEmail(email)
                 .orElseThrow(() -> new RuntimeException("User not found with this email: " + email));
         if (user.getOtp().equals(otp) && Duration.between(user.getOtpGeneratedTime(),
-                LocalDateTime.now()).getSeconds() < (3*60)) {
+                LocalDateTime.now()).getSeconds() < (3 * 60)) {
             user.setActive(true);
             userRepository.save(user);
             return "OTP verified you can login";

@@ -113,13 +113,14 @@ public class BackendController {
 
     @GetMapping("/preprocess")
     public String preprocess(Model model, @CookieValue(value = "user_id", required = false) String userId) throws Exception {
-        Map preprocessed = apiService.getPreprocess("remove_nulls", 4L,"mean");
+        Map preprocessed = apiService.getPreprocessing("remove_nulls", 4L, "mean");
         model.addAttribute("preprocessed", preprocessed);
         return "visualization";
     }
+
     @GetMapping("/metrics")
     public String metrics(Model model, @CookieValue(value = "user_id", required = false) String userId) throws Exception {
-        Map metrics = apiService.getMetrics( 4L,"liner_regression");
+        Map metrics = apiService.getMetrics(4L, "liner_regression");
         model.addAttribute("metrics", metrics);
         return "visualization";
     }

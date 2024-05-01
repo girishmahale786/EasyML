@@ -58,11 +58,13 @@ public class UserController {
         }
         return "redirect:/login";
     }
+
     @GetMapping("/verify-account")
     public ResponseEntity<String> verifyAccount(@RequestParam String email,
                                                 @RequestParam String otp) {
         return new ResponseEntity<>(userService.verifyAccount(email, otp), HttpStatus.OK);
     }
+
     @PostMapping("/login")
     public String login(@ModelAttribute User users, RedirectAttributes redirectAttributes, HttpServletResponse response) throws Exception {
         User authenticated = userService.authenticate(users.getEmail(), users.getPassword());
