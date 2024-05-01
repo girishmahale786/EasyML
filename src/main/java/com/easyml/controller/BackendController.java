@@ -62,10 +62,6 @@ public class BackendController {
             return "upload";
         }
         return String.format("redirect:/preview?project_id=%d", project.getId());
-//        Map preprocessed = apiService.getPreprocess("remove_nulls", 1L,"mean");
-//        model.addAttribute("preprocessed", preprocessed);
-//        return "visualization";
-
     }
 
     @GetMapping("/dashboard")
@@ -117,8 +113,14 @@ public class BackendController {
 
     @GetMapping("/preprocess")
     public String preprocess(Model model, @CookieValue(value = "user_id", required = false) String userId) throws Exception {
-        Map preprocessed = apiService.getPreprocess("remove_nulls", 1L,"mean");
+        Map preprocessed = apiService.getPreprocess("remove_nulls", 4L,"mean");
         model.addAttribute("preprocessed", preprocessed);
+        return "visualization";
+    }
+    @GetMapping("/metrics")
+    public String metrics(Model model, @CookieValue(value = "user_id", required = false) String userId) throws Exception {
+        Map metrics = apiService.getMetrics( 4L,"liner_regression");
+        model.addAttribute("metrics", metrics);
         return "visualization";
     }
 }

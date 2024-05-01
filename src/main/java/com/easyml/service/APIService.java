@@ -1,7 +1,9 @@
 package com.easyml.service;
 
+import com.easyml.model.History;
 import com.easyml.model.Project;
 import com.google.gson.Gson;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
@@ -21,9 +23,14 @@ public class APIService {
 
     private final RestTemplate restTemplate = new RestTemplate();
     private final Gson gson = new Gson();
+    private final HistoryService historyService;
 
     @Value("${api.base}")
     private String apiBase;
+
+    public APIService(HistoryService historyService) {
+        this.historyService = historyService;
+    }
 
     public Project createProject(Long userId, String projectName, MultipartFile dataset) {
         if (userId == null || Objects.equals(projectName, "") || projectName == null) {
@@ -54,23 +61,22 @@ public class APIService {
         return gson.fromJson(jsonResponse, Map.class);
     }
 
-//    public Map getPreprocess(String , Long project_id, String x, String y) {
-//        String plotUrl = String.format("%s/visualize/%s?project_id=%d", apiBase, plot, project_id);
-//        if (x != null) {
-//            plotUrl = String.format("%s&x=%s", plotUrl, x);
-//        }
-//        if (y != null) {
-//            plotUrl = String.format("%s&y=%s", plotUrl, y);
-//        }
-//        String jsonResponse = restTemplate.getForObject(plotUrl, String.class);
-//        return gson.fromJson(jsonResponse, Map.class);
-//    }
+
 
     public Map getPreprocess(String option, Long project_id, String mode) {
+        String preprocessing = String.format("%s-%s",option, mode);
+        History history = new History();
+        history.setProject_id(project_id);
+        history.setPreprocessing(preprocessing);
+        historyService.save(history);
         String preprocessUrl = String.format("%s/preprocess/%s?project_id=%d&mode=%s", apiBase, option, project_id, mode);
         String jsonResponse = restTemplate.getForObject(preprocessUrl, String.class);
         return gson.fromJson(jsonResponse, Map.class);
     }
-
+    public Map getMetrics(Long project_id, String option) {
+        String metricsUrl = String.format("%s/metrics/%s?project_id=%d", apiBase,option, project_id);
+        String jsonResponse = restTemplate.getForObject(metricsUrl, String.class);
+        return gson.fromJson(jsonResponse, Map.class);
+    }
 }
 
