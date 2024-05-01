@@ -12,20 +12,41 @@ public class Project {
     private String name;
     @Column(nullable = false)
     private String datasetUrl;
+    @Column(nullable = false)
+    private String edit_dataset_url;
+    @Column(nullable = false)
+    private String final_dataset_url;
     @ManyToOne
     @JoinColumn(name = "user_id", nullable = false)
     private User user;
-
     public Project() {
 
     }
 
-    public Project(Long id, String name, String datasetUrl) {
+    public Project(Long id, String name, String datasetUrl, String edit_dataset_url, String final_dataset_url, User user) {
         this.id = id;
         this.name = name;
         this.datasetUrl = datasetUrl;
+        this.edit_dataset_url = edit_dataset_url;
+        this.final_dataset_url = final_dataset_url;
+        this.user = user;
     }
 
+    public String getEdit_dataset_url() {
+        return edit_dataset_url;
+    }
+
+    public void setEdit_dataset_url(String edit_dataset_url) {
+        this.edit_dataset_url = edit_dataset_url;
+    }
+
+    public String getFinal_dataset_url() {
+        return final_dataset_url;
+    }
+
+    public void setFinal_dataset_url(String final_dataset_url) {
+        this.final_dataset_url = final_dataset_url;
+    }
     public Long getId() {
         return id;
     }

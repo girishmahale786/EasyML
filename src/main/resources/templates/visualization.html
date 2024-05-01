@@ -3,16 +3,15 @@
 <head>
     <meta charset="UTF-8">
     <title>dashboard</title>
-    <th:block th:insert="~{base :: scripts}"></th:block>
+<!--    <th:block th:insert="~{base :: scripts}"></th:block>-->
 </head>
 <body>
-<h1> Welcome to dashboard <span th:text="${userLogin}"> </span></h1>
+<!--<h1> Welcome to dashboard <span th:text="${userLogin}"> </span></h1>-->
 
 <main>
     <section>
-        <h2 th:text="${preprocessed.get('option')} , ${preprocessed.get('mode')}"></h2>
-        <figure th:utext="${preprocessed.get('df')}">
-        </figure>
+<!--        <h2 th:text="${preprocessed.get('option')} , ${preprocessed.get('mode')}"></h2>-->
+        <h3 th:utext="${preprocessed.get('df')}"></h3>
     </section>
 <!--    <section>-->
 <!--        <p> No. of rows: <strong th:text="${dims[0]}"></strong></p>-->
