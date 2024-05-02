@@ -2,11 +2,7 @@ package com.easyml.service;
 
 import com.easyml.model.History;
 import com.easyml.repository.HistoryRepository;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
-import java.util.List;
-import java.util.Optional;
 
 @Service
 public class HistoryService {
@@ -18,8 +14,8 @@ public class HistoryService {
     }
 
     public void save(History history) {
+        historyRepository.save(history);
 //        System.out.println(historyRepository.findByProjectId(history.getProjectId()).isPresent());
-//
 //        if (historyRepository.findByProjectId(history.getProjectId()).isPresent()) {
 //            Optional<History> optional = historyRepository.findByProjectId(history.getProjectId());
 //            String preprocess = optional.get().getPreprocessing();
@@ -27,9 +23,6 @@ public class HistoryService {
 //            history.setPreprocessing(update_preprocess);
 //            historyRepository.deleteByProjectId(history.getProjectId());
 //            historyRepository.save(history);
-//        } else {
-        historyRepository.save(history);
 //        }
-
     }
 }
