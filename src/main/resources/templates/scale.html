@@ -1,0 +1,59 @@
+<section class="relative z-10" th:fragment="content">
+    <div class="flex flex-col py-6 text-center w-full">
+        <h2 class="sm:text-5xl text-xl font-medium title-font text-white">Feature Scaling</h2>
+    </div>
+    <div class="bg-transparent text-black mx-20 mb-5">
+        <div class="container mx-auto flex justify-between ">
+            <a th:href="${prev}">
+                <button class="bg-[#9eff00] focus:outline-none font-bold px-6 py-2 border border-gray-800 rounded-full">
+                    Prev
+                </button>
+            </a>
+            <a th:href="${next}">
+                <button class="bg-[#9eff00] focus:outline-none font-bold px-6 py-2 border border-gray-800 rounded-full">
+                    Skip
+                </button>
+            </a>
+        </div>
+    </div>
+    <div class="container flex flex-wrap -m-4 px-5 p-4 mx-auto text-white text-justify">
+        <div class="flex flex-wrap justify-center -m-4">
+            <div class="p-4 lg:w-1/2 md:w-full">
+                <div class="flex p-4 sm:flex-row flex-col">
+                    <div class="grow">
+                        <div class="flex flex-row">
+                            <i class="far fa-compress fa-2x text-[#9eff00] mb-4 mr-4"></i>
+                            <h2 class="text-white font-bold title-font text-2xl mb-3">Standard Scaling (Standardization)</h2>
+                        </div>
+                        <p class="leading-relaxed text-base">This is a popular scaling technique that subtracts the mean
+                            from each feature and then divides by the standard deviation. It standardizes the data to
+                            have a mean of 0 and a standard deviation of 1.
+                        </p>
+                        <a th:href="'/preprocess/' + ${projectId} + '/scale/standard'">
+                            <button class="px-20 text-black font-medium focus:outline-none bg-[#9eff00] mt-2 py-2 px-4 rounded-md">
+                                Proceed
+                            </button>
+                        </a>
+                    </div>
+                </div>
+            </div>
+            <div class="p-4 lg:w-1/2 md:w-full">
+                <div class="flex p-4 sm:flex-row flex-col">
+                    <div class="grow">
+                        <div class="flex flex-row">
+                            <i class="fa-solid fa-arrows-to-dot fa-2x text-[#9eff00] mb-4 mr-4"></i>
+                            <h2 class="text-white font-bold title-font text-2xl mb-3">MinMax Scaling (Normalization)</h2>
+                        </div>
+                        <p class="leading-relaxed text-base"> This is a popular scaling technique that rescales each feature to a specific range, often 0 to
+                            1. This is useful when you want to ensure all features fall within a specific boundary.</p>
+                        <a th:href="'/preprocess/' + ${projectId} + '/scale/minmax'">
+                            <button class="px-20 text-black font-medium focus:outline-none bg-[#9eff00] mt-2 py-2 px-4 rounded-md">
+                                Proceed
+                            </button>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>

@@ -1,36 +1,80 @@
-<!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
-<head>
-    <meta charset="UTF-8">
-    <title>Dataset Preview</title>
-    <th:block th:insert="~{base :: scripts}"></th:block>
-</head>
-<body>
-<main>
-    <section>
-        <p> No. of rows: <strong th:text="${dims[0]}"></strong></p>
-        <p> No. of columns: <strong th:text="${dims[1]}"></strong></p>
-        <p>CSV Preview </p>
-        <div class="rounded-t-xl overflow-hidden bg-gradient-to-r from-emerald-50 to-teal-100 p-10">
-            <table class="table-auto">
-                <thead>
-                <tr>
-                    <th class="px-4 py-2 text-emerald-600" th:each="col: ${columns}">
-                        <th:block th:text="${col}"/>
-                    </th>
-                </tr>
-                </thead>
-                <tbody>
-                <tr class="border border-emerald-500 px-4 py-2 text-emerald-600 font-medium" th:each="row: ${rows}">
-                    <td th:each="val: ${row}">
-                        <th:block th:text="${val}"/>
-                    </td>
-                </tr>
-                </tbody>
-            </table>
+<section class="relative z-10" th:fragment="content">
+    <div class="flex flex-col py-6 text-center w-full">
+        <h2 class="sm:text-5xl text-xl font-medium title-font text-white" th:text="${previewTitle}"></h2>
+    </div>
+    <div class="bg-transparent text-black mx-20 mb-5">
+        <div class="container mx-auto flex justify-between ">
+            <a th:href="${prev}">
+                <button class="bg-[#9eff00] focus:outline-none font-bold px-6 py-2 border border-gray-800 rounded-full">
+                    Prev
+                </button>
+            </a>
+            <a th:href="${next}">
+                <button class="bg-[#9eff00] focus:outline-none font-bold px-6 py-2 border border-gray-800 rounded-full">
+                    Next
+                </button>
+            </a>
         </div>
-    </section>
-</main>
+    </div>
+    <div class="container mx-auto flex flex-wrap justify-center align-center">
+        <div class="m-4 p-2 px-4 bg-gray-800 bg-[#262626] rounded-lg border border-white">
+            <div class="flex flex-col pb-2 text-center w-full">
+                <h4 class="sm:text-2xl text-lg font-medium title-font text-white">Dataset Preview</h4>
+            </div>
+            <div class="tbl bg-[#262626] border border-white overflow-auto w-[35rem] h-[30rem]"
+                 th:utext="${data.get('df')}">
+            </div>
+            <div class="text-white font-bold" th:if="${data.get('dims') != null}">
+                <span th:text="${data.get('dims')[0]}"></span> x <span th:text="${data.get('dims')[1]}"></span>
+            </div>
+        </div>
 
-</body>
-</html>
+        <div class="m-4 p-2 px-4 bg-gray-800 bg-[#262626] rounded-lg border border-white">
+            <div class="flex flex-col pb-2 text-center w-full">
+                <h4 class="sm:text-2xl text-lg font-medium title-font text-white">Column Information</h4>
+            </div>
+            <div class="tbl bg-[#262626] border border-white overflow-auto w-[35rem] h-[30rem]"
+                 th:utext="${data.get('info')}">
+            </div>
+        </div>
+
+        <div class="m-4 p-2 px-4 bg-gray-800 bg-[#262626] rounded-lg border border-white">
+            <div class="flex flex-col pb-2 text-center w-full">
+                <h4 class="sm:text-2xl text-lg font-medium title-font text-white"> Statistical Description </h4>
+            </div>
+            <div class="tbl bg-[#262626] border border-white overflow-auto w-[35rem] h-[30rem]"
+                 th:utext="${data.get('desc')}">
+            </div>
+        </div>
+
+        <div class="m-4 p-2 px-4 bg-gray-800 bg-[#262626] rounded-lg border border-white">
+            <div class="flex flex-col pb-2 text-center w-full">
+                <h4 class="sm:text-2xl text-lg font-medium title-font text-white">Null values count</h4>
+            </div>
+            <div class="tbl bg-[#262626] border border-white overflow-auto w-[35rem] h-[30rem]"
+                 th:utext="${data.get('isna')}">
+            </div>
+        </div>
+    </div>
+
+    <script th:inline="javascript">
+        let tables = document.getElementsByClassName("tbl");
+        for (const t of tables) {
+            for (const table of t.querySelectorAll("table")) {
+                table.removeAttribute("border");
+                table.removeAttribute("style");
+                table.classList.add("table", "border-separate", "w-fit", "h-fit");
+                table.querySelector("thead > tr").removeAttribute("style");
+                table.querySelector("thead > tr").classList.add("sticky", "top-0", "border", "border-white", "px-2", "py-2", "bg-[#363636]", "text-[#9eff00]", "text-center", "font-medium");
+                for (const th of table.querySelectorAll("thead > tr > th"))
+                    th.classList.add("border", "border-white", "px-2", "py-2");
+                for (const tr of table.querySelectorAll("tbody > tr")) {
+                    tr.classList.add("border", "border-white", "px-2", "py-2", "text-white", "text-center", "font-medium");
+                    for (const td of tr.querySelectorAll("td")) {
+                        td.classList.add("border", "border-white", "px-2", "py-2");
+                    }
+                }
+            }
+        }
+    </script>
+</section>

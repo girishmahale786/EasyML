@@ -1,6 +1,5 @@
 <section th:fragment="content">
-    <section
-            class="bg-[url('/static/img/abstract.svg')] bg-no-repeat bg-contain bg-bottom flex flex-col justify-center h-[90vh]">
+    <section class="relative z-10 flex flex-col justify-center h-[90vh]">
         <p class="text-5xl text-center text-white">
             A Digital Product That Will <br>
             <span class="text-[#9eff00]">Ease</span> Your Work
@@ -28,9 +27,11 @@
             </button>
         </div>
         <div class="flex justify-center mt-10">
-            <button class="bg-[#9eff00] text-black font-bold py-2 px-8 rounded">
-                Explore
-            </button>
+            <a href="/dashboard">
+                <button class="bg-[#9eff00] text-black font-bold py-2 px-8 rounded">
+                    Explore
+                </button>
+            </a>
         </div>
     </section>
     <section class="text-gray-600 body-font">
@@ -44,7 +45,7 @@
                 <div class="flex flex-wrap -m-4">
                     <div class="p-4 lg:w-1/2 md:w-full">
                         <div class="flex p-8 sm:flex-row flex-col">
-                            <i class="fa-solid fa-user-graduate fa-3x" style="color: #9eff00;"></i>
+                            <i class="fa-solid fa-user-graduate fa-3x text-[#9eff00]"></i>
                             <div class="flex-grow ml-5">
                                 <h2 class="text-white text-lg title-font font-medium mb-3">
                                     Expertise
@@ -105,13 +106,15 @@
                     <h1 class="sm:text-3xl text-2xl font-medium title-font mb-8">
                         Thank You for your interest<br> in EasyML
                     </h1>
-                    <button class="bg-[#9eff00] text-black font-bold py-2 px-8 rounded">
-                        Start Project
-                    </button>
+                    <a href="/dashboard">
+                        <button class="bg-[#9eff00] text-black font-bold py-2 px-8 rounded">
+                            Start Project
+                        </button>
+                    </a>
                 </div>
             </div>
             <div class="lg:w-1/2 md:w-2/3 mx-auto mt-10">
-                <div class="flex flex-wrap -m-2">
+                <form class="flex flex-wrap -m-2" th:object="${EnquiryRequest}">
                     <div class="p-2 w-full">
                         <div class="relative">
                             <label class="leading-7 text-sm text-white" for="name">Name</label>
@@ -133,7 +136,7 @@
                             <label class="leading-7 text-sm text-white" for="message">Message</label>
                             <textarea
                                     class="w-full bg-[#262626] bg-opacity-50 rounded border border-gray-300 focus:border-indigo-500 focus:bg-white focus:ring-2 focus:ring-indigo-200 h-32 text-base outline-none text-gray-700 py-1 px-3 resize-none leading-6 transition-colors duration-200 ease-in-out"
-                                    id="message" name="message">
+                                    id="message" name="enquiryText">
                             </textarea>
                         </div>
                     </div>
@@ -142,7 +145,7 @@
                             Submit
                         </button>
                     </div>
-                </div>
+                </form>
             </div>
         </div>
     </section>

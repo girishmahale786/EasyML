@@ -1,8 +1,8 @@
 package com.easyml.service;
 
-import com.easyml.model.History;
 import com.easyml.model.Project;
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
@@ -21,23 +21,16 @@ import java.util.Objects;
 public class APIService {
 
     private final RestTemplate restTemplate = new RestTemplate();
-    private final Gson gson = new Gson();
-    private final ProjectService projectService;
-    private final HistoryService historyService;
+    private final Gson gson = new GsonBuilder().excludeFieldsWithoutExposeAnnotation().create();
 
     @Value("${api.base}")
     private String apiBase;
 
-    public APIService(ProjectService projectService, HistoryService historyService) {
-        this.projectService = projectService;
-        this.historyService = historyService;
-    }
-
-    public Project createProject(Long userId, String projectName, MultipartFile dataset) {
+    public Project createProject(Long userId, String projectName, String projectDescription, MultipartFile dataset) {
         if (userId == null || Objects.equals(projectName, "") || projectName == null) {
             return null;
         }
-        String projectUrl = String.format("%s/project?user_id=%d&name=%s", apiBase, userId, projectName);
+        String projectUrl = String.format("%s/project?user_id=%d&name=%s&description=%s", apiBase, userId, projectName, projectDescription);
 
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.MULTIPART_FORM_DATA);
@@ -48,6 +41,12 @@ public class APIService {
         HttpEntity<MultiValueMap<String, Object>> requestEntity = new HttpEntity<>(requestBody, headers);
         ResponseEntity<String> response = restTemplate.postForEntity(projectUrl, requestEntity, String.class);
         return gson.fromJson(response.getBody(), Project.class);
+    }
+
+    public Map getDatasetDescription(Long projectId) {
+        String descUrl = String.format("%s/describe?project_id=%d", apiBase, projectId);
+        String jsonResponse = restTemplate.getForObject(descUrl, String.class);
+        return gson.fromJson(jsonResponse, Map.class);
     }
 
     public Map getVisualization(String plot, Long projectId, String x, String y) {
@@ -62,14 +61,7 @@ public class APIService {
         return gson.fromJson(jsonResponse, Map.class);
     }
 
-
-    public Map getPreprocessing(String option, Long projectId, String mode) {
-        String preprocessing = String.format("%s-%s", option, mode);
-        History history = new History();
-        Project project = projectService.getProject(projectId);
-        history.setProject(project);
-        history.setPreprocessing(preprocessing);
-        historyService.save(history);
+    public Map getPreprocessing(Long projectId, String option, String mode) {
         String preprocessUrl = String.format("%s/preprocess/%s?project_id=%d&mode=%s", apiBase, option, projectId, mode);
         String jsonResponse = restTemplate.getForObject(preprocessUrl, String.class);
         return gson.fromJson(jsonResponse, Map.class);
@@ -80,5 +72,11 @@ public class APIService {
         String jsonResponse = restTemplate.getForObject(metricsUrl, String.class);
         return gson.fromJson(jsonResponse, Map.class);
     }
+
+    public void resetProject(Long projectId) {
+        String resetUrl = String.format("%s/reset_project?project_id=%d", apiBase, projectId);
+        restTemplate.getForObject(resetUrl, String.class);
+    }
+
 }
 
