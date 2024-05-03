@@ -31,7 +31,7 @@ public class UserController {
     }
 
     @GetMapping("/logout")
-    public String logout(Model model, HttpServletResponse response, RedirectAttributes redirectAttributes) {
+    public String logout(HttpServletResponse response, RedirectAttributes redirectAttributes) {
         Cookie deleteUser = new Cookie("user_id", null);
         deleteUser.setMaxAge(0);
         response.addCookie(deleteUser);
@@ -128,7 +128,7 @@ public class UserController {
 
     @PostMapping("/reset-password")
     public String resetPassword(@ModelAttribute User user, RedirectAttributes redirectAttributes, HttpSession session) {
-        if (userService.getUserByEmail(user.getEmail()) == null){
+        if (userService.getUserByEmail(user.getEmail()) == null) {
             userService.setFlashError(redirectAttributes, "User with this email is not registered!");
             return "redirect:/reset-password";
         }
@@ -144,7 +144,7 @@ public class UserController {
     }
 
     @PostMapping("/verify-otp")
-    public String verifyOtp(Model model, @RequestParam String otp, RedirectAttributes redirectAttributes, HttpSession session) {
+    public String verifyOtp(@RequestParam String otp, RedirectAttributes redirectAttributes, HttpSession session) {
         String email = session.getAttribute("email").toString();
         String requestType = session.getAttribute("requestType").toString();
         Boolean success = userService.verifyOtp(email, Integer.parseInt(otp));

@@ -43,13 +43,13 @@ public class APIService {
         return gson.fromJson(response.getBody(), Project.class);
     }
 
-    public Map getDatasetDescription(Long projectId) {
+    public Map<?, ?> getDatasetDescription(Long projectId) {
         String descUrl = String.format("%s/describe?project_id=%d", apiBase, projectId);
         String jsonResponse = restTemplate.getForObject(descUrl, String.class);
         return gson.fromJson(jsonResponse, Map.class);
     }
 
-    public Map getVisualization(String plot, Long projectId, String x, String y) {
+    public Map<?, ?> getVisualization(String plot, Long projectId, String x, String y) {
         String plotUrl = String.format("%s/visualize/%s?project_id=%d", apiBase, plot, projectId);
         if (x != null) {
             plotUrl = String.format("%s&x=%s", plotUrl, x);
@@ -61,20 +61,20 @@ public class APIService {
         return gson.fromJson(jsonResponse, Map.class);
     }
 
-    public Map getPreprocessing(Long projectId, String option, String mode) {
+    public Map<?, ?> getPreprocessing(Long projectId, String option, String mode) {
         String preprocessUrl = String.format("%s/preprocess/%s?project_id=%d&mode=%s", apiBase, option, projectId, mode);
         String jsonResponse = restTemplate.getForObject(preprocessUrl, String.class);
         return gson.fromJson(jsonResponse, Map.class);
     }
 
-    public Map getMetrics(Long projectId, String option) {
+    public Map<?, ?> getMetrics(Long projectId, String option) {
         String metricsUrl = String.format("%s/metrics/%s?project_id=%d", apiBase, option, projectId);
         String jsonResponse = restTemplate.getForObject(metricsUrl, String.class);
         return gson.fromJson(jsonResponse, Map.class);
     }
 
-    public void resetProject(Long projectId) {
-        String resetUrl = String.format("%s/reset_project?project_id=%d", apiBase, projectId);
+    public void resetProject(Long projectId, Boolean delete) {
+        String resetUrl = String.format("%s/reset_project?project_id=%d&delete=%b", apiBase, projectId, delete);
         restTemplate.getForObject(resetUrl, String.class);
     }
 

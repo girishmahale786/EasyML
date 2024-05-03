@@ -44,7 +44,7 @@ public class BackendService {
         return new int[]{rowCount, columnCount};
     }
 
-    public Map preprocess(Long projectId, String option, String mode) {
+    public Map<?, ?> preprocess(Long projectId, String option, String mode) {
         String preprocessing = String.format("%s-%s", option, mode);
         History history = new History();
         Project project = projectService.getProject(projectId);

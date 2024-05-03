@@ -1,0 +1,53 @@
+<section class="relative z-10 text-white body-font mx-auto" th:fragment="content">
+    <div class="flex flex-col py-6 text-center w-full">
+        <h2 class="sm:text-5xl text-xl font-medium title-font text-white">Project Settings</h2>
+    </div>
+    <div class="flex items-center flex-col justify-center bg-grey-lighter mt-5">
+        <form class="flex flex-wrap -m-2 w-2/5" method="post" th:action="'/update-project/' + ${projectId}"
+              th:object="${ProjectRequest}">
+            <div class="p-2 w-full">
+                <div class="relative">
+                    <label class="leading-7 text-sm text-white" for="dataset_url">Dataset URL</label>
+                    <input class="cursor-not-allowed w-full bg-gray-500 bg-opacity-50 rounded border border-gray-300 outline-none text-white py-1 px-3 leading-8 transition-colors duration-200 ease-in-out"
+                           disabled id="dataset_url" name="dataset_url" th:value="${project.getDatasetUrl()}"
+                           type="text">
+                </div>
+            </div>
+            <div class="p-2 w-full">
+                <div class="relative">
+                    <label class="leading-7 text-sm text-white" for="name">Project Name</label>
+                    <input class="w-full bg-[#262626] bg-opacity-50 rounded border border-gray-300 outline-none text-white py-1 px-3 leading-8 transition-colors duration-200 ease-in-out"
+                           id="name" name="name" th:value="${project.getName()}" type="text">
+                </div>
+            </div>
+            <div class="p-2 w-full">
+                <div class="relative">
+                    <label class="leading-7 text-sm text-white" for="description">Description</label>
+                    <textarea
+                            class="w-full bg-[#262626] bg-opacity-50 rounded border border-gray-300 h-32 text-base outline-none text-white py-1 px-3 resize-none leading-6 transition-colors duration-200 ease-in-out"
+                            id="description"
+                            name="description" th:text="${project.getDescription()}"></textarea>
+                </div>
+            </div>
+            <div class="p-2 flex flex-wrap justify-center items-center w-full">
+                <a th:href="'/reset-project/' + ${projectId}">
+                    <button class="m-2 text-black bg-yellow-500 font-bold border-0 py-2 px-8 focus:outline-none rounded text-lg"
+                            type="button">
+                        Reset
+                    </button>
+                </a>
+                <button class="m-2 text-black bg-[#9eff00] font-bold border-0 py-2 px-8 focus:outline-none rounded text-lg"
+                        type="submit">
+                    Update
+                </button>
+                <a th:href="'/delete-project/' + ${projectId}">
+                    <button class="m-2 text-black bg-red-600 font-bold border-0 py-2 px-8 focus:outline-none rounded text-lg"
+                            type="button">
+                        Delete
+                    </button>
+                </a>
+            </div>
+        </form>
+    </div>
+
+</section>

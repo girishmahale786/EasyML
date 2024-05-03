@@ -1,0 +1,132 @@
+<section class="relative z-10" th:fragment="content">
+    <div class="flex flex-col py-6 text-center w-full">
+        <h2 class="sm:text-5xl text-xl font-medium title-font text-white">Data Visualization</h2>
+    </div>
+    <div class="bg-transparent text-black mx-20 mb-5">
+        <div class="container mx-auto flex justify-between ">
+            <a th:href="${prev}">
+                <button class="bg-[#9eff00] focus:outline-none font-bold px-6 py-2 border border-gray-800 rounded-full">
+                    Prev
+                </button>
+            </a>
+            <a th:href="${next}">
+                <button class="bg-[#9eff00] focus:outline-none font-bold px-6 py-2 border border-gray-800 rounded-full">
+                    Skip
+                </button>
+            </a>
+        </div>
+    </div>
+    <div class="container flex flex-wrap -m-4 px-5 p-4 mx-auto text-white text-justify">
+        <div class="flex flex-wrap justify-center -m-4">
+            <div class="p-4 lg:w-1/2 md:w-full">
+                <div class="flex p-4 sm:flex-row flex-col">
+                    <div class="grow">
+                        <div class="flex flex-row">
+                            <i class="fa-regular fa-chart-line fa-2x text-[#9eff00] mb-4 mr-4"></i>
+                            <h2 class="text-white font-bold title-font text-2xl mb-3">Line Plot</h2>
+                        </div>
+                        <p class="leading-relaxed text-base">A line plot is a graph that uses dots or symbols on a
+                            number line to show how often each data value appears. It's a simple way to see how your
+                            data is spread out.
+                        </p>
+                        <a th:href="'/visualize/' + ${projectId} + '/line'">
+                            <button class="px-20 text-black font-medium focus:outline-none bg-[#9eff00] mt-2 py-2 px-4 rounded-md">
+                                Proceed
+                            </button>
+                        </a>
+                    </div>
+                </div>
+            </div>
+            <div class="p-4 lg:w-1/2 md:w-full">
+                <div class="flex p-4 sm:flex-row flex-col">
+                    <div class="grow">
+                        <div class="flex flex-row">
+                            <i class="fa-regular fa-chart-bar fa-2x text-[#9eff00] mb-4 mr-4"></i>
+                            <h2 class="text-white font-bold title-font text-2xl mb-3">Bar Plot</h2>
+                        </div>
+                        <p class="leading-relaxed text-base">A bar plot uses rectangular bars to display comparisons
+                            between categories. The length or height of each bar represents a specific value.
+                        </p>
+                        <a th:href="'/visualize/' + ${projectId} + '/bar'">
+                            <button class="px-20 text-black font-medium focus:outline-none bg-[#9eff00] mt-2 py-2 px-4 rounded-md">
+                                Proceed
+                            </button>
+                        </a>
+                    </div>
+                </div>
+            </div>
+            <div class="p-4 lg:w-1/2 md:w-full">
+                <div class="flex p-4 sm:flex-row flex-col">
+                    <div class="grow">
+                        <div class="flex flex-row">
+                            <i class="fa-regular fa-chart-scatter fa-2x text-[#9eff00] mb-4 mr-4"></i>
+                            <h2 class="text-white font-bold title-font text-2xl mb-3">Scatter Plot</h2>
+                        </div>
+                        <p class="leading-relaxed text-base">A scatter plot uses dots to visualize the relationship
+                            between two numerical variables, with each dot representing a single data point.
+                        </p>
+                        <a th:href="'/visualize/' + ${projectId} + '/scatter'">
+                            <button class="px-20 text-black font-medium focus:outline-none bg-[#9eff00] mt-2 py-2 px-4 rounded-md">
+                                Proceed
+                            </button>
+                        </a>
+                    </div>
+                </div>
+            </div>
+            <div class="p-4 lg:w-1/2 md:w-full">
+                <div class="flex p-4 sm:flex-row flex-col">
+                    <div class="grow">
+                        <div class="flex flex-row">
+                            <i class="fa-regular fa-chart-candlestick fa-2x text-[#9eff00] mb-4 mr-4"></i>
+                            <h2 class="text-white font-bold title-font text-2xl mb-3">Box Plot</h2>
+                        </div>
+                        <p class="leading-relaxed text-base">A box plot uses a box to show the middle half of your data
+                            and whiskers to show the spread. It also highlights potential outliers using quantiles.
+                        </p>
+                        <a th:href="'/visualize/' + ${projectId} + '/box'">
+                            <button class="px-20 text-black font-medium focus:outline-none bg-[#9eff00] mt-2 py-2 px-4 rounded-md">
+                                Proceed
+                            </button>
+                        </a>
+                    </div>
+                </div>
+            </div>
+            <div class="p-4 lg:w-1/2 md:w-full">
+                <div class="flex p-4 sm:flex-row flex-col">
+                    <div class="grow">
+                        <div class="flex flex-row">
+                            <i class="fa-regular fa-analytics fa-2x text-[#9eff00] mb-4 mr-4"></i>
+                            <h2 class="text-white font-bold title-font text-2xl mb-3">Histogram</h2>
+                        </div>
+                        <p class="leading-relaxed text-base">A histogram uses bars to show how many data points fall
+                            within certain ranges, giving a quick view of your data's distribution.
+                        </p>
+                        <a th:href="'/visualize/' + ${projectId} + '/hist'">
+                            <button class="px-20 text-black font-medium focus:outline-none bg-[#9eff00] mt-2 py-2 px-4 rounded-md">
+                                Proceed
+                            </button>
+                        </a>
+                    </div>
+                </div>
+            </div>
+            <div class="p-4 lg:w-1/2 md:w-full">
+                <div class="flex p-4 sm:flex-row flex-col">
+                    <div class="grow">
+                        <div class="flex flex-row">
+                            <i class="fa-regular fa-chess-board fa-2x text-[#9eff00] mb-4 mr-4"></i>
+                            <h2 class="text-white font-bold title-font text-2xl mb-3">Heatmap</h2>
+                        </div>
+                        <p class="leading-relaxed text-base">A heatmap uses color intensity to represent data values in
+                            a grid, making it easy to see areas of high and low values at a glance.
+                        </p>
+                        <a th:href="'/visualize/' + ${projectId} + '/heatmap'">
+                            <button class="px-20 text-black font-medium focus:outline-none bg-[#9eff00] mt-2 py-2 px-4 rounded-md">
+                                Proceed
+                            </button>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>

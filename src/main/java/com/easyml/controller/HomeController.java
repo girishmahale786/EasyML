@@ -25,6 +25,7 @@ public class HomeController {
     @GetMapping("/")
     public String home(Model model, @CookieValue(value = "user_id", required = false) String userId) throws Exception {
         userService.setUserLogin(model, userId);
+        model.addAttribute("EnquiryRequest", new Enquiry());
         model.addAttribute("page", "home");
         return "base";
     }
@@ -36,24 +37,14 @@ public class HomeController {
         return "base";
     }
 
-    @GetMapping("/contact")
-    public String contact(Model model, @CookieValue(value = "user_id", required = false) String userId) throws Exception {
-        userService.setUserLogin(model, userId);
-        model.addAttribute("EnquiryRequest", new Enquiry());
-        model.addAttribute("page", "contact");
-        return "base";
-    }
-
     @PostMapping("/enquiry")
-    public String enquiry(@ModelAttribute Enquiry enquiry, Model model, RedirectAttributes redirectAttributes) {
+    public String enquiry(@ModelAttribute Enquiry enquiry, RedirectAttributes redirectAttributes) {
         Enquiry savedEnquiry = enquiryService.saveEnquiry(enquiry.getName(), enquiry.getEmail(), enquiry.getEnquiryText());
         if (savedEnquiry == null) {
             userService.setFlashError(redirectAttributes, "Enquiry could not be submitted!");
-            return "redirect:/contact";
-        } else {
-            model.addAttribute("success", true);
+            return "redirect:/";
         }
-        return "redirect:/contact";
+        userService.setFlashError(redirectAttributes, "Your request has been received!");
+        return "redirect:/";
     }
-
 }

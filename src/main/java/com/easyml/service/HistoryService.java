@@ -15,14 +15,5 @@ public class HistoryService {
 
     public void save(History history) {
         historyRepository.save(history);
-//        System.out.println(historyRepository.findByProjectId(history.getProjectId()).isPresent());
-//        if (historyRepository.findByProjectId(history.getProjectId()).isPresent()) {
-//            Optional<History> optional = historyRepository.findByProjectId(history.getProjectId());
-//            String preprocess = optional.get().getPreprocessing();
-//            String update_preprocess = preprocess + "," + history.getPreprocessing();
-//            history.setPreprocessing(update_preprocess);
-//            historyRepository.deleteByProjectId(history.getProjectId());
-//            historyRepository.save(history);
-//        }
     }
 }

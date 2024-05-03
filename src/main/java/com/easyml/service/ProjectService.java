@@ -26,30 +26,30 @@ public class ProjectService {
         return projectRepository.findById(projectId).orElse(null);
     }
 
-    public Project updateProject(Long id, String name, String description) {
-        Project project = projectRepository.findById(id).orElse(null);
+    public void updateProject(Long projectId, String name, String description) {
+        Project project = projectRepository.findById(projectId).orElse(null);
         if (project != null) {
             project.setName(name);
             project.setDescription(description);
-            return projectRepository.save(project);
+            projectRepository.save(project);
         }
-        return null;
     }
 
-    public void resetProject(Long id) {
-        Project project = projectRepository.findById(id).orElse(null);
+    public void resetProject(Long projectId) {
+        Project project = projectRepository.findById(projectId).orElse(null);
         if (project != null) {
             project.setEditDatasetUrl(project.getDatasetUrl());
             project.setFinalDatasetUrl(project.getDatasetUrl());
             List<History> histories = project.getHistories();
             historyRepository.deleteAllInBatch(histories);
             projectRepository.save(project);
-            apiService.resetProject(id);
+            apiService.resetProject(projectId, false);
         }
     }
 
-    public void deleteProject(Project project) {
-        projectRepository.delete(project);
+    public void deleteProjectById(Long projectId) {
+        apiService.resetProject(projectId, true);
+        projectRepository.deleteById(projectId);
     }
 
 }
