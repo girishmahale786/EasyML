@@ -1,0 +1,71 @@
+<section th:fragment="content">
+    <div class="absolute z-50 inset-x-0 top-10 body-font transition-opacity duration-500 ease-in-out opacity-0"
+         id="msg"
+         th:if="${status} == 'success'">
+        <div class="container w-fit mx-auto bg-gray-800 rounded">
+            <div class="bg-gray-800 rounded flex py-3 px-6 h-full items-center">
+                <i class="flex-shrink-0 mr-3 fa-xl fa-solid fa-circle-check text-green-500"></i>
+                <span class="title-font font-medium text-green-500" th:text="${message}"></span>
+            </div>
+            <div class="h-1 rounded w-full bg-gray-800">
+                <div class="h-full rounded bg-green-500 w-full transition-all ease-linear duration-75"
+                     id="progressBar"></div>
+            </div>
+        </div>
+    </div>
+
+    <div class="absolute z-50 inset-x-0 top-10 body-font transition-opacity duration-500 ease-in-out opacity-0"
+         id="msg"
+         th:if="${status} == 'info'">
+        <div class="container w-fit mx-auto bg-gray-800 rounded">
+            <div class="bg-gray-800 rounded flex py-3 px-6 h-full items-center">
+                <i class="flex-shrink-0 mr-3 fa-xl fa-solid fa-triangle-exclamation text-yellow-500"></i>
+                <span class="title-font font-medium text-yellow-500" th:text="${message}"></span>
+            </div>
+            <div class="h-1 rounded w-full bg-gray-800">
+                <div class="h-full rounded bg-yellow-500 w-full transition-all ease-linear duration-75"
+                     id="progressBar"></div>
+            </div>
+        </div>
+    </div>
+
+    <div class="absolute z-50 inset-x-0 top-10 body-font transition-opacity duration-500 ease-in-out opacity-0"
+         id="msg"
+         th:if="${status} == 'error'">
+        <div class="container w-fit mx-auto bg-gray-800 rounded">
+            <div class="bg-gray-800 rounded flex py-3 px-6 h-full items-center">
+                <i class="flex-shrink-0 mr-3 fa-xl fa-solid fa-circle-exclamation text-red-500"></i>
+                <span class="title-font font-medium text-red-500" th:text="${message}"></span>
+            </div>
+            <div class="h-1 rounded w-full bg-gray-800">
+                <div class="h-full rounded bg-red-500 w-full transition-all ease-linear duration-75"
+                     id="progressBar"></div>
+            </div>
+        </div>
+    </div>
+
+    <script th:inline="javascript">
+        setTimeout(function () {
+            let progressBar = document.getElementById("progressBar");
+            let msg = document.getElementById("msg");
+            let progress = 100;
+            if (msg) {
+                setInterval(function () {
+                    progress -= 1;
+                    progressBar.style.width = progress + "%";
+                }, 55);
+                msg.classList.remove("opacity-0");
+                msg.classList.add("opacity-100");
+                setTimeout(function () {
+                    msg.classList.remove("opacity-100");
+                    setTimeout(function () {
+                        msg.classList.add("opacity-0");
+                        setTimeout(function () {
+                            msg.remove();
+                        }, 600);
+                    }, 500);
+                }, 5000);
+            }
+        }, 500);
+    </script>
+</section>

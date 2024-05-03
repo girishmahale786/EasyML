@@ -34,15 +34,20 @@
             </a>
             <nav class="md:ml-auto md:mr-auto flex flex-wrap items-center text-base justify-center">
                 <a class="mr-5 hover:text-[#9eff00]" href="/">Home</a>
-                <a class="mr-5 hover:text-[#9eff00]">Services</a>
+                <a class="mr-5 hover:text-[#9eff00]" href="/dashboard">Dashboard</a>
                 <a class="mr-5 hover:text-[#9eff00]">Work</a>
                 <a class="mr-5 hover:text-[#9eff00]">Process</a>
                 <a class="mr-5 hover:text-[#9eff00]" href="/about">About</a>
                 <a class="mr-5 hover:text-[#9eff00]">Careers</a>
             </nav>
-            <a href="/login">
+            <a th:if="${!login}" href="/login">
                 <button class="inline-flex text-black font-bold items-center bg-[#9eff00] border-0 py-1 px-4 focus:outline-none rounded text-base mt-4 md:mt-0">
                     Login
+                </button>
+            </a>
+            <a th:if="${login}" href="/logout">
+                <button class="inline-flex text-black font-bold items-center bg-[#9eff00] border-0 py-1 px-4 focus:outline-none rounded text-base mt-4 md:mt-0">
+                    Logout
                 </button>
             </a>
         </div>
@@ -50,20 +55,7 @@
 </th:block>
 
 <main class="font-['Quicksand'] relative min-h-screen bg-black">
-    <section class="absolute z-50 inset-x-0 top-10 body-font transition-opacity duration-500 ease-in-out opacity-0"
-             id="errorMsg"
-             th:if="${error}">
-        <div class="container w-fit mx-auto bg-gray-800 rounded">
-            <div class="bg-gray-800 rounded flex py-3 px-6 h-full items-center">
-                <i class="text-red-500 flex-shrink-0 mr-3 fa-xl fa-solid fa-circle-exclamation"></i>
-                <span class="title-font font-medium text-red-500" th:text="${errorMsg}"></span>
-            </div>
-            <div class="h-1 rounded w-full bg-gray-800">
-                <div class="h-full rounded bg-red-500 w-full transition-all ease-linear duration-75"
-                     id="progressBar"></div>
-            </div>
-        </div>
-    </section>
+    <section th:replace="~{message :: content}"></section>
     <section
             class="absolute inset-0 bg-[url('/static/img/abstract.svg')] bg-no-repeat bg-contain bg-bottom h-[90vh]"></section>
     <section th:replace="~{${page} :: content}"></section>
@@ -71,22 +63,13 @@
 
 <th:block th:if="${page} != 'auth_base'">
     <footer class="text-gray-600 body-font mt-10">
-        <div class="container mx-auto flex flex-wrap p-5 flex-col md:flex-row items-center">
+        <div class="container mx-auto flex flex-wrap justify-between p-5 flex-col md:flex-row items-center">
             <a class="flex title-font font-medium items-center mb-4 md:mb-0" href="/">
                 <div class="flex justify-center items-center w-9 h-9 rounded bg-[#9eff00]">
                     <i class="fa-solid fa-cube fa-xl text-black"></i>
                 </div>
                 <span class="ml-3 text-xl">EasyML</span>
             </a>
-            <nav class="md:ml-auto md:mr-auto flex flex-wrap items-center text-base justify-center">
-                <a class="mr-5 hover:text-[#9eff00]">Home</a>
-                <a class="mr-5 hover:text-[#9eff00]">Services</a>
-                <a class="mr-5 hover:text-[#9eff00]">Work</a>
-                <a class="mr-5 hover:text-[#9eff00]">Process</a>
-                <a class="mr-5 hover:text-[#9eff00]">About</a>
-                <a class="mr-5 hover:text-[#9eff00]">Careers</a>
-                <a class="mr-5 hover:text-[#9eff00]">Contact</a>
-            </nav>
             <button
                     class="inline-flex items-center bg-black border-0 py-1 px-10 focus:outline-none rounded text-base mt-4 md:mt-0">
                 <span class="mx-2"> Stay Connected </span>
@@ -109,29 +92,6 @@
         </div>
     </footer>
 </th:block>
-<script th:inline="javascript">
-    setTimeout(function () {
-        let progressBar = document.getElementById("progressBar");
-        let errorMsg = document.getElementById("errorMsg");
-        let progress = 100;
-        if (errorMsg) {
-            setInterval(function () {
-                progress -= 1;
-                progressBar.style.width = progress + "%";
-            }, 55);
-            errorMsg.classList.remove("opacity-0");
-            errorMsg.classList.add("opacity-100");
-            setTimeout(function () {
-                errorMsg.classList.remove("opacity-100");
-                setTimeout(function () {
-                    errorMsg.classList.add("opacity-0");
-                    setTimeout(function () {
-                        errorMsg.remove();
-                    }, 600);
-                }, 500);
-            }, 5000);
-        }
-    }, 500);
-</script>
+
 </body>
 </html>

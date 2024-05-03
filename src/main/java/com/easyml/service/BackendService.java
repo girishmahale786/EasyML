@@ -2,12 +2,16 @@ package com.easyml.service;
 
 import com.easyml.model.History;
 import com.easyml.model.Project;
+import com.easyml.model.User;
+import com.easyml.util.EncryptionUtil;
 import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVParser;
 import org.apache.commons.csv.CSVRecord;
 import org.springframework.stereotype.Service;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.CookieValue;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -44,6 +48,42 @@ public class BackendService {
         return new int[]{rowCount, columnCount};
     }
 
+    public void setMessage(Model model, String status, String message) {
+        model.addAttribute("status", status);
+        model.addAttribute("message", message);
+    }
+
+    public void setMessage(RedirectAttributes redirectAttributes, String status, String message) {
+        redirectAttributes.addFlashAttribute("status", status);
+        redirectAttributes.addFlashAttribute("message", message);
+    }
+
+    public void setPage(Model model, String pageTitle, String pageName) {
+        model.addAttribute("title", pageTitle);
+        model.addAttribute("page", pageName);
+    }
+
+    public void setAuthPage(Model model, String pageTitle, String pageName) {
+        setPage(model, pageTitle, "auth_base");
+        model.addAttribute("authPage", "auth");
+        model.addAttribute("authContent", pageName);
+    }
+
+    public void setPath(Model model, String prev, String next) {
+        model.addAttribute("prev", prev);
+        model.addAttribute("next", next);
+    }
+
+    public void setLogin(Model model, @CookieValue(value = "user_id", required = false) String userId) throws Exception {
+        model.addAttribute("login", false);
+        if (userId != null) {
+            Long id = Long.valueOf(EncryptionUtil.decrypt(userId));
+            User user = userService.getUser(id);
+            model.addAttribute("login", true);
+            model.addAttribute("user", user);
+        }
+    }
+
     public Map<?, ?> preprocess(Long projectId, String option, String mode) {
         String preprocessing = String.format("%s-%s", option, mode);
         History history = new History();
@@ -58,7 +98,7 @@ public class BackendService {
         model.addAttribute("data", preprocess(projectId, option, mode));
         model.addAttribute("previewTitle", pageTitle);
         model.addAttribute("projectId", projectId);
-        userService.setPage(model, pageTitle, "preview");
-        userService.setPath(model, prev, next);
+        setPage(model, pageTitle, "preview");
+        setPath(model, prev, next);
     }
 }
