@@ -1,5 +1,6 @@
 package com.easyml.util;
 
+import com.easyml.exception.EncryptionException;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
@@ -26,19 +27,27 @@ public class EncryptionUtil {
         return Base64.getEncoder().encodeToString(encodedKey);
     }
 
-    public static String encrypt(String rawString) throws Exception {
-        SecretKeySpec key = new SecretKeySpec(SECRET_KEY.getBytes(), "AES");
-        Cipher cipher = Cipher.getInstance("AES");
-        cipher.init(Cipher.ENCRYPT_MODE, key);
-        byte[] encryptedBytes = cipher.doFinal(rawString.getBytes());
-        return Base64.getEncoder().encodeToString(encryptedBytes);
+    public static String encrypt(String rawString) throws EncryptionException {
+        try {
+            SecretKeySpec key = new SecretKeySpec(SECRET_KEY.getBytes(), "AES");
+            Cipher cipher = Cipher.getInstance("AES");
+            cipher.init(Cipher.ENCRYPT_MODE, key);
+            byte[] encryptedBytes = cipher.doFinal(rawString.getBytes());
+            return Base64.getEncoder().encodeToString(encryptedBytes);
+        } catch (Exception e) {
+            throw new EncryptionException("Something went wrong.");
+        }
     }
 
-    public static String decrypt(String encryptedString) throws Exception {
-        SecretKeySpec key = new SecretKeySpec(SECRET_KEY.getBytes(), "AES");
-        Cipher cipher = Cipher.getInstance("AES");
-        cipher.init(Cipher.DECRYPT_MODE, key);
-        byte[] decryptedBytes = cipher.doFinal(Base64.getDecoder().decode(encryptedString));
-        return new String(decryptedBytes);
+    public static String decrypt(String encryptedString) throws EncryptionException {
+        try {
+            SecretKeySpec key = new SecretKeySpec(SECRET_KEY.getBytes(), "AES");
+            Cipher cipher = Cipher.getInstance("AES");
+            cipher.init(Cipher.DECRYPT_MODE, key);
+            byte[] decryptedBytes = cipher.doFinal(Base64.getDecoder().decode(encryptedString));
+            return new String(decryptedBytes);
+        } catch (Exception e) {
+            throw new EncryptionException("Something went wrong.");
+        }
     }
 }

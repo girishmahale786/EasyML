@@ -1,14 +1,13 @@
 package com.easyml.service;
 
+import com.easyml.exception.EmailException;
+import com.easyml.exception.InvalidOtp;
+import com.easyml.exception.UserNotFound;
 import com.easyml.model.User;
 import com.easyml.repository.UserRepository;
-import com.easyml.util.EncryptionUtil;
 import com.easyml.util.OtpUtil;
-import jakarta.mail.MessagingException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
-import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.CookieValue;
 
 import java.time.Duration;
 import java.time.LocalDateTime;
@@ -34,7 +33,7 @@ public class UserService {
         return bCryptPasswordEncoder.matches(rawPassword, encodedPassword);
     }
 
-    public User registerUser(String name, String email, String password) {
+    public User registerUser(String name, String email, String password) throws UserNotFound, EmailException {
         if (name == null || name.isEmpty() || email == null || email.isEmpty() || password == null || password.isEmpty()) {
             return null;
         }
@@ -51,34 +50,29 @@ public class UserService {
         return user;
     }
 
-    public Boolean sendOtp(String email) {
+    public void sendOtp(String email) throws EmailException, UserNotFound {
         User user = getUserByEmail(email);
         if (user == null) {
-            return false;
+            throw new UserNotFound();
         }
         Integer otp = otpUtil.generateOtp();
-        try {
-            otpUtil.sendOtpEmail(email, otp);
-        } catch (MessagingException e) {
-            System.err.println("Error sending otp email: " + e);
-        }
+        otpUtil.sendOtpEmail(email, otp);
         user.setOtp(otp);
         user.setOtpGeneratedTime(LocalDateTime.now());
         userRepository.save(user);
-        return true;
     }
 
-    public Boolean verifyOtp(String email, Integer otp) {
+    public void verifyOtp(String email, Integer otp) throws InvalidOtp, UserNotFound {
         User user = getUserByEmail(email);
         if (user == null) {
-            return false;
+            throw new UserNotFound();
         }
-        if (user.getOtp().equals(otp) && Duration.between(user.getOtpGeneratedTime(), LocalDateTime.now()).getSeconds() < (3 * 60)) {
-            user.setActive(true);
-            userRepository.save(user);
-            return true;
+        boolean verified = user.getOtp().equals(otp) && Duration.between(user.getOtpGeneratedTime(), LocalDateTime.now()).getSeconds() < (3 * 60);
+        if (!verified) {
+            throw new InvalidOtp();
         }
-        return false;
+        user.setActive(true);
+        userRepository.save(user);
     }
 
     public User authenticate(String email, String password) {
@@ -89,14 +83,14 @@ public class UserService {
         return null;
     }
 
-    public Boolean changePassword(String email, String password) {
+    public void changePassword(String email, String password) throws UserNotFound {
         User user = getUserByEmail(email);
         if (user == null) {
-            return false;
+            throw new UserNotFound();
         }
         user.setPassword(encodePassword(password));
         userRepository.save(user);
-        return true;
+
     }
 
     public User getUser(Long userId) {
@@ -106,21 +100,5 @@ public class UserService {
     public User getUserByEmail(String email) {
         return userRepository.findByEmail(email).orElse(null);
     }
-
-    public void setUserLogin(Model model, @CookieValue(value = "user_id", required = false) String userId) throws Exception {
-        model.addAttribute("loggedIn", false);
-        if (userId != null) {
-            Long id = Long.valueOf(EncryptionUtil.decrypt(userId));
-            User user = getUser(id);
-            model.addAttribute("loggedIn", true);
-            model.addAttribute("user", user);
-        }
-    }
-
-    public void setPage(Model model, String pageTitle, String pageName) {
-        model.addAttribute("title", pageTitle);
-        model.addAttribute("page", pageName);
-    }
-
 
 }

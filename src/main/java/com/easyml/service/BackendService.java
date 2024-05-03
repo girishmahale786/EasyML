@@ -1,5 +1,9 @@
 package com.easyml.service;
 
+import com.easyml.exception.EncryptionException;
+import com.easyml.exception.PermissionDenied;
+import com.easyml.exception.InvalidFileSize;
+import com.easyml.exception.InvalidFileType;
 import com.easyml.model.History;
 import com.easyml.model.Project;
 import com.easyml.model.User;
@@ -33,19 +37,25 @@ public class BackendService {
         this.historyService = historyService;
     }
 
-    public int[] readCsv(MultipartFile csv) throws IOException {
-        BufferedReader reader = new BufferedReader(new InputStreamReader(csv.getInputStream()));
-        CSVParser csvParser = new CSVParser(reader, CSVFormat.DEFAULT);
-        int rowCount = 0;
-        int columnCount = 0;
-        for (CSVRecord record : csvParser) {
-            rowCount++;
-            if (rowCount == 1) {
-                columnCount = record.size();
+    public void readCsv(MultipartFile csv) throws InvalidFileType, InvalidFileSize {
+        try {
+            BufferedReader reader = new BufferedReader(new InputStreamReader(csv.getInputStream()));
+            CSVParser csvParser = new CSVParser(reader, CSVFormat.DEFAULT);
+            int rowCount = 0;
+            int columnCount = 0;
+            for (CSVRecord record : csvParser) {
+                rowCount++;
+                if (rowCount == 1) {
+                    columnCount = record.size();
+                }
             }
+            csvParser.close();
+            if (rowCount < 10 || columnCount < 2) {
+                throw new InvalidFileSize();
+            }
+        } catch (IOException ioe) {
+            throw new InvalidFileType();
         }
-        csvParser.close();
-        return new int[]{rowCount, columnCount};
     }
 
     public void setMessage(Model model, String status, String message) {
@@ -74,13 +84,24 @@ public class BackendService {
         model.addAttribute("next", next);
     }
 
-    public void setLogin(Model model, @CookieValue(value = "user_id", required = false) String userId) throws Exception {
+    public void setLogin(Model model, @CookieValue(value = "user_id", required = false) String userId) throws EncryptionException {
         model.addAttribute("login", false);
         if (userId != null) {
             Long id = Long.valueOf(EncryptionUtil.decrypt(userId));
             User user = userService.getUser(id);
-            model.addAttribute("login", true);
             model.addAttribute("user", user);
+            model.addAttribute("login", true);
+        }
+    }
+
+    public void validateLogin(Model model, @CookieValue(value = "user_id", required = false) String userId, RedirectAttributes redirectAttributes) throws PermissionDenied {
+        if (userId == null) {
+            throw new PermissionDenied().setPath("redirect:/login");
+        }
+        try {
+            setLogin(model, userId);
+        } catch (EncryptionException ee) {
+            throw new PermissionDenied().setPath("redirect:/error");
         }
     }
 

@@ -1,5 +1,8 @@
 package com.easyml.controller;
 
+import com.easyml.exception.EncryptionException;
+import com.easyml.exception.InvalidFileSize;
+import com.easyml.exception.InvalidFileType;
 import com.easyml.model.Project;
 import com.easyml.model.User;
 import com.easyml.service.APIService;
@@ -32,53 +35,73 @@ public class ProjectController {
     }
 
     @GetMapping("/dashboard")
-    public String dashboard(Model model, @CookieValue(value = "user_id", required = false) String userId, RedirectAttributes redirectAttributes) throws Exception {
+    public String dashboard(Model model, @CookieValue(value = "user_id", required = false) String userId, RedirectAttributes redirectAttributes) {
         if (userId == null) {
             backendService.setMessage(redirectAttributes, "info", "Can't access this page. Sign in to continue...");
             return "redirect:/login";
         }
-        backendService.setLogin(model, userId);
+        try {
+            backendService.setLogin(model, userId);
+        } catch (EncryptionException ee) {
+            return "redirect:/error";
+        }
         User user = (User) model.getAttribute("user");
         if (user != null) {
             model.addAttribute("projects", user.getProjects());
+        }
+        try {
+            backendService.setLogin(model, userId);
+        } catch (EncryptionException ee) {
+            return "redirect:/error";
         }
         backendService.setPage(model, "Dashboard", "dashboard");
         return "base";
     }
 
     @GetMapping("/create-project")
-    public String createProject(Model model, @CookieValue(value = "user_id", required = false) String userId, RedirectAttributes redirectAttributes) throws Exception {
+    public String createProject(Model model, @CookieValue(value = "user_id", required = false) String userId, RedirectAttributes redirectAttributes) {
         if (userId == null) {
             backendService.setMessage(redirectAttributes, "info", "Can't access this page. Sign in to continue...");
             return "redirect:/login";
         }
-        backendService.setLogin(model, userId);
+        try {
+            backendService.setLogin(model, userId);
+        } catch (EncryptionException ee) {
+            return "redirect:/error";
+        }
         backendService.setPage(model, "Create New Project", "create_project");
         return "base";
     }
 
     @PostMapping("/create-project")
-    public String createProject(@ModelAttribute Project project, @RequestParam("csv") MultipartFile csv, @CookieValue(value = "user_id", required = false) String userId, RedirectAttributes redirectAttributes) throws Exception {
+    public String createProject(@ModelAttribute Project project, @RequestParam("csv") MultipartFile csv, @CookieValue(value = "user_id", required = false) String userId, RedirectAttributes redirectAttributes) {
         if (userId == null) {
             backendService.setMessage(redirectAttributes, "info", "Can't access this page. Sign in to continue...");
             return "redirect:/login";
         }
-        Long id = Long.valueOf(EncryptionUtil.decrypt(userId));
-        int[] dims = backendService.readCsv(csv);
-        if (dims[0] <= 3 || dims[1] <= 3) {
-            backendService.setMessage(redirectAttributes, "error", "CSV doesn't have sufficient no. of rows and columns.");
+        try {
+            Long id = Long.valueOf(EncryptionUtil.decrypt(userId));
+            try {
+                backendService.readCsv(csv);
+                Project savedProject = apiService.createProject(id, project.getName(), project.getDescription(), csv);
+                if (savedProject == null) {
+                    backendService.setMessage(redirectAttributes, "error", "CSV didn't uploaded to the database, try again.");
+                    return "redirect:/create-project";
+                }
+                return "redirect:/preview/%d".formatted(savedProject.getId());
+            } catch (InvalidFileType | InvalidFileSize ift) {
+                backendService.setMessage(redirectAttributes, "error", ift.getMessage());
+                return "redirect:/create-project";
+            }
+        } catch (EncryptionException ee) {
+            backendService.setMessage(redirectAttributes, "error", ee.getMessage());
             return "redirect:/create-project";
         }
-        Project savedProject = apiService.createProject(id, project.getName(), project.getDescription(), csv);
-        if (savedProject == null) {
-            backendService.setMessage(redirectAttributes, "error", "CSV didn't uploaded to the database, try again.");
-            return "redirect:/create-project";
-        }
-        return "redirect:/preview/%d".formatted(savedProject.getId());
+
     }
 
     @GetMapping("/projects/{projectId}")
-    public String projectSettings(Model model, @PathVariable(value = "projectId") Long projectId, @CookieValue(value = "user_id", required = false) String userId, RedirectAttributes redirectAttributes) throws Exception {
+    public String projectSettings(Model model, @PathVariable(value = "projectId") Long projectId, @CookieValue(value = "user_id", required = false) String userId, RedirectAttributes redirectAttributes) {
         if (userId == null) {
             backendService.setMessage(redirectAttributes, "info", "Can't access this page. Sign in to continue...");
             return "redirect:/login";
@@ -86,7 +109,11 @@ public class ProjectController {
         Project project = projectService.getProject(projectId);
         model.addAttribute("projectId", projectId);
         model.addAttribute("project", project);
-        backendService.setLogin(model, userId);
+        try {
+            backendService.setLogin(model, userId);
+        } catch (EncryptionException ee) {
+            return "redirect:/error";
+        }
         backendService.setPage(model, "Project Settings", "project_settings");
         return "base";
     }
@@ -125,24 +152,34 @@ public class ProjectController {
     }
 
     @GetMapping("/preview/{projectId}")
-    public String preview(Model model, @PathVariable(value = "projectId") Long projectId, @CookieValue(value = "user_id", required = false) String userId, RedirectAttributes redirectAttributes) throws Exception {
+    public String preview(Model model, @PathVariable(value = "projectId") Long projectId, @CookieValue(value = "user_id", required = false) String userId, RedirectAttributes redirectAttributes) {
         if (userId == null) {
             backendService.setMessage(redirectAttributes, "info", "Can't access this page. Sign in to continue...");
             return "redirect:/login";
         }
         backendService.setPage(model, "Dataset Preview", "preview");
-        Long id = Long.valueOf(EncryptionUtil.decrypt(userId));
-        User user = userService.getUser(id);
-        List<Project> projects = user.getProjects();
-        List<Long> projectIds = projects.stream().map(Project::getId).toList();
-        if (!projectIds.contains(projectId)) {
-            backendService.setMessage(model, "info", "Project with id %d does not exists!".formatted(projectId));
-            return "base";
+        try {
+            Long id = Long.valueOf(EncryptionUtil.decrypt(userId));
+            User user = userService.getUser(id);
+            List<Project> projects = user.getProjects();
+            List<Long> projectIds = projects.stream().map(Project::getId).toList();
+            if (!projectIds.contains(projectId)) {
+                backendService.setMessage(model, "info", "Project with id %d does not exists!".formatted(projectId));
+                return "base";
+            }
+        } catch (EncryptionException ee) {
+            backendService.setMessage(redirectAttributes, "error", ee.getMessage());
+            return "redirect:/dashboard";
         }
+
         Map<?, ?> description = apiService.getDatasetDescription(projectId);
         model.addAttribute("data", description);
         model.addAttribute("previewTitle", "Dataset Preview");
-        backendService.setLogin(model, userId);
+        try {
+            backendService.setLogin(model, userId);
+        } catch (EncryptionException ee) {
+            return "redirect:/error";
+        }
         backendService.setPath(model, "/dashboard", "/preprocess/%d".formatted(projectId));
         return "base";
     }
