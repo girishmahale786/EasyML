@@ -1,75 +1,64 @@
 package com.easyml.service;
 
+import com.easyml.model.History;
+import com.easyml.model.Project;
 import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVParser;
 import org.apache.commons.csv.CSVRecord;
 import org.springframework.stereotype.Service;
+import org.springframework.ui.Model;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.net.URL;
-import java.nio.charset.StandardCharsets;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.Map;
 
 @Service
 public class BackendService {
 
-    private int[] dims;
-    private List<String> columns;
-    private List<List<String>> rows;
+    public final APIService apiService;
+    public final UserService userService;
+    public final ProjectService projectService;
+    public final HistoryService historyService;
 
-    public int[] getDims() {
-        return dims;
+    public BackendService(APIService apiService, UserService userService, ProjectService projectService, HistoryService historyService) {
+        this.apiService = apiService;
+        this.userService = userService;
+        this.projectService = projectService;
+        this.historyService = historyService;
     }
 
-    public void setDims(int[] dims) {
-        this.dims = dims;
-    }
-
-    public List<String> getColumns() {
-        return columns;
-    }
-
-    public void setColumns(List<String> columns) {
-        this.columns = columns;
-    }
-
-    public List<List<String>> getRows() {
-        return rows;
-    }
-
-    public void setRows(List<List<String>> rows) {
-        this.rows = rows;
-    }
-
-    public void readCSV(MultipartFile csv, String csvUrl) throws IOException {
-        BufferedReader reader = null;
-        if (csv != null) {
-            reader = new BufferedReader(new InputStreamReader(csv.getInputStream()));
-        }
-        if (csvUrl != null) {
-            URL url = new URL(csvUrl);
-            reader = new BufferedReader(new InputStreamReader(url.openStream(), StandardCharsets.UTF_8));
-        }
+    public int[] readCsv(MultipartFile csv) throws IOException {
+        BufferedReader reader = new BufferedReader(new InputStreamReader(csv.getInputStream()));
         CSVParser csvParser = new CSVParser(reader, CSVFormat.DEFAULT);
-        List<List<String>> rows = new ArrayList<>();
         int rowCount = 0;
         int columnCount = 0;
         for (CSVRecord record : csvParser) {
-            rows.add(record.toList());
             rowCount++;
             if (rowCount == 1) {
                 columnCount = record.size();
-                rows.remove(record.toList());
-                setColumns(record.toList());
             }
         }
         csvParser.close();
-        setRows(rows);
-        setDims(new int[]{rowCount, columnCount});
+        return new int[]{rowCount, columnCount};
+    }
 
+    public Map preprocess(Long projectId, String option, String mode) {
+        String preprocessing = String.format("%s-%s", option, mode);
+        History history = new History();
+        Project project = projectService.getProject(projectId);
+        history.setProject(project);
+        history.setPreprocessing(preprocessing);
+        historyService.save(history);
+        return apiService.getPreprocessing(projectId, option, mode);
+    }
+
+    public void applyPreprocess(Long projectId, String option, String mode, Model model, String pageTitle, String prev, String next) {
+        model.addAttribute("data", preprocess(projectId, option, mode));
+        model.addAttribute("previewTitle", pageTitle);
+        model.addAttribute("projectId", projectId);
+        userService.setPage(model, pageTitle, "preview");
+        userService.setPath(model, prev, next);
     }
 }

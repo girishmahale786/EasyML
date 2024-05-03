@@ -137,7 +137,11 @@ public class UserService {
         setPage(model, pageTitle, "auth_base");
         model.addAttribute("authPage", "auth");
         model.addAttribute("authContent", pageName);
+    }
 
+    public void setPath(Model model, String prev, String next) {
+        model.addAttribute("prev", prev);
+        model.addAttribute("next", next);
     }
 
 }

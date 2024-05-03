@@ -1,0 +1,113 @@
+<section class="relative z-10" th:fragment="content">
+    <div class="flex flex-col py-6 text-center w-full">
+        <h2 class="sm:text-5xl text-xl font-medium title-font text-white">Data Imputation</h2>
+    </div>
+    <div class="bg-transparent text-black mx-20 mb-5">
+        <div class="container mx-auto flex justify-between ">
+            <a th:href="${prev}">
+                <button class="bg-[#9eff00] focus:outline-none font-bold px-6 py-2 border border-gray-800 rounded-full">
+                    Prev
+                </button>
+            </a>
+            <a th:href="${next}">
+                <button class="bg-[#9eff00] focus:outline-none font-bold px-6 py-2 border border-gray-800 rounded-full">
+                    Skip
+                </button>
+            </a>
+        </div>
+    </div>
+    <div class="container flex flex-wrap -m-4 px-5 p-4 mx-auto text-white text-justify">
+        <div class="flex flex-wrap justify-center -m-4">
+            <div class="p-4 lg:w-1/2 md:w-full">
+                <div class="flex p-4 sm:flex-row flex-col">
+                    <div class="grow">
+                        <div class="flex flex-row">
+                            <i class="fas fa-chart-line fa-2x text-[#9eff00] mb-4 mr-4"></i>
+                            <h2 class="text-white font-bold title-font text-2xl mb-3">Mean Imputation</h2>
+                        </div>
+                        <p class="leading-relaxed text-base">It fills missing data points with the average value of the
+                            existing data in that column. It's simple and maintains sample size, but underestimates
+                            variability and can bias analysis towards the mean.</p>
+                        <a th:href="'/preprocess/' + ${projectId} + '/impute/mean'">
+                            <button class="px-20 text-black font-medium focus:outline-none bg-[#9eff00] mt-2 py-2 px-4 rounded-md">
+                                Proceed
+                            </button>
+                        </a>
+                    </div>
+                </div>
+            </div>
+            <div class="p-4 lg:w-1/2 md:w-full">
+                <div class="flex p-4 sm:flex-row flex-col">
+                    <div class="grow">
+                        <div class="flex flex-row">
+                            <i class="fas fa-chart-pie fa-2x text-[#9eff00] mb-4 mr-4"></i>
+                            <h2 class="text-white font-bold title-font text-2xl mb-3">Mode Imputation</h2>
+                        </div>
+                        <p class="leading-relaxed text-base">It replaces missing values with the most frequent value in
+                            the column. It's fast and works well for categorical data, but can mask underlying trends
+                            and affect analysis if the data isn't non-uniform.</p>
+                        <a th:href="'/preprocess/' + ${projectId} + '/impute/mode'">
+                            <button class="px-20 text-black font-medium focus:outline-none bg-[#9eff00] mt-2 py-2 px-4 rounded-md">
+                                Proceed
+                            </button>
+                        </a>
+                    </div>
+                </div>
+            </div>
+            <div class="p-4 lg:w-1/2 md:w-full">
+                <div class="flex p-4 sm:flex-row flex-col">
+                    <div class="grow">
+                        <div class="flex flex-row">
+                            <i class="fas fa-chart-area fa-2x text-[#9eff00] mb-4 mr-4"></i>
+                            <h2 class="text-white font-bold title-font text-2xl mb-3">Median Imputation</h2>
+                        </div>
+                        <p class="leading-relaxed text-base">It fills missing data with the middle value of a sorted
+                            list within a column. It's robust to outliers unlike mean imputation, but assumes the data
+                            is symmetrical and can underestimate variability.</p>
+                        <a th:href="'/preprocess/' + ${projectId} + '/impute/median'">
+                            <button class="px-20 text-black font-medium focus:outline-none bg-[#9eff00] mt-2 py-2 px-4 rounded-md">
+                                Proceed
+                            </button>
+                        </a>
+                    </div>
+                </div>
+            </div>
+            <div class="p-4 lg:w-1/2 md:w-full">
+                <div class="flex p-4 sm:flex-row flex-col">
+                    <div class="grow">
+                        <div class="flex flex-row">
+                            <i class="fas fa-arrow-left fa-2x text-[#9eff00] mb-4 mr-4"></i>
+                            <h2 class="text-white font-bold title-font text-2xl mb-3">Backward Fill</h2>
+                        </div>
+                        <p class="leading-relaxed text-base">It replaces missing values with the next available value in
+                            the same column. It's efficient and keeps data size intact, but can be misleading if the
+                            data isn't truly sequential and may not capture underlying trends.</p>
+                        <a th:href="'/preprocess/' + ${projectId} + '/impute/bfill'">
+                            <button class="px-20 text-black font-medium focus:outline-none bg-[#9eff00] mt-2 py-2 px-4 rounded-md">
+                                Proceed
+                            </button>
+                        </a>
+                    </div>
+                </div>
+            </div>
+            <div class="p-4 lg:w-1/2 md:w-full">
+                <div class="flex p-4 sm:flex-row flex-col">
+                    <div class="grow">
+                        <div class="flex flex-row">
+                            <i class="fas fa-arrow-right fa-2x text-[#9eff00] mb-4 mr-4"></i>
+                            <h2 class="text-white font-bold title-font text-2xl mb-3">Forward Fill</h2>
+                        </div>
+                        <p class="leading-relaxed text-base">It replaces missing values with the previous available
+                            value in the same column. It's simple and maintains data size, but assumes the missing value
+                            reflects the previous state, which can potentially introduce bias.</p>
+                        <a th:href="'/preprocess/' + ${projectId} + '/impute/ffill'">
+                            <button class="px-20 text-black font-medium focus:outline-none bg-[#9eff00] mt-2 py-2 px-4 rounded-md">
+                                Proceed
+                            </button>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>

@@ -1,0 +1,41 @@
+<section class="relative z-10 text-white body-font mx-auto" th:fragment="content">
+    <div class="flex flex-col py-6 text-center w-full">
+        <h2 class="sm:text-5xl text-xl font-medium title-font text-white">Create New Project</h2>
+    </div>
+    <div class="flex items-center flex-col justify-center bg-grey-lighter mt-5">
+        <form action="/create-project" method="post" enctype="multipart/form-data" class="flex flex-wrap -m-2 w-2/5" th:object="${ProjectRequest}">
+            <div class="p-2 w-full flex justify-center">
+                <label class="w-64 ml-3 flex flex-col items-center px-4 py-6 bg-transparent text-blue rounded-lg shadow-lg tracking-wide uppercase border border-blue cursor-pointer">
+                    <svg class="w-8 h-8" fill="currentColor"
+                         viewBox="0 0 20 20"
+                         xmlns="http://www.w3.org/2000/svg">
+                        <path d="M16.88 9.1A4 4 0 0 1 16 17H5a5 5 0 0 1-1-9.9V7a3 3 0 0 1 4.52-2.59A4.98 4.98 0 0 1 17 8c0 .38-.04.74-.12 1.1zM11 11h3l-4-4-4 4h3v3h2v-3z"/>
+                    </svg>
+                    <span class="mt-2 text-base leading-normal">Select a CSV file</span>
+                    <input accept="text/csv" class="hidden" name="csv" required type='file'/>
+                </label>
+            </div>
+            <div class="p-2 w-full">
+                <div class="relative">
+                    <label class="leading-7 text-sm text-white" for="name">Project Name</label>
+                    <input class="w-full bg-[#262626] bg-opacity-50 rounded border border-gray-300 outline-none text-white py-1 px-3 leading-8 transition-colors duration-200 ease-in-out"
+                           id="name" name="name" required type="text">
+                </div>
+            </div>
+            <div class="p-2 w-full">
+                <div class="relative">
+                    <label class="leading-7 text-sm text-white" for="description">Description</label>
+                    <textarea
+                            class="w-full bg-[#262626] bg-opacity-50 rounded border border-gray-300 h-32 text-base outline-none text-white py-1 px-3 resize-none leading-6 transition-colors duration-200 ease-in-out"
+                            id="description" name="description"></textarea>
+                </div>
+            </div>
+            <div class="p-2 w-full">
+                <button class="flex mx-auto text-black bg-[#9eff00] font-bold border-0 py-2 px-8 focus:outline-none rounded text-lg">
+                    Proceed
+                </button>
+            </div>
+        </form>
+    </div>
+
+</section>
