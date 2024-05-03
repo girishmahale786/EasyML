@@ -1,5 +1,9 @@
 package com.easyml.controller;
 
+import com.easyml.exception.EmailException;
+import com.easyml.exception.EncryptionException;
+import com.easyml.exception.InvalidOtp;
+import com.easyml.exception.UserNotFound;
 import com.easyml.model.User;
 import com.easyml.service.BackendService;
 import com.easyml.service.UserService;
@@ -76,7 +80,11 @@ public class UserController {
             return "redirect:/";
         }
         String email = session.getAttribute("email").toString();
-        userService.sendOtp(email);
+        try {
+            userService.sendOtp(email);
+        } catch (EmailException | UserNotFound e) {
+            backendService.setMessage(redirectAttributes, "error", e.getMessage());
+        }
         backendService.setMessage(redirectAttributes, "success", "An OTP is sent to your email!");
         return "redirect:/verify-otp";
     }
@@ -94,19 +102,24 @@ public class UserController {
 
     @PostMapping("/register")
     public String register(@ModelAttribute User user, RedirectAttributes redirectAttributes, HttpSession session) {
-        User registeredUser = userService.registerUser(user.getName(), user.getEmail(), user.getPassword());
-        if (registeredUser == null) {
-            backendService.setMessage(redirectAttributes, "info", "User with this email already exists!");
-            return "redirect:/login";
+        try {
+            User registeredUser = userService.registerUser(user.getName(), user.getEmail(), user.getPassword());
+            if (registeredUser == null) {
+                backendService.setMessage(redirectAttributes, "info", "User with this email already exists!");
+                return "redirect:/login";
+            }
+            backendService.setMessage(redirectAttributes, "success", "An OTP has been sent to your email, verify to complete the registration!");
+            session.setAttribute("email", registeredUser.getEmail());
+
+        } catch (EmailException | UserNotFound e) {
+            backendService.setMessage(redirectAttributes, "error", e.getMessage());
         }
-        backendService.setMessage(redirectAttributes, "success", "An OTP has been sent to your email, verify to complete the registration!");
-        session.setAttribute("email", registeredUser.getEmail());
         session.setAttribute("requestType", "register");
         return "redirect:/verify-otp";
     }
 
     @PostMapping("/login")
-    public String login(@ModelAttribute User user, RedirectAttributes redirectAttributes, HttpServletResponse response, HttpSession session) throws Exception {
+    public String login(@ModelAttribute User user, RedirectAttributes redirectAttributes, HttpServletResponse response, HttpSession session) {
         User authenticated = userService.authenticate(user.getEmail(), user.getPassword());
         if (authenticated == null) {
             backendService.setMessage(redirectAttributes, "error", "Invalid authentication credentials!");
@@ -114,17 +127,26 @@ public class UserController {
         }
         if (!authenticated.isActive()) {
             backendService.setMessage(redirectAttributes, "info", "Email verification pending!");
-            userService.sendOtp(authenticated.getEmail());
+            try {
+                userService.sendOtp(authenticated.getEmail());
+            } catch (EmailException | UserNotFound e) {
+                backendService.setMessage(redirectAttributes, "error", e.getMessage());
+            }
             session.setAttribute("email", authenticated.getEmail());
             session.setAttribute("requestType", "register");
             return "redirect:/verify-otp";
         }
         Long userId = authenticated.getId();
-        Cookie userCookie = new Cookie("user_id", EncryptionUtil.encrypt(userId.toString()));
-        userCookie.setMaxAge(60 * 60 * 24);
-        userCookie.setSecure(true);
-        userCookie.setHttpOnly(true);
-        response.addCookie(userCookie);
+        try {
+            Cookie userCookie = new Cookie("user_id", EncryptionUtil.encrypt(userId.toString()));
+            userCookie.setMaxAge(60 * 60 * 24);
+            userCookie.setSecure(true);
+            userCookie.setHttpOnly(true);
+            response.addCookie(userCookie);
+        } catch (EncryptionException ee) {
+            backendService.setMessage(redirectAttributes, "error", ee.getMessage());
+            return "redirect:/login";
+        }
         backendService.setMessage(redirectAttributes, "success", "Signed in successfully!");
         return "redirect:/dashboard";
     }
@@ -136,11 +158,12 @@ public class UserController {
             return "redirect:/reset-password";
         }
 
-        Boolean success = userService.sendOtp(user.getEmail());
-        if (!success) {
-            backendService.setMessage(redirectAttributes, "error", "Something went wrong, please try again!");
+        try {
+            userService.sendOtp(user.getEmail());
+        } catch (EmailException | UserNotFound e) {
+            backendService.setMessage(redirectAttributes, "error", e.getMessage());
         }
-        backendService.setMessage(redirectAttributes,"success",  "An OTP has been sent to your email!");
+        backendService.setMessage(redirectAttributes, "success", "An OTP has been sent to your email!");
         session.setAttribute("email", user.getEmail());
         session.setAttribute("requestType", "resetPassword");
         return "redirect:/verify-otp";
@@ -150,14 +173,15 @@ public class UserController {
     public String verifyOtp(@RequestParam String otp, RedirectAttributes redirectAttributes, HttpSession session) {
         String email = session.getAttribute("email").toString();
         String requestType = session.getAttribute("requestType").toString();
-        Boolean success = userService.verifyOtp(email, Integer.parseInt(otp));
-        if (!success) {
-            backendService.setMessage(redirectAttributes, "error", "Invalid OTP! Please try resending the OTP!");
+        try {
+            userService.verifyOtp(email, Integer.parseInt(otp));
+        } catch (UserNotFound | InvalidOtp e) {
+            backendService.setMessage(redirectAttributes, "error", e.getMessage());
             return "redirect:/verify-otp";
         }
         session.setAttribute("success", true);
         if (requestType.equals("register")) {
-            backendService.setMessage(redirectAttributes,  "success","OTP Verification Successful, Please login to continue!");
+            backendService.setMessage(redirectAttributes, "success", "OTP Verification Successful, Please login to continue!");
             return "redirect:/login";
         }
         backendService.setMessage(redirectAttributes, "success", "OTP Verification Successful!");
@@ -170,7 +194,7 @@ public class UserController {
         String requestType = session.getAttribute("requestType").toString();
         Boolean success = (Boolean) session.getAttribute("success");
         if (!requestType.equals("resetPassword")) {
-            backendService.setMessage(redirectAttributes, "info","Can't access this page at the moment!");
+            backendService.setMessage(redirectAttributes, "info", "Can't access this page at the moment!");
             return "redirect:/";
         }
         if (!success) {
@@ -182,9 +206,10 @@ public class UserController {
             backendService.setMessage(model, "error", "Both password doesn't match!");
             return "base";
         }
-        success = userService.changePassword(email, password);
-        if (!success) {
-            backendService.setMessage(redirectAttributes, "error","Something went wrong, Please try again!");
+        try {
+            userService.changePassword(email, password);
+        } catch (UserNotFound e) {
+            backendService.setMessage(redirectAttributes, "error", e.getMessage());
             return "redirect:/reset-password";
         }
         backendService.setMessage(redirectAttributes, "success", "Password reset successful, login to continue!");
