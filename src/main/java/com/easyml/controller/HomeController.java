@@ -1,8 +1,8 @@
 package com.easyml.controller;
 
 import com.easyml.model.Enquiry;
+import com.easyml.service.BackendService;
 import com.easyml.service.EnquiryService;
-import com.easyml.service.UserService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.CookieValue;
@@ -15,45 +15,36 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 public class HomeController {
 
     private final EnquiryService enquiryService;
-    private final UserService userService;
+    private final BackendService backendService;
 
-    public HomeController(EnquiryService enquiryService, UserService userService) {
+    public HomeController(EnquiryService enquiryService, BackendService backendService) {
         this.enquiryService = enquiryService;
-        this.userService = userService;
+        this.backendService = backendService;
     }
 
     @GetMapping("/")
-    public String home(Model model, @CookieValue(value = "user_id", required = false) String userId) throws Exception {
-        userService.setUserLogin(model, userId);
+    public String home(Model model, @CookieValue(value = "user_id", required = false) String userId, RedirectAttributes redirectAttributes) throws Exception {
+        backendService.setLogin(model, userId);
+        model.addAttribute("EnquiryRequest", new Enquiry());
         model.addAttribute("page", "home");
         return "base";
     }
 
     @GetMapping("/about")
     public String about(Model model, @CookieValue(value = "user_id", required = false) String userId) throws Exception {
-        userService.setUserLogin(model, userId);
+        backendService.setLogin(model, userId);
         model.addAttribute("page", "about");
         return "base";
     }
 
-    @GetMapping("/contact")
-    public String contact(Model model, @CookieValue(value = "user_id", required = false) String userId) throws Exception {
-        userService.setUserLogin(model, userId);
-        model.addAttribute("EnquiryRequest", new Enquiry());
-        model.addAttribute("page", "contact");
-        return "base";
-    }
-
     @PostMapping("/enquiry")
-    public String enquiry(@ModelAttribute Enquiry enquiry, Model model, RedirectAttributes redirectAttributes) {
+    public String enquiry(@ModelAttribute Enquiry enquiry, RedirectAttributes redirectAttributes) {
         Enquiry savedEnquiry = enquiryService.saveEnquiry(enquiry.getName(), enquiry.getEmail(), enquiry.getEnquiryText());
         if (savedEnquiry == null) {
-            userService.setFlashError(redirectAttributes, "Enquiry could not be submitted!");
-            return "redirect:/contact";
-        } else {
-            model.addAttribute("success", true);
+            backendService.setMessage(redirectAttributes, "error", "Enquiry could not be submitted!");
+            return "redirect:/";
         }
-        return "redirect:/contact";
+        backendService.setMessage(redirectAttributes, "success", "Your request has been received!");
+        return "redirect:/";
     }
-
 }

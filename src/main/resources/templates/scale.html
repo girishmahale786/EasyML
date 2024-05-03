@@ -22,8 +22,9 @@
                 <div class="flex p-4 sm:flex-row flex-col">
                     <div class="grow">
                         <div class="flex flex-row">
-                            <i class="far fa-compress fa-2x text-[#9eff00] mb-4 mr-4"></i>
-                            <h2 class="text-white font-bold title-font text-2xl mb-3">Standard Scaling (Standardization)</h2>
+                            <i class="fa-regular fa-compress fa-2x text-[#9eff00] mb-4 mr-4"></i>
+                            <h2 class="text-white font-bold title-font text-2xl mb-3">Standard Scaling
+                                (Standardization)</h2>
                         </div>
                         <p class="leading-relaxed text-base">This is a popular scaling technique that subtracts the mean
                             from each feature and then divides by the standard deviation. It standardizes the data to
@@ -41,10 +42,12 @@
                 <div class="flex p-4 sm:flex-row flex-col">
                     <div class="grow">
                         <div class="flex flex-row">
-                            <i class="fa-solid fa-arrows-to-dot fa-2x text-[#9eff00] mb-4 mr-4"></i>
-                            <h2 class="text-white font-bold title-font text-2xl mb-3">MinMax Scaling (Normalization)</h2>
+                            <i class="fa-regular fa-binary fa-2x text-[#9eff00] mb-4 mr-4"></i>
+                            <h2 class="text-white font-bold title-font text-2xl mb-3">MinMax Scaling
+                                (Normalization)</h2>
                         </div>
-                        <p class="leading-relaxed text-base"> This is a popular scaling technique that rescales each feature to a specific range, often 0 to
+                        <p class="leading-relaxed text-base"> This is a popular scaling technique that rescales each
+                            feature to a specific range, often 0 to
                             1. This is useful when you want to ensure all features fall within a specific boundary.</p>
                         <a th:href="'/preprocess/' + ${projectId} + '/scale/minmax'">
                             <button class="px-20 text-black font-medium focus:outline-none bg-[#9eff00] mt-2 py-2 px-4 rounded-md">

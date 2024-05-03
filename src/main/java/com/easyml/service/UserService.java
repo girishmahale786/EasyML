@@ -9,7 +9,6 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.CookieValue;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.time.Duration;
 import java.time.LocalDateTime;
@@ -118,30 +117,10 @@ public class UserService {
         }
     }
 
-    public void setError(Model model, String errorMsg) {
-        model.addAttribute("error", true);
-        model.addAttribute("errorMsg", errorMsg);
-    }
-
-    public void setFlashError(RedirectAttributes redirectAttributes, String errorMsg) {
-        redirectAttributes.addFlashAttribute("error", true);
-        redirectAttributes.addFlashAttribute("errorMsg", errorMsg);
-    }
-
     public void setPage(Model model, String pageTitle, String pageName) {
         model.addAttribute("title", pageTitle);
         model.addAttribute("page", pageName);
     }
 
-    public void setAuthPage(Model model, String pageTitle, String pageName) {
-        setPage(model, pageTitle, "auth_base");
-        model.addAttribute("authPage", "auth");
-        model.addAttribute("authContent", pageName);
-    }
-
-    public void setPath(Model model, String prev, String next) {
-        model.addAttribute("prev", prev);
-        model.addAttribute("next", next);
-    }
 
 }

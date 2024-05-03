@@ -17,8 +17,8 @@
                         <h1 class="title-font text-lg font-medium text-white mb-2"
                             th:text="${project.getName() != '' ? project.getName() : 'Untitled'}"></h1>
                         <a th:href="'/projects/' + ${project.getId()}">
-
-                            <i class="mt-1 fa-solid fa-gear transition duration-500 ease-in-out hover:text-[#9eff00]"></i></a>
+                            <i class="mt-1 fa-solid fa-gear transition duration-500 ease-in-out hover:text-[#9eff00]"></i>
+                        </a>
                     </div>
                     <div class="flex items-center h-40 justify-between flex-wrap">
                         <a class="block w-full text-green-500 leading-relaxed mb-2" target="_blank"

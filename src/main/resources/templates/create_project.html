@@ -3,7 +3,8 @@
         <h2 class="sm:text-5xl text-xl font-medium title-font text-white">Create New Project</h2>
     </div>
     <div class="flex items-center flex-col justify-center bg-grey-lighter mt-5">
-        <form action="/create-project" method="post" enctype="multipart/form-data" class="flex flex-wrap -m-2 w-2/5" th:object="${ProjectRequest}">
+        <form action="/create-project" class="flex flex-wrap -m-2 w-2/5" enctype="multipart/form-data" method="post"
+              th:object="${ProjectRequest}">
             <div class="p-2 w-full flex justify-center">
                 <label class="w-64 ml-3 flex flex-col items-center px-4 py-6 bg-transparent text-blue rounded-lg shadow-lg tracking-wide uppercase border border-blue cursor-pointer">
                     <svg class="w-8 h-8" fill="currentColor"
