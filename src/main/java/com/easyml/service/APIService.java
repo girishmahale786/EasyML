@@ -14,6 +14,7 @@ import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 
@@ -70,8 +71,12 @@ public class APIService {
         return gson.fromJson(jsonResponse, Map.class);
     }
 
-    public Map<?, ?> getMetrics(Long projectId, String option) {
-        String metricsUrl = String.format("%s/metrics/%s?project_id=%d", apiBase, option, projectId);
+    public Map<?, ?> getMetrics(Long projectId, List<String> features, String target, String option) {
+        StringBuilder feats = new StringBuilder();
+        for (String f : features) {
+            feats.append("&x=%s".formatted(f));
+        }
+        String metricsUrl = String.format("%s/metrics/%s?project_id=%d&y=%s%s", apiBase, option, projectId, target, feats);
         String jsonResponse = restTemplate.getForObject(metricsUrl, String.class);
         return gson.fromJson(jsonResponse, Map.class);
     }

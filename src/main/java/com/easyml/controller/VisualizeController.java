@@ -32,8 +32,9 @@ public class VisualizeController {
         }
         Map<?, ?> description = apiService.getDatasetDescription(projectId);
         session.setAttribute("columns", description.get("cols"));
+
         backendService.setPage(model, "Visualization", "visualize");
-        backendService.setPath(model, "/preview/%d".formatted(projectId), "/model-building/%d".formatted(projectId));
+        backendService.setPath(model, "/preview/%d".formatted(projectId), "/model/%d".formatted(projectId));
         return "base";
 
     }
@@ -48,6 +49,7 @@ public class VisualizeController {
         }
         model.addAttribute("columns", session.getAttribute("columns"));
         model.addAttribute("plot", "line");
+        model.addAttribute("previewTitle", "Line Plot");
         backendService.setPage(model, "Line Plot", "plot");
         if (x != null || y != null)
             backendService.applyVisualize(projectId, "plot", x, y, false, model, "Line Plot");
@@ -64,6 +66,7 @@ public class VisualizeController {
         }
         model.addAttribute("columns", session.getAttribute("columns"));
         model.addAttribute("plot", "bar");
+        model.addAttribute("previewTitle", "Bar Plot");
         backendService.setPage(model, "Bar Plot", "plot");
         if (x != null || y != null)
             backendService.applyVisualize(projectId, "bar", x, y, false, model, "Bar Plot");
@@ -80,6 +83,7 @@ public class VisualizeController {
         }
         model.addAttribute("columns", session.getAttribute("columns"));
         model.addAttribute("plot", "scatter");
+        model.addAttribute("previewTitle", "Scatter Plot");
         backendService.setPage(model, "Scatter Plot", "plot");
         if (x != null || y != null)
             backendService.applyVisualize(projectId, "scatter", x, y, false, model, "Scatter Plot");
@@ -96,6 +100,7 @@ public class VisualizeController {
         }
         model.addAttribute("columns", session.getAttribute("columns"));
         model.addAttribute("plot", "box");
+        model.addAttribute("previewTitle", "Box Plot");
         backendService.setPage(model, "Box Plot", "plot");
         if (x != null || y != null)
             backendService.applyVisualize(projectId, "boxplot", x, y, false, model, "Box Plot");
@@ -112,6 +117,7 @@ public class VisualizeController {
         }
         model.addAttribute("columns", session.getAttribute("columns"));
         model.addAttribute("plot", "hist");
+        model.addAttribute("previewTitle", "Histogram");
         backendService.setPage(model, "Histogram", "plot");
         if (x != null || y != null)
             backendService.applyVisualize(projectId, "hist", x, y, false, model, "Histogram");
@@ -128,21 +134,9 @@ public class VisualizeController {
         }
         model.addAttribute("columns", session.getAttribute("columns"));
         model.addAttribute("plot", "heatmap");
+        model.addAttribute("previewTitle", "Heatmap");
         backendService.setPage(model, "Heatmap", "plot");
         backendService.applyVisualize(projectId, "heatmap", "", "", corr, model, "Heatmap");
         return "base";
     }
-
-//
-//    @GetMapping("/metrics")
-//    public String metrics(Model model, @CookieValue(value = "user_id", required = false) String userId) {
-//        Map<?, ?> metrics = apiService.getMetrics(4L, "liner_regression");
-//        model.addAttribute("metrics", metrics);
-//        try {
-//            backendService.setLogin(model, userId);
-//        } catch (EncryptionException ee) {
-//            return "redirect:/error";
-//        }
-//        return "visualize";
-//    }
 }

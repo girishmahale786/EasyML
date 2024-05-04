@@ -23,9 +23,9 @@
                     <div class="flex items-center h-40 justify-between flex-wrap">
                         <a class="block w-full text-green-500 leading-relaxed mb-2" target="_blank"
                            th:href="${project.getDatasetUrl()}"> Download Dataset </a>
-                        <p class="grow block w-full leading-relaxed mb-3"
+                        <p class="grow block w-full leading-relaxed mb-px"
                            th:text="${#strings.length(project.getDescription()) > 90 ? #strings.substring(project.getDescription(), 0, 90) + '...' : project.getDescription()}"></p>
-                        <div class="w-full flex justify-between">
+                        <div class="w-full py-4 flex justify-between">
                             <a class="text-orange-400 inline-flex items-center md:mb-2 lg:mb-0"
                                th:href="'/preview/' + ${project.getId()}">
                                 Preview

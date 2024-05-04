@@ -8,6 +8,7 @@ import com.easyml.model.History;
 import com.easyml.model.Project;
 import com.easyml.model.User;
 import com.easyml.util.EncryptionUtil;
+import jakarta.servlet.http.HttpSession;
 import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVParser;
 import org.apache.commons.csv.CSVRecord;
@@ -18,8 +19,8 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.io.BufferedReader;
-import java.io.IOException;
 import java.io.InputStreamReader;
+import java.util.List;
 import java.util.Map;
 
 @Service
@@ -132,5 +133,16 @@ public class BackendService {
         model.addAttribute("previewTitle", pageTitle);
         model.addAttribute("projectId", projectId);
         setPage(model, pageTitle, "plot");
+    }
+
+    public Map<?, ?> model(Long projectId, List<String> features, String target, String option) {
+        return apiService.getMetrics(projectId, features, target, option);
+    }
+
+    public void applyModel(Long projectId, List<String> features, String target, String option, String pageTitle, HttpSession session) {
+        Map<?, ?> model = model(projectId, features, target, option);
+        session.setAttribute("data", model);
+        session.setAttribute("model_path", model.get("model_path"));
+        session.setAttribute("previewTitle", pageTitle);
     }
 }
