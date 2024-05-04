@@ -1,0 +1,73 @@
+<section class="relative z-10" th:fragment="content">
+    <div class="flex flex-col py-6 text-center w-full">
+        <h2 class="sm:text-5xl text-xl font-medium title-font text-white" th:text="${previewTitle}"></h2>
+    </div>
+    <div class="bg-transparent text-black mx-20 mb-5">
+        <div class="container mx-auto flex justify-between">
+            <a th:href="'/preview/' + ${projectId}">
+                <button class="bg-[#9eff00] focus:outline-none font-bold px-6 py-2 border border-gray-800 rounded-full">
+                    Prev
+                </button>
+            </a>
+            <div class="flex flex-wrap justify-center">
+                <a class="px-2" th:href="'/visualize/' + ${projectId}">
+                    <button class="bg-[#9eff00] focus:outline-none font-bold px-6 py-2 border border-gray-800 rounded-full">
+                        Visualize another plot
+                    </button>
+                </a>
+                <a class="px-2" th:href="'/model-building/' + ${projectId}">
+                    <button class="bg-[#9eff00] focus:outline-none font-bold px-6 py-2 border border-gray-800 rounded-full">
+                        Skip
+                    </button>
+                </a>
+            </div>
+        </div>
+    </div>
+    <div class="container flex flex-wrap justify-center -m-4 px-5 p-4 mx-auto text-white text-justify">
+        <form class="w-fit" method="get" th:action="${plot}">
+            <div class="flex flex-wrap justify-center -m-4 px-5 p-4 mx-auto text-white text-justify">
+                <div class="mx-2 relative border rounded-sm border-gray-300 text-[#9eff00]"
+                     th:if="${plot} != 'heatmap'">
+                    <label class="sr-only" for="xaxis">x - Axis</label>
+                    <select class="appearance-none w-full py-2 px-2 pr-6 bg-gray-800" id="xaxis"
+                            name="x">
+                        <option value="">Select column for x-axis</option>
+                        <th:block th:each="col : ${columns}">
+                            <option th:text="${col}" th:value="${col}">
+                            </option>
+                        </th:block>
+                    </select>
+                    <div class="bg-gray-800 pointer-events-none absolute right-0 top-0 bottom-0 flex items-center px-2 border-l">
+                        <i class="fa-solid fa-angle-down text-[#9eff00]"></i>
+                    </div>
+                </div>
+                <div class="mx-4 relative border rounded-sm border-gray-300 text-[#9eff00]"
+                     th:if="${plot} != 'heatmap'">
+                    <label class="sr-only" for="yaxis">y - Axis</label>
+                    <select class="appearance-none w-full py-2 px-2 pr-6 bg-gray-800" id="yaxis"
+                            name="y">
+                        <option value="">Select column for y-axis</option>
+                        <th:block th:each="col : ${columns}">
+                            <option th:text="${col}" th:value="${col}">
+                            </option>
+                        </th:block>
+                    </select>
+                    <div class="bg-gray-800 pointer-events-none absolute right-0 top-0 bottom-0 flex items-center px-2 border-l">
+                        <i class="fa-solid fa-angle-down text-[#9eff00]"></i>
+                    </div>
+                </div>
+                <div class="static mx-2 bg-[#9eff00] text-black focus:outline-none font-bold px-6 py-2 border border-gray-800 rounded-full"
+                     th:if="${plot} == 'heatmap'">
+                    <input class="relative left-[1px] top-[2px] w-4 h-4 inline-block" id="corr" name="corr"
+                           type="radio"/>
+                    Correlation Matrix Heatmap
+                </div>
+                <button class="mx-2 bg-[#9eff00] text-black focus:outline-none font-bold px-6 py-2 border border-gray-800 rounded-full"
+                        type="submit">
+                    Get Visualization
+                </button>
+            </div>
+        </form>
+    </div>
+    <div class="size-full px-20 py-10" id="plot" th:if="${data != null}" th:utext="${data.get('plot')}"></div>
+</section>

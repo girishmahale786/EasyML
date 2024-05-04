@@ -49,21 +49,24 @@ public class APIService {
         return gson.fromJson(jsonResponse, Map.class);
     }
 
-    public Map<?, ?> getVisualization(String plot, Long projectId, String x, String y) {
-        String plotUrl = String.format("%s/visualize/%s?project_id=%d", apiBase, plot, projectId);
-        if (x != null) {
-            plotUrl = String.format("%s&x=%s", plotUrl, x);
-        }
-        if (y != null) {
-            plotUrl = String.format("%s&y=%s", plotUrl, y);
-        }
-        String jsonResponse = restTemplate.getForObject(plotUrl, String.class);
-        return gson.fromJson(jsonResponse, Map.class);
-    }
-
     public Map<?, ?> getPreprocessing(Long projectId, String option, String mode) {
         String preprocessUrl = String.format("%s/preprocess/%s?project_id=%d&mode=%s", apiBase, option, projectId, mode);
         String jsonResponse = restTemplate.getForObject(preprocessUrl, String.class);
+        return gson.fromJson(jsonResponse, Map.class);
+    }
+
+    public Map<?, ?> getVisualization(Long projectId, String plot, String x, String y, Boolean corr) {
+        String plotUrl = String.format("%s/visualize/%s?project_id=%d", apiBase, plot, projectId);
+        if (!x.isEmpty()) {
+            plotUrl = String.format("%s&x=%s", plotUrl, x);
+        }
+        if (!y.isEmpty()) {
+            plotUrl = String.format("%s&y=%s", plotUrl, y);
+        }
+        if (plot.equals("heatmap")) {
+            plotUrl = String.format("%s&corr=%b", plotUrl, corr);
+        }
+        String jsonResponse = restTemplate.getForObject(plotUrl, String.class);
         return gson.fromJson(jsonResponse, Map.class);
     }
 

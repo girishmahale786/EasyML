@@ -10,6 +10,7 @@ import com.easyml.service.BackendService;
 import com.easyml.service.ProjectService;
 import com.easyml.service.UserService;
 import com.easyml.util.EncryptionUtil;
+import jakarta.servlet.http.HttpSession;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -152,7 +153,7 @@ public class ProjectController {
     }
 
     @GetMapping("/preview/{projectId}")
-    public String preview(Model model, @PathVariable(value = "projectId") Long projectId, @CookieValue(value = "user_id", required = false) String userId, RedirectAttributes redirectAttributes) {
+    public String preview(Model model, @PathVariable(value = "projectId") Long projectId, @CookieValue(value = "user_id", required = false) String userId, RedirectAttributes redirectAttributes, HttpSession session) {
         if (userId == null) {
             backendService.setMessage(redirectAttributes, "info", "Can't access this page. Sign in to continue...");
             return "redirect:/login";
@@ -175,6 +176,7 @@ public class ProjectController {
         Map<?, ?> description = apiService.getDatasetDescription(projectId);
         model.addAttribute("data", description);
         model.addAttribute("previewTitle", "Dataset Preview");
+        session.setAttribute("columns", description.get("cols"));
         try {
             backendService.setLogin(model, userId);
         } catch (EncryptionException ee) {

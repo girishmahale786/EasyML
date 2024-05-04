@@ -1,9 +1,9 @@
 package com.easyml.service;
 
 import com.easyml.exception.EncryptionException;
-import com.easyml.exception.PermissionDenied;
 import com.easyml.exception.InvalidFileSize;
 import com.easyml.exception.InvalidFileType;
+import com.easyml.exception.PermissionDenied;
 import com.easyml.model.History;
 import com.easyml.model.Project;
 import com.easyml.model.User;
@@ -53,7 +53,7 @@ public class BackendService {
             if (rowCount < 10 || columnCount < 2) {
                 throw new InvalidFileSize();
             }
-        } catch (IOException ioe) {
+        } catch (Exception ioe) {
             throw new InvalidFileType();
         }
     }
@@ -121,5 +121,16 @@ public class BackendService {
         model.addAttribute("projectId", projectId);
         setPage(model, pageTitle, "preview");
         setPath(model, prev, next);
+    }
+
+    public Map<?, ?> visualize(Long projectId, String plot, String x, String y, Boolean corr) {
+        return apiService.getVisualization(projectId, plot, x, y, corr);
+    }
+
+    public void applyVisualize(Long projectId, String plot, String x, String y, Boolean corr, Model model, String pageTitle) {
+        model.addAttribute("data", visualize(projectId, plot, x, y, corr));
+        model.addAttribute("previewTitle", pageTitle);
+        model.addAttribute("projectId", projectId);
+        setPage(model, pageTitle, "plot");
     }
 }
