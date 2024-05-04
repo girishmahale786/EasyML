@@ -1,0 +1,125 @@
+<section class="relative z-10" th:fragment="content">
+    <div class="flex flex-col py-6 text-center w-full">
+        <h2 class="sm:text-5xl text-xl font-medium title-font text-white">Regression Models</h2>
+    </div>
+    <div class="bg-transparent text-black mx-20 mb-5">
+        <div class="container mx-auto flex justify-between">
+            <a th:href="${prev}">
+                <button class="bg-[#9eff00] focus:outline-none font-bold px-6 py-2 border border-gray-800 rounded-full">
+                    Prev
+                </button>
+            </a>
+        </div>
+    </div>
+    <div class="container flex flex-wrap justify-center -m-4 px-5 p-4 mx-auto text-white text-justify">
+        <form action="results" class="w-fit" method="post">
+            <div class="flex flex-wrap flex-col justify-center items-center -m-4 px-5 p-4 mx-auto text-white text-justify">
+                <div class="min-w-60 w-fit my-2 mx-2 relative border rounded-sm border-gray-300 text-[#9eff00]">
+                    <label class="sr-only" for="features">Features</label>
+                    <select class="appearance-none w-full py-2 px-2 pr-10 bg-gray-800" id="features"
+                            multiple name="features" required>
+                        <option value="">Select features (X)</option>
+                        <th:block th:each="col : ${columns}">
+                            <option th:text="${col}" th:value="${col}">
+                            </option>
+                        </th:block>
+                    </select>
+                    <div class="bg-gray-800 pointer-events-none absolute right-0 top-0 bottom-0 flex items-center px-2 border-l">
+                        <i class="fa-solid fa-angle-down text-[#9eff00]"></i>
+                    </div>
+                </div>
+                <div class="min-w-60 w-fit my-2 mx-2 relative border rounded-sm border-gray-300 text-[#9eff00]">
+                    <label class="sr-only" for="target">Target</label>
+                    <select class="appearance-none w-full py-2 px-2 pr-10 bg-gray-800" id="target"
+                            name="target" required>
+                        <option value="">Select target (y)</option>
+                        <th:block th:each="col : ${columns}">
+                            <option th:text="${col}" th:value="${col}">
+                            </option>
+                        </th:block>
+                    </select>
+                    <div class="bg-gray-800 pointer-events-none absolute right-0 top-0 bottom-0 flex items-center px-2 border-l">
+                        <i class="fa-solid fa-angle-down text-[#9eff00]"></i>
+                    </div>
+                </div>
+            </div>
+            <div class="flex flex-wrap justify-center -m-4">
+                <div class="p-4 lg:w-1/2 md:w-full">
+                    <div class="flex p-4 sm:flex-row flex-col">
+                        <div class="grow">
+                            <div class="flex flex-row">
+                                <i class="fa-regular fa-chart-line-up fa-2x text-[#9eff00] mb-4 mr-4"></i>
+                                <h2 class="text-white font-bold title-font text-2xl mb-3">Linear Regression</h2>
+                            </div>
+                            <p class="leading-relaxed text-base">By analyzing data points, linear regression creates a
+                                straight line that best predicts how one variable changes along with another.
+                            </p>
+                            <button class="px-20 text-black font-medium focus:outline-none bg-[#9eff00] mt-2 py-2 px-4 rounded-md"
+                                    name="modelType" type="submit" value="linear">
+                                Train Model
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                <div class="p-4 lg:w-1/2 md:w-full">
+                    <div class="flex p-4 sm:flex-row flex-col">
+                        <div class="grow">
+                            <div class="flex flex-row">
+                                <i class="fa-regular fa-draw-polygon fa-2x text-[#9eff00] mb-4 mr-4"></i>
+                                <h2 class="text-white font-bold title-font text-2xl mb-3">Polynomial Regression</h2>
+                            </div>
+                            <p class="leading-relaxed text-base">Polynomial regression goes beyond straight lines,
+                                fitting a
+                                curved model to capture non-linear relationships between variables.
+                            </p>
+                            <button class="px-20 text-black font-medium focus:outline-none bg-[#9eff00] mt-2 py-2 px-4 rounded-md"
+                                    name="modelType" type="submit"
+                                    value="polynomial">
+                                Train Model
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                <div class="p-4 lg:w-1/2 md:w-full">
+                    <div class="flex p-4 sm:flex-row flex-col">
+                        <div class="grow">
+                            <div class="flex flex-row">
+                                <i class="fa-regular fa-lasso fa-2x text-[#9eff00] mb-4 mr-4"></i>
+                                <h2 class="text-white font-bold title-font text-2xl mb-3">Lasso Regression</h2>
+                            </div>
+                            <p class="leading-relaxed text-base">Lasso regression shrinks coefficients in linear
+                                regression,
+                                promoting simpler models and potentially selecting key features.
+                            </p>
+                            <button class="px-20 text-black font-medium focus:outline-none bg-[#9eff00] mt-2 py-2 px-4 rounded-md"
+                                    name="modelType" type="submit"
+                                    value="lasso">
+                                Train Model
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                <div class="p-4 lg:w-1/2 md:w-full">
+                    <div class="flex p-4 sm:flex-row flex-col">
+                        <div class="grow">
+                            <div class="flex flex-row">
+                                <i class="fa-regular fa-lambda fa-2x text-[#9eff00] mb-4 mr-4"></i>
+                                <h2 class="text-white font-bold title-font text-2xl mb-3">Ridge Regression</h2>
+                            </div>
+                            <p class="leading-relaxed text-base">Ridge regression tackles overfitting in linear
+                                regression
+                                by adding a penalty that shrinks the coefficients of the model, leading to a more stable
+                                model.
+                            </p>
+                            <button class="px-20 text-black font-medium focus:outline-none bg-[#9eff00] mt-2 py-2 px-4 rounded-md"
+                                    name="modelType" type="submit"
+                                    value="ridge">
+                                Train Model
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+</section>

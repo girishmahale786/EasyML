@@ -14,6 +14,7 @@ import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 
@@ -49,26 +50,33 @@ public class APIService {
         return gson.fromJson(jsonResponse, Map.class);
     }
 
-    public Map<?, ?> getVisualization(String plot, Long projectId, String x, String y) {
-        String plotUrl = String.format("%s/visualize/%s?project_id=%d", apiBase, plot, projectId);
-        if (x != null) {
-            plotUrl = String.format("%s&x=%s", plotUrl, x);
-        }
-        if (y != null) {
-            plotUrl = String.format("%s&y=%s", plotUrl, y);
-        }
-        String jsonResponse = restTemplate.getForObject(plotUrl, String.class);
-        return gson.fromJson(jsonResponse, Map.class);
-    }
-
     public Map<?, ?> getPreprocessing(Long projectId, String option, String mode) {
         String preprocessUrl = String.format("%s/preprocess/%s?project_id=%d&mode=%s", apiBase, option, projectId, mode);
         String jsonResponse = restTemplate.getForObject(preprocessUrl, String.class);
         return gson.fromJson(jsonResponse, Map.class);
     }
 
-    public Map<?, ?> getMetrics(Long projectId, String option) {
-        String metricsUrl = String.format("%s/metrics/%s?project_id=%d", apiBase, option, projectId);
+    public Map<?, ?> getVisualization(Long projectId, String plot, String x, String y, Boolean corr) {
+        String plotUrl = String.format("%s/visualize/%s?project_id=%d", apiBase, plot, projectId);
+        if (!x.isEmpty()) {
+            plotUrl = String.format("%s&x=%s", plotUrl, x);
+        }
+        if (!y.isEmpty()) {
+            plotUrl = String.format("%s&y=%s", plotUrl, y);
+        }
+        if (plot.equals("heatmap")) {
+            plotUrl = String.format("%s&corr=%b", plotUrl, corr);
+        }
+        String jsonResponse = restTemplate.getForObject(plotUrl, String.class);
+        return gson.fromJson(jsonResponse, Map.class);
+    }
+
+    public Map<?, ?> getMetrics(Long projectId, List<String> features, String target, String option) {
+        StringBuilder feats = new StringBuilder();
+        for (String f : features) {
+            feats.append("&x=%s".formatted(f));
+        }
+        String metricsUrl = String.format("%s/metrics/%s?project_id=%d&y=%s%s", apiBase, option, projectId, target, feats);
         String jsonResponse = restTemplate.getForObject(metricsUrl, String.class);
         return gson.fromJson(jsonResponse, Map.class);
     }

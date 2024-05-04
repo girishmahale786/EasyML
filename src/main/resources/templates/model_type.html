@@ -1,0 +1,56 @@
+<section class="relative z-10" th:fragment="content">
+    <div class="flex flex-col py-6 text-center w-full">
+        <h2 class="sm:text-5xl text-xl font-medium title-font text-white">Model Selection</h2>
+    </div>
+    <div class="bg-transparent text-black mx-20 mb-5">
+        <div class="container mx-auto flex justify-between">
+            <a th:href="${prev}">
+                <button class="bg-[#9eff00] focus:outline-none font-bold px-6 py-2 border border-gray-800 rounded-full">
+                    Prev
+                </button>
+            </a>
+        </div>
+    </div>
+    <div class="container flex flex-wrap -m-4 px-5 p-4 mx-auto text-white text-justify">
+        <div class="flex flex-wrap justify-center -m-4">
+            <div class="p-4 lg:w-1/2 md:w-full">
+                <div class="flex p-4 sm:flex-row flex-col">
+                    <div class="grow">
+                        <div class="flex flex-row">
+                            <i class="fa-regular fa-chart-line-up-down fa-2x text-[#9eff00] mb-4 mr-4"></i>
+                            <h2 class="text-white font-bold title-font text-2xl mb-3">Regression Models</h2>
+                        </div>
+                        <p class="leading-relaxed text-base">Regression unveils the relationship between variables,
+                            using a best-fit line or model to predict how one changes with another. Outputs values in a
+                            continuous range.
+                        </p>
+                        <a th:href="'/model/' + ${projectId} + '/regression'">
+                            <button class="px-20 text-black font-medium focus:outline-none bg-[#9eff00] mt-2 py-2 px-4 rounded-md">
+                                Proceed
+                            </button>
+                        </a>
+                    </div>
+                </div>
+            </div>
+            <div class="p-4 lg:w-1/2 md:w-full">
+                <div class="flex p-4 sm:flex-row flex-col">
+                    <div class="grow">
+                        <div class="flex flex-row">
+                            <i class="fa-regular fa-chart-scatter-bubble fa-2x text-[#9eff00] mb-4 mr-4"></i>
+                            <h2 class="text-white font-bold title-font text-2xl mb-3">Classification Models</h2>
+                        </div>
+                        <p class="leading-relaxed text-base">Classification sorts data points into distinct categories,
+                            like building a filing system to organize information based on predefined labels. The output
+                            values are discrete in nature.
+                        </p>
+                        <a th:href="'/model/' + ${projectId} + '/classification'">
+                            <button class="px-20 text-black font-medium focus:outline-none bg-[#9eff00] mt-2 py-2 px-4 rounded-md">
+                                Proceed
+                            </button>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>

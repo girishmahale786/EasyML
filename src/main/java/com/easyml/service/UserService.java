@@ -56,7 +56,7 @@ public class UserService {
             throw new UserNotFound();
         }
         Integer otp = otpUtil.generateOtp();
-        otpUtil.sendOtpEmail(email, otp);
+        otpUtil.sendOtpEmail(user.getName(), email, otp);
         user.setOtp(otp);
         user.setOtpGeneratedTime(LocalDateTime.now());
         userRepository.save(user);

@@ -1,7 +1,6 @@
 package com.easyml.util;
 
 import com.easyml.exception.EmailException;
-import jakarta.mail.MessagingException;
 import org.springframework.stereotype.Component;
 
 import java.util.Random;
@@ -20,7 +19,7 @@ public class OtpUtil {
         return random.nextInt(100000, 999999);
     }
 
-    public void sendOtpEmail(String email, Integer otp) throws EmailException {
+    public void sendOtpEmail(String name, String email, Integer otp) throws EmailException {
         String subject = "EasyML - OTP Verification";
         String message = "<div>Your OTP is: %d</div>".formatted(otp);
         emailUtil.sendEmail(email, subject, message, true);

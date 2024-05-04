@@ -1,29 +1,25 @@
 package com.easyml.controller;
 
-import com.easyml.exception.EncryptionException;
 import com.easyml.exception.PermissionDenied;
-import com.easyml.service.APIService;
 import com.easyml.service.BackendService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.CookieValue;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import java.util.Map;
-
 @Controller
-public class BackendController {
+@RequestMapping("/preprocess")
+public class PreprocessController {
     private final BackendService backendService;
-    private final APIService apiService;
 
-    public BackendController(BackendService backendService, APIService apiService) {
+    public PreprocessController(BackendService backendService) {
         this.backendService = backendService;
-        this.apiService = apiService;
     }
 
-    @GetMapping("/preprocess/{projectId}")
+    @GetMapping("/{projectId}")
     public String preprocess(Model model, @PathVariable(value = "projectId") Long projectId, @CookieValue(value = "user_id", required = false) String userId, RedirectAttributes redirectAttributes) {
         try {
             backendService.validateLogin(model, userId, redirectAttributes);
@@ -37,7 +33,7 @@ public class BackendController {
 
     }
 
-    @GetMapping("/preprocess/{projectId}/impute")
+    @GetMapping("/{projectId}/impute")
     public String impute(Model model, @PathVariable(value = "projectId") Long projectId, @CookieValue(value = "user_id", required = false) String userId, RedirectAttributes redirectAttributes) {
         try {
             backendService.validateLogin(model, userId, redirectAttributes);
@@ -51,7 +47,7 @@ public class BackendController {
         return "base";
     }
 
-    @GetMapping("/preprocess/{projectId}/impute/mean")
+    @GetMapping("/{projectId}/impute/mean")
     public String imputeMean(Model model, @PathVariable(value = "projectId") Long projectId, @CookieValue(value = "user_id", required = false) String userId, RedirectAttributes redirectAttributes) {
         try {
             backendService.validateLogin(model, userId, redirectAttributes);
@@ -65,9 +61,9 @@ public class BackendController {
         return "base";
     }
 
-    @GetMapping("/preprocess/{projectId}/impute/mode")
+    @GetMapping("/{projectId}/impute/mode")
     public String imputeMode(Model model, @PathVariable(value = "projectId") Long projectId, @CookieValue(value = "user_id", required = false) String userId, RedirectAttributes redirectAttributes) {
-       try {
+        try {
             backendService.validateLogin(model, userId, redirectAttributes);
         } catch (PermissionDenied pd) {
             backendService.setMessage(model, "info", pd.getMessage());
@@ -80,7 +76,7 @@ public class BackendController {
         return "base";
     }
 
-    @GetMapping("/preprocess/{projectId}/impute/median")
+    @GetMapping("/{projectId}/impute/median")
     public String imputeMedian(Model model, @PathVariable(value = "projectId") Long projectId, @CookieValue(value = "user_id", required = false) String userId, RedirectAttributes redirectAttributes) {
         try {
             backendService.validateLogin(model, userId, redirectAttributes);
@@ -95,7 +91,7 @@ public class BackendController {
         return "base";
     }
 
-    @GetMapping("/preprocess/{projectId}/impute/bfill")
+    @GetMapping("/{projectId}/impute/bfill")
     public String imputeBfill(Model model, @PathVariable(value = "projectId") Long projectId, @CookieValue(value = "user_id", required = false) String userId, RedirectAttributes redirectAttributes) {
         try {
             backendService.validateLogin(model, userId, redirectAttributes);
@@ -110,7 +106,7 @@ public class BackendController {
         return "base";
     }
 
-    @GetMapping("/preprocess/{projectId}/impute/ffill")
+    @GetMapping("/{projectId}/impute/ffill")
     public String imputeFfill(Model model, @PathVariable(value = "projectId") Long projectId, @CookieValue(value = "user_id", required = false) String userId, RedirectAttributes redirectAttributes) {
         try {
             backendService.validateLogin(model, userId, redirectAttributes);
@@ -125,7 +121,7 @@ public class BackendController {
         return "base";
     }
 
-    @GetMapping("/preprocess/{projectId}/delete")
+    @GetMapping("/{projectId}/delete")
     public String delete(Model model, @PathVariable(value = "projectId") Long projectId, @CookieValue(value = "user_id", required = false) String userId, RedirectAttributes redirectAttributes) {
         try {
             backendService.validateLogin(model, userId, redirectAttributes);
@@ -139,7 +135,7 @@ public class BackendController {
         return "base";
     }
 
-    @GetMapping("/preprocess/{projectId}/delete/pairwise")
+    @GetMapping("/{projectId}/delete/pairwise")
     public String deletePairwise(Model model, @PathVariable(value = "projectId") Long projectId, @CookieValue(value = "user_id", required = false) String userId, RedirectAttributes redirectAttributes) {
         try {
             backendService.validateLogin(model, userId, redirectAttributes);
@@ -153,7 +149,7 @@ public class BackendController {
         return "base";
     }
 
-    @GetMapping("/preprocess/{projectId}/delete/column")
+    @GetMapping("/{projectId}/delete/column")
     public String deleteColumn(Model model, @PathVariable(value = "projectId") Long projectId, @CookieValue(value = "user_id", required = false) String userId, RedirectAttributes redirectAttributes) {
         try {
             backendService.validateLogin(model, userId, redirectAttributes);
@@ -167,7 +163,7 @@ public class BackendController {
         return "base";
     }
 
-    @GetMapping("/preprocess/{projectId}/delete/row")
+    @GetMapping("/{projectId}/delete/row")
     public String deleteRow(Model model, @PathVariable(value = "projectId") Long projectId, @CookieValue(value = "user_id", required = false) String userId, RedirectAttributes redirectAttributes) {
         try {
             backendService.validateLogin(model, userId, redirectAttributes);
@@ -181,7 +177,7 @@ public class BackendController {
         return "base";
     }
 
-    @GetMapping("/preprocess/{projectId}/encode")
+    @GetMapping("/{projectId}/encode")
     public String encode(Model model, @PathVariable(value = "projectId") Long projectId, @CookieValue(value = "user_id", required = false) String userId, RedirectAttributes redirectAttributes) {
         try {
             backendService.validateLogin(model, userId, redirectAttributes);
@@ -195,7 +191,7 @@ public class BackendController {
         return "base";
     }
 
-    @GetMapping("/preprocess/{projectId}/encode/onehot")
+    @GetMapping("/{projectId}/encode/onehot")
     public String encodeOneHot(Model model, @PathVariable(value = "projectId") Long projectId, @CookieValue(value = "user_id", required = false) String userId, RedirectAttributes redirectAttributes) {
         try {
             backendService.validateLogin(model, userId, redirectAttributes);
@@ -210,7 +206,7 @@ public class BackendController {
         return "base";
     }
 
-    @GetMapping("/preprocess/{projectId}/encode/label")
+    @GetMapping("/{projectId}/encode/label")
     public String encodeLabel(Model model, @PathVariable(value = "projectId") Long projectId, @CookieValue(value = "user_id", required = false) String userId, RedirectAttributes redirectAttributes) {
         try {
             backendService.validateLogin(model, userId, redirectAttributes);
@@ -224,7 +220,7 @@ public class BackendController {
         return "base";
     }
 
-    @GetMapping("/preprocess/{projectId}/scale")
+    @GetMapping("/{projectId}/scale")
     public String scale(Model model, @PathVariable(value = "projectId") Long projectId, @CookieValue(value = "user_id", required = false) String userId, RedirectAttributes redirectAttributes) {
         try {
             backendService.validateLogin(model, userId, redirectAttributes);
@@ -239,9 +235,9 @@ public class BackendController {
         return "base";
     }
 
-    @GetMapping("/preprocess/{projectId}/scale/standard")
+    @GetMapping("/{projectId}/scale/standard")
     public String scaleStandard(Model model, @PathVariable(value = "projectId") Long projectId, @CookieValue(value = "user_id", required = false) String userId, RedirectAttributes redirectAttributes) {
-       try {
+        try {
             backendService.validateLogin(model, userId, redirectAttributes);
         } catch (PermissionDenied pd) {
             backendService.setMessage(model, "info", pd.getMessage());
@@ -254,7 +250,7 @@ public class BackendController {
         return "base";
     }
 
-    @GetMapping("/preprocess/{projectId}/scale/minmax")
+    @GetMapping("/{projectId}/scale/minmax")
     public String scaleMinMax(Model model, @PathVariable(value = "projectId") Long projectId, @CookieValue(value = "user_id", required = false) String userId, RedirectAttributes redirectAttributes) {
         try {
             backendService.validateLogin(model, userId, redirectAttributes);
@@ -266,17 +262,5 @@ public class BackendController {
         String next = "/visualize/%d".formatted(projectId);
         backendService.applyPreprocess(projectId, "feature_scaling", "minmax", model, "MinMax Scaling Results", prev, next);
         return "base";
-    }
-
-    @GetMapping("/metrics")
-    public String metrics(Model model, @CookieValue(value = "user_id", required = false) String userId) {
-        Map<?, ?> metrics = apiService.getMetrics(4L, "liner_regression");
-        model.addAttribute("metrics", metrics);
-        try {
-            backendService.setLogin(model, userId);
-        } catch (EncryptionException ee) {
-            return "redirect:/error";
-        }
-        return "visualize";
     }
 }
