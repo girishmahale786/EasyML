@@ -1,11 +1,15 @@
 package com.easyml.service;
 
 import com.easyml.exception.EmailException;
+import com.easyml.exception.EncryptionException;
 import com.easyml.exception.InvalidOtp;
 import com.easyml.exception.UserNotFound;
 import com.easyml.model.User;
 import com.easyml.repository.UserRepository;
+import com.easyml.util.EncryptionUtil;
 import com.easyml.util.OtpUtil;
+import jakarta.servlet.http.Cookie;
+import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -91,6 +95,14 @@ public class UserService {
         user.setPassword(encodePassword(password));
         userRepository.save(user);
 
+    }
+
+    public void login(Long userId, HttpServletResponse response) throws EncryptionException {
+        Cookie userCookie = new Cookie("user_id", EncryptionUtil.encrypt(userId.toString()));
+        userCookie.setMaxAge(60 * 60 * 24);
+        userCookie.setSecure(true);
+        userCookie.setHttpOnly(true);
+        response.addCookie(userCookie);
     }
 
     public User getUser(Long userId) {
