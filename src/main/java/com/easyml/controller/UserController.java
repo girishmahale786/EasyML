@@ -138,11 +138,7 @@ public class UserController {
         }
         Long userId = authenticated.getId();
         try {
-            Cookie userCookie = new Cookie("user_id", EncryptionUtil.encrypt(userId.toString()));
-            userCookie.setMaxAge(60 * 60 * 24);
-            userCookie.setSecure(true);
-            userCookie.setHttpOnly(true);
-            response.addCookie(userCookie);
+            userService.login(userId, response);
         } catch (EncryptionException ee) {
             backendService.setMessage(redirectAttributes, "error", ee.getMessage());
             return "redirect:/login";
@@ -170,7 +166,7 @@ public class UserController {
     }
 
     @PostMapping("/verify-otp")
-    public String verifyOtp(@RequestParam String otp, RedirectAttributes redirectAttributes, HttpSession session) {
+    public String verifyOtp(@RequestParam String otp, RedirectAttributes redirectAttributes, HttpServletResponse response, HttpSession session) {
         String email = session.getAttribute("email").toString();
         String requestType = session.getAttribute("requestType").toString();
         try {
@@ -181,8 +177,15 @@ public class UserController {
         }
         session.setAttribute("success", true);
         if (requestType.equals("register")) {
-            backendService.setMessage(redirectAttributes, "success", "OTP Verification Successful, Please login to continue!");
-            return "redirect:/login";
+            backendService.setMessage(redirectAttributes, "success", "OTP Verification Successful!");
+            Long userId = userService.getUserByEmail(email).getId();
+            try {
+                userService.login(userId, response);
+            } catch (EncryptionException ee) {
+                backendService.setMessage(redirectAttributes, "error", ee.getMessage());
+                return "redirect:/login";
+            }
+            return "redirect:/dashboard";
         }
         backendService.setMessage(redirectAttributes, "success", "OTP Verification Successful!");
         return "redirect:/change-password";
